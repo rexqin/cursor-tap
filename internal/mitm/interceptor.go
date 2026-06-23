@@ -132,11 +132,11 @@ func (i *Interceptor) interceptTLS(clientConn *PeekableConn, targetHost string, 
 	}
 	defer serverTCPConn.Close()
 
-	// Server TLS config - force HTTP/1.1 only (no H2)
+	// Server TLS config - offer HTTP/2 and HTTP/1.1
 	serverTLSConfig := &tls.Config{
 		InsecureSkipVerify: true,
 		ServerName:         targetHost,
-		NextProtos:         []string{"http/1.1"}, // Force HTTP/1.1
+		NextProtos:         alpnProtos(),
 	}
 	// Outbound keylog (Proxy -> Remote Server)
 	if i.keyLog != nil {
@@ -159,10 +159,10 @@ func (i *Interceptor) interceptTLS(clientConn *PeekableConn, targetHost string, 
 		return fmt.Errorf("get cert: %w", err)
 	}
 
-	// Client TLS config - force HTTP/1.1 only
+	// Client TLS config - must offer h2; Cursor clients may require it exclusively.
 	clientTLSConfig := &tls.Config{
 		Certificates: []tls.Certificate{*cert},
-		NextProtos:   []string{"http/1.1"}, // Force HTTP/1.1
+		NextProtos:   alpnProtos(),
 	}
 	// Inbound keylog (Client -> Proxy)
 	if i.keyLog != nil {
@@ -178,8 +178,13 @@ func (i *Interceptor) interceptTLS(clientConn *PeekableConn, targetHost string, 
 	fmt.Printf("[DEBUG] Client TLS handshake completed for %s, ALPN: %q\n", targetHost, clientProto)
 	defer tlsClientConn.Close()
 
-	fmt.Printf("[DEBUG] Starting pipe for %s\n", targetHost)
-	err = i.pipe(tlsClientConn, serverConn, targetHost)
+	if isH2(clientProto) {
+		fmt.Printf("[DEBUG] Starting HTTP/2 bridge for %s\n", targetHost)
+		err = i.pipeClientH2(tlsClientConn, serverConn, targetHost, negotiatedProto)
+	} else {
+		fmt.Printf("[DEBUG] Starting HTTP/1.1 pipe for %s\n", targetHost)
+		err = i.pipe(tlsClientConn, serverConn, targetHost)
+	}
 	fmt.Printf("[DEBUG] Pipe finished for %s, err=%v\n", targetHost, err)
 	return err
 }
@@ -239,11 +244,10 @@ func (i *Interceptor) pipeSimple(client, server net.Conn) error {
 	return nil
 }
 
-// pipeWithHTTPParsing performs forwarding with HTTP stream parsing.
-func (i *Interceptor) pipeWithHTTPParsing(client, server net.Conn, host string) error {
+// newHTTPParser creates a parser configured with the interceptor's options.
+func (i *Interceptor) newHTTPParser(host string) *httpstream.Parser {
 	var logger httpstream.Logger = i.httpLogger
 
-	// If recorder is set, create session logger
 	var session *httpstream.Session
 	if i.recorder != nil {
 		session = i.recorder.NewSession(host)
@@ -267,20 +271,22 @@ func (i *Interceptor) pipeWithHTTPParsing(client, server net.Conn, host string) 
 		opts = append(opts, httpstream.WithOnGRPC(i.onGRPC))
 	}
 
-	// Add gRPC registry
 	grpcRegistry := i.grpcRegistry
 	if grpcRegistry == nil {
 		grpcRegistry = httpstream.DefaultGRPCRegistry()
 	}
 	opts = append(opts, httpstream.WithGRPCRegistry(grpcRegistry))
 
-	// If we have a session, use its ID
 	if session != nil {
 		opts = append(opts, httpstream.WithSessionID(session.ID))
 	}
 
-	parser := httpstream.NewParser(host, opts...)
-	return parser.Forward(client, server)
+	return httpstream.NewParser(host, opts...)
+}
+
+// pipeWithHTTPParsing performs forwarding with HTTP stream parsing.
+func (i *Interceptor) pipeWithHTTPParsing(client, server net.Conn, host string) error {
+	return i.newHTTPParser(host).Forward(client, server)
 }
 
 // closeWrite closes the write side of a connection if supported.

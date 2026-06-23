@@ -190,6 +190,16 @@ func (p *Parser) parseStream(r io.Reader, dir Direction) {
 	}
 }
 
+// ProcessRequest handles a single HTTP request (e.g. from an HTTP/2 stream).
+func (p *Parser) ProcessRequest(req *http.Request) {
+	p.handleRequest(req)
+}
+
+// ProcessResponse handles a single HTTP response correlated with the last request.
+func (p *Parser) ProcessResponse(resp *http.Response) {
+	p.handleResponse(resp)
+}
+
 // parseRequests parses HTTP requests from mirrored stream.
 func (p *Parser) parseRequests(reader *bufio.Reader) {
 	for {
@@ -197,46 +207,49 @@ func (p *Parser) parseRequests(reader *bufio.Reader) {
 		if err != nil {
 			return // EOF or parse error, stop parsing
 		}
+		p.handleRequest(req)
+	}
+}
 
-		// Create body reader for request body
-		var bodyReader *BodyReader
-		if req.Body != nil {
-			bodyReader = NewBodyReader(req.Body, req.Header)
-		}
+func (p *Parser) handleRequest(req *http.Request) {
+	// Create body reader for request body
+	var bodyReader *BodyReader
+	if req.Body != nil {
+		bodyReader = NewBodyReader(req.Body, req.Header)
+	}
 
-		// Create message
-		msg := &HTTPMessage{
-			Direction: ClientToServer,
-			Request:   req,
-			Body:      bodyReader,
-			Host:      p.host,
-			Timestamp: time.Now(),
-		}
+	// Create message
+	msg := &HTTPMessage{
+		Direction: ClientToServer,
+		Request:   req,
+		Body:      bodyReader,
+		Host:      p.host,
+		Timestamp: time.Now(),
+	}
 
-		// Log and callback
-		p.logger.LogRequest(msg)
-		if p.onRequest != nil {
-			p.onRequest(msg)
-		}
+	// Log and callback
+	p.logger.LogRequest(msg)
+	if p.onRequest != nil {
+		p.onRequest(msg)
+	}
 
-		// Check if this is a gRPC request
-		contentType := req.Header.Get("Content-Type")
-		if bodyReader != nil && IsGRPCContentType(contentType) && req.Method == "POST" {
-			// Store URL and content type for response correlation
-			p.lastRequestMutex.Lock()
-			p.lastRequestURL = req.URL.Path
-			p.lastRequestIsGRPC = true
-			p.lastRequestContentType = contentType
-			p.lastRequestMutex.Unlock()
+	// Check if this is a gRPC request
+	contentType := req.Header.Get("Content-Type")
+	if bodyReader != nil && IsGRPCContentType(contentType) && req.Method == "POST" {
+		// Store URL and content type for response correlation
+		p.lastRequestMutex.Lock()
+		p.lastRequestURL = req.URL.Path
+		p.lastRequestIsGRPC = true
+		p.lastRequestContentType = contentType
+		p.lastRequestMutex.Unlock()
 
-			p.parseGRPCBody(bodyReader, req.URL.Path, true, contentType)
-			continue
-		}
+		p.parseGRPCBody(bodyReader, req.URL.Path, true, contentType)
+		return
+	}
 
-		// Log request body if present
-		if bodyReader != nil {
-			p.logBody(bodyReader, ClientToServer)
-		}
+	// Log request body if present
+	if bodyReader != nil {
+		p.logBody(bodyReader, ClientToServer)
 	}
 }
 
@@ -247,62 +260,54 @@ func (p *Parser) parseResponses(reader *bufio.Reader) {
 		if err != nil {
 			return // EOF or parse error, stop parsing
 		}
+		p.handleResponse(resp)
+	}
+}
 
-		// Create body reader for decoded access
-		bodyReader := NewBodyReader(resp.Body, resp.Header)
+func (p *Parser) handleResponse(resp *http.Response) {
+	bodyReader := NewBodyReader(resp.Body, resp.Header)
 
-		// Create message
-		msg := &HTTPMessage{
-			Direction: ServerToClient,
-			Response:  resp,
-			Body:      bodyReader,
-			Host:      p.host,
-			Timestamp: time.Now(),
-		}
+	msg := &HTTPMessage{
+		Direction: ServerToClient,
+		Response:  resp,
+		Body:      bodyReader,
+		Host:      p.host,
+		Timestamp: time.Now(),
+	}
 
-		// Log and callback
-		p.logger.LogResponse(msg)
-		if p.onResponse != nil {
-			p.onResponse(msg)
-		}
+	p.logger.LogResponse(msg)
+	if p.onResponse != nil {
+		p.onResponse(msg)
+	}
 
-		// Get request correlation info
-		p.lastRequestMutex.Lock()
-		requestPath := p.lastRequestURL
-		requestWasGRPC := p.lastRequestIsGRPC
-		// Clear after use
-		p.lastRequestURL = ""
-		p.lastRequestIsGRPC = false
-		p.lastRequestContentType = ""
-		p.lastRequestMutex.Unlock()
+	p.lastRequestMutex.Lock()
+	requestPath := p.lastRequestURL
+	requestWasGRPC := p.lastRequestIsGRPC
+	p.lastRequestURL = ""
+	p.lastRequestIsGRPC = false
+	p.lastRequestContentType = ""
+	p.lastRequestMutex.Unlock()
 
-		// Check if this is a gRPC response
-		contentType := resp.Header.Get("Content-Type")
+	contentType := resp.Header.Get("Content-Type")
 
-		// Case 1: Response is explicitly gRPC/Connect
-		if bodyReader != nil && IsGRPCContentType(contentType) && requestPath != "" {
-			p.parseGRPCBody(bodyReader, requestPath, false, contentType)
-			continue
-		}
+	if bodyReader != nil && IsGRPCContentType(contentType) && requestPath != "" {
+		p.parseGRPCBody(bodyReader, requestPath, false, contentType)
+		return
+	}
 
-		// Case 2: Request was gRPC/Connect but response is SSE (gRPC-over-SSE tunnel)
-		// The SSE is just a transport, actual data is gRPC framing
-		if bodyReader != nil && requestWasGRPC && requestPath != "" {
-			service, method, _ := ParseMethodFromURL(requestPath)
-			p.parseGRPCStream(bodyReader, service, method, false)
-			continue
-		}
+	if bodyReader != nil && requestWasGRPC && requestPath != "" {
+		service, method, _ := ParseMethodFromURL(requestPath)
+		p.parseGRPCStream(bodyReader, service, method, false)
+		return
+	}
 
-		// Handle true SSE: parse events for logging
-		if bodyReader != nil && bodyReader.IsSSE() {
-			p.parseSSEEvents(bodyReader)
-			continue
-		}
+	if bodyReader != nil && bodyReader.IsSSE() {
+		p.parseSSEEvents(bodyReader)
+		return
+	}
 
-		// For non-SSE: log full body
-		if bodyReader != nil {
-			p.logBody(bodyReader, ServerToClient)
-		}
+	if bodyReader != nil {
+		p.logBody(bodyReader, ServerToClient)
 	}
 }
 
