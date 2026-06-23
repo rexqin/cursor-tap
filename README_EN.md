@@ -19,15 +19,36 @@ This tool decrypts traffic into readable JSON and shows each streaming frame in 
 
 ## Quick Start
 
-### 1. Start the Proxy
+### Using Nx (Recommended)
 
 ```bash
-go run ./cmd/proxy
+pnpm install
+
+# Start proxy + WebUI together
+pnpm dev
+
+# Or start separately
+pnpm dev:tap
+pnpm dev:web
+
+# Other commands
+pnpm build:tap
+pnpm build:web
+pnpm exec nx run proto:generate
+pnpm exec nx test tap
 ```
 
-Listens on `localhost:8080` (HTTP proxy) and `localhost:9090` (WebUI + WebSocket).
+### Manual Setup
 
-### 2. Configure Cursor
+#### 1. Start the Proxy
+
+```bash
+go run ./cmd/cursor-tap start --http-parse --http-record ./access.log
+```
+
+Listens on `localhost:8080` (HTTP proxy), `localhost:1080` (SOCKS5), and `localhost:9090` (API + WebSocket).
+
+#### 2. Configure Cursor
 
 ```bash
 # Windows
@@ -41,14 +62,13 @@ export HTTPS_PROXY=http://localhost:8080
 export NODE_EXTRA_CA_CERTS=/path/to/ca.crt
 ```
 
-CA certificate is auto-generated at `~/.cursor-tap/ca.crt` on first run.
+CA certificate is auto-generated at `~/.cursor-tap/ca/ca.crt` on first run.
 
-### 3. Start WebUI
+#### 3. Start WebUI
 
 ```bash
 cd web
-npm install
-npm run dev
+pnpm dev
 ```
 
 Open `http://localhost:3000`.
