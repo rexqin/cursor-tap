@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -9,12 +12,16 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.mjs"
     ],
-    "sharedGlobals": ["{workspaceRoot}/go.work"]
+    "sharedGlobals": [
+      "{workspaceRoot}/go.work"
+    ]
   },
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "test": {
       "cache": true
@@ -26,7 +33,9 @@
   "plugins": [
     {
       "plugin": "@naxodev/gonx",
-      "exclude": ["go.mod"],
+      "exclude": [
+        "go.mod"
+      ],
       "options": {
         "buildTargetName": "build",
         "serveTargetName": "serve",
@@ -45,5 +54,6 @@
       }
     }
   ],
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "analytics": false
 }
