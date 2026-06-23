@@ -1,0 +1,48 @@
+{
+  "name": "proto",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "cursor_proto",
+  "tags": ["type:lib", "lang:proto"],
+  "targets": {
+    "generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "buf generate",
+        "cwd": "cursor_proto"
+      },
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/**/*.proto",
+        "{projectRoot}/buf.yaml",
+        "{projectRoot}/buf.gen.yaml",
+        "{projectRoot}/buf.lock"
+      ],
+      "outputs": ["{projectRoot}/gen"]
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "buf generate",
+        "cwd": "cursor_proto"
+      },
+      "cache": true,
+      "dependsOn": [],
+      "inputs": [
+        "{projectRoot}/**/*.proto",
+        "{projectRoot}/buf.yaml",
+        "{projectRoot}/buf.gen.yaml",
+        "{projectRoot}/buf.lock"
+      ],
+      "outputs": ["{projectRoot}/gen"]
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "buf lint",
+        "cwd": "cursor_proto"
+      },
+      "cache": true
+    }
+  }
+}

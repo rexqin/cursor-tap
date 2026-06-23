@@ -1,0 +1,16 @@
+{
+  "name": "cursor-tap-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nx run-many -t dev --projects=tap,web --parallel",
+    "build": "nx run-many -t build --all",
+    "test": "nx run-many -t test --all",
+    "lint": "nx run-many -t lint --all"
+  },
+  "devDependencies": {
+    "@naxodev/gonx": "3.0.0",
+    "@nx/next": "23.0.0",
+    "nx": "23.0.0"
+  }
+}
