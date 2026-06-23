@@ -22,12 +22,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Copied from: local:anyrun.v1.BlobStorageFormat (var: Ra)
+// Copied from: local:anyrun.v1.BlobStorageFormat (var: _m)
 type BlobStorageFormat int32
 
 const (
 	BlobStorageFormat_BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED BlobStorageFormat = 0
 	BlobStorageFormat_BLOB_STORAGE_FORMAT_V1                 BlobStorageFormat = 1
+	BlobStorageFormat_BLOB_STORAGE_FORMAT_VM_SNAPSHOT_V1     BlobStorageFormat = 2
+	BlobStorageFormat_BLOB_STORAGE_FORMAT_V2                 BlobStorageFormat = 3
+	BlobStorageFormat_BLOB_STORAGE_FORMAT_V2_LAYERED         BlobStorageFormat = 4
 )
 
 // Enum value maps for BlobStorageFormat.
@@ -35,10 +38,16 @@ var (
 	BlobStorageFormat_name = map[int32]string{
 		0: "BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED",
 		1: "BLOB_STORAGE_FORMAT_V1",
+		2: "BLOB_STORAGE_FORMAT_VM_SNAPSHOT_V1",
+		3: "BLOB_STORAGE_FORMAT_V2",
+		4: "BLOB_STORAGE_FORMAT_V2_LAYERED",
 	}
 	BlobStorageFormat_value = map[string]int32{
 		"BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED": 0,
 		"BLOB_STORAGE_FORMAT_V1":                 1,
+		"BLOB_STORAGE_FORMAT_VM_SNAPSHOT_V1":     2,
+		"BLOB_STORAGE_FORMAT_V2":                 3,
+		"BLOB_STORAGE_FORMAT_V2_LAYERED":         4,
 	}
 )
 
@@ -69,7 +78,7 @@ func (BlobStorageFormat) EnumDescriptor() ([]byte, []int) {
 	return file_anyrun_v1_proto_rawDescGZIP(), []int{0}
 }
 
-// Copied from: local:anyrun.v1.ClonePurpose (var: Sl)
+// Copied from: local:anyrun.v1.ClonePurpose (var: qKt)
 type ClonePurpose int32
 
 const (
@@ -119,7 +128,231 @@ func (ClonePurpose) EnumDescriptor() ([]byte, []int) {
 	return file_anyrun_v1_proto_rawDescGZIP(), []int{1}
 }
 
-// Copied from: local:anyrun.v1.PodCreatingPhase (var: nw)
+// Copied from: local:anyrun.v1.DrainingReason (var: y7r)
+type DrainingReason int32
+
+const (
+	DrainingReason_DRAINING_REASON_UNSPECIFIED DrainingReason = 0
+	DrainingReason_DRAINING_REASON_CAPACITY    DrainingReason = 1
+	DrainingReason_DRAINING_REASON_UPGRADE     DrainingReason = 2
+	DrainingReason_DRAINING_REASON_MANUAL      DrainingReason = 3
+	DrainingReason_DRAINING_REASON_HEALTH      DrainingReason = 4
+)
+
+// Enum value maps for DrainingReason.
+var (
+	DrainingReason_name = map[int32]string{
+		0: "DRAINING_REASON_UNSPECIFIED",
+		1: "DRAINING_REASON_CAPACITY",
+		2: "DRAINING_REASON_UPGRADE",
+		3: "DRAINING_REASON_MANUAL",
+		4: "DRAINING_REASON_HEALTH",
+	}
+	DrainingReason_value = map[string]int32{
+		"DRAINING_REASON_UNSPECIFIED": 0,
+		"DRAINING_REASON_CAPACITY":    1,
+		"DRAINING_REASON_UPGRADE":     2,
+		"DRAINING_REASON_MANUAL":      3,
+		"DRAINING_REASON_HEALTH":      4,
+	}
+)
+
+func (x DrainingReason) Enum() *DrainingReason {
+	p := new(DrainingReason)
+	*p = x
+	return p
+}
+
+func (x DrainingReason) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DrainingReason) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[2].Descriptor()
+}
+
+func (DrainingReason) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[2]
+}
+
+func (x DrainingReason) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DrainingReason.Descriptor instead.
+func (DrainingReason) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{2}
+}
+
+// Copied from: local:anyrun.v1.EntryType (var: EPr)
+type EntryType int32
+
+const (
+	EntryType_ENTRY_TYPE_UNSPECIFIED EntryType = 0
+	EntryType_ENTRY_TYPE_FILE        EntryType = 1
+	EntryType_ENTRY_TYPE_DIRECTORY   EntryType = 2
+	EntryType_ENTRY_TYPE_SYMLINK     EntryType = 3
+)
+
+// Enum value maps for EntryType.
+var (
+	EntryType_name = map[int32]string{
+		0: "ENTRY_TYPE_UNSPECIFIED",
+		1: "ENTRY_TYPE_FILE",
+		2: "ENTRY_TYPE_DIRECTORY",
+		3: "ENTRY_TYPE_SYMLINK",
+	}
+	EntryType_value = map[string]int32{
+		"ENTRY_TYPE_UNSPECIFIED": 0,
+		"ENTRY_TYPE_FILE":        1,
+		"ENTRY_TYPE_DIRECTORY":   2,
+		"ENTRY_TYPE_SYMLINK":     3,
+	}
+)
+
+func (x EntryType) Enum() *EntryType {
+	p := new(EntryType)
+	*p = x
+	return p
+}
+
+func (x EntryType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EntryType) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[3].Descriptor()
+}
+
+func (EntryType) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[3]
+}
+
+func (x EntryType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use EntryType.Descriptor instead.
+func (EntryType) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{3}
+}
+
+// Copied from: local:anyrun.v1.GitCloneFailureCategory (var: iJr)
+type GitCloneFailureCategory int32
+
+const (
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_UNSPECIFIED           GitCloneFailureCategory = 0
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_IP_ALLOW_LIST         GitCloneFailureCategory = 1
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_INVALID_CREDENTIALS   GitCloneFailureCategory = 2
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_SSO_REDIRECT          GitCloneFailureCategory = 3
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_PROXY_CONNECT         GitCloneFailureCategory = 4
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_CONNECTION_RESET      GitCloneFailureCategory = 5
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_TRANSPORT_INTERRUPTED GitCloneFailureCategory = 6
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_REMOTE_FORBIDDEN      GitCloneFailureCategory = 7
+	GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_UPSTREAM_BAD_GATEWAY  GitCloneFailureCategory = 8
+)
+
+// Enum value maps for GitCloneFailureCategory.
+var (
+	GitCloneFailureCategory_name = map[int32]string{
+		0: "GIT_CLONE_FAILURE_CATEGORY_UNSPECIFIED",
+		1: "GIT_CLONE_FAILURE_CATEGORY_IP_ALLOW_LIST",
+		2: "GIT_CLONE_FAILURE_CATEGORY_INVALID_CREDENTIALS",
+		3: "GIT_CLONE_FAILURE_CATEGORY_SSO_REDIRECT",
+		4: "GIT_CLONE_FAILURE_CATEGORY_PROXY_CONNECT",
+		5: "GIT_CLONE_FAILURE_CATEGORY_CONNECTION_RESET",
+		6: "GIT_CLONE_FAILURE_CATEGORY_TRANSPORT_INTERRUPTED",
+		7: "GIT_CLONE_FAILURE_CATEGORY_REMOTE_FORBIDDEN",
+		8: "GIT_CLONE_FAILURE_CATEGORY_UPSTREAM_BAD_GATEWAY",
+	}
+	GitCloneFailureCategory_value = map[string]int32{
+		"GIT_CLONE_FAILURE_CATEGORY_UNSPECIFIED":           0,
+		"GIT_CLONE_FAILURE_CATEGORY_IP_ALLOW_LIST":         1,
+		"GIT_CLONE_FAILURE_CATEGORY_INVALID_CREDENTIALS":   2,
+		"GIT_CLONE_FAILURE_CATEGORY_SSO_REDIRECT":          3,
+		"GIT_CLONE_FAILURE_CATEGORY_PROXY_CONNECT":         4,
+		"GIT_CLONE_FAILURE_CATEGORY_CONNECTION_RESET":      5,
+		"GIT_CLONE_FAILURE_CATEGORY_TRANSPORT_INTERRUPTED": 6,
+		"GIT_CLONE_FAILURE_CATEGORY_REMOTE_FORBIDDEN":      7,
+		"GIT_CLONE_FAILURE_CATEGORY_UPSTREAM_BAD_GATEWAY":  8,
+	}
+)
+
+func (x GitCloneFailureCategory) Enum() *GitCloneFailureCategory {
+	p := new(GitCloneFailureCategory)
+	*p = x
+	return p
+}
+
+func (x GitCloneFailureCategory) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GitCloneFailureCategory) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[4].Descriptor()
+}
+
+func (GitCloneFailureCategory) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[4]
+}
+
+func (x GitCloneFailureCategory) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GitCloneFailureCategory.Descriptor instead.
+func (GitCloneFailureCategory) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{4}
+}
+
+// Copied from: local:anyrun.v1.IsoEnvExtraDrivePurpose (var: nJr)
+type IsoEnvExtraDrivePurpose int32
+
+const (
+	IsoEnvExtraDrivePurpose_ISO_ENV_EXTRA_DRIVE_PURPOSE_UNSPECIFIED        IsoEnvExtraDrivePurpose = 0
+	IsoEnvExtraDrivePurpose_ISO_ENV_EXTRA_DRIVE_PURPOSE_CHECKPOINT_SCRATCH IsoEnvExtraDrivePurpose = 1
+)
+
+// Enum value maps for IsoEnvExtraDrivePurpose.
+var (
+	IsoEnvExtraDrivePurpose_name = map[int32]string{
+		0: "ISO_ENV_EXTRA_DRIVE_PURPOSE_UNSPECIFIED",
+		1: "ISO_ENV_EXTRA_DRIVE_PURPOSE_CHECKPOINT_SCRATCH",
+	}
+	IsoEnvExtraDrivePurpose_value = map[string]int32{
+		"ISO_ENV_EXTRA_DRIVE_PURPOSE_UNSPECIFIED":        0,
+		"ISO_ENV_EXTRA_DRIVE_PURPOSE_CHECKPOINT_SCRATCH": 1,
+	}
+)
+
+func (x IsoEnvExtraDrivePurpose) Enum() *IsoEnvExtraDrivePurpose {
+	p := new(IsoEnvExtraDrivePurpose)
+	*p = x
+	return p
+}
+
+func (x IsoEnvExtraDrivePurpose) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IsoEnvExtraDrivePurpose) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[5].Descriptor()
+}
+
+func (IsoEnvExtraDrivePurpose) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[5]
+}
+
+func (x IsoEnvExtraDrivePurpose) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IsoEnvExtraDrivePurpose.Descriptor instead.
+func (IsoEnvExtraDrivePurpose) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{5}
+}
+
+// Copied from: local:anyrun.v1.PodCreatingPhase (var: sJr)
 type PodCreatingPhase int32
 
 const (
@@ -162,11 +395,11 @@ func (x PodCreatingPhase) String() string {
 }
 
 func (PodCreatingPhase) Descriptor() protoreflect.EnumDescriptor {
-	return file_anyrun_v1_proto_enumTypes[2].Descriptor()
+	return file_anyrun_v1_proto_enumTypes[6].Descriptor()
 }
 
 func (PodCreatingPhase) Type() protoreflect.EnumType {
-	return &file_anyrun_v1_proto_enumTypes[2]
+	return &file_anyrun_v1_proto_enumTypes[6]
 }
 
 func (x PodCreatingPhase) Number() protoreflect.EnumNumber {
@@ -175,10 +408,222 @@ func (x PodCreatingPhase) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PodCreatingPhase.Descriptor instead.
 func (PodCreatingPhase) EnumDescriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{2}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{6}
 }
 
-// Copied from: local:anyrun.v1.SnapshotState (var: Pa)
+// Copied from: local:anyrun.v1.PodStartCacheSource (var: Zjt)
+type PodStartCacheSource int32
+
+const (
+	PodStartCacheSource_POD_START_CACHE_SOURCE_UNSPECIFIED                     PodStartCacheSource = 0
+	PodStartCacheSource_POD_START_CACHE_SOURCE_NODE_LOCAL_FIRECRACKER_SNAPSHOT PodStartCacheSource = 1
+	PodStartCacheSource_POD_START_CACHE_SOURCE_REMOTE_ROOTAR_CHECKPOINT        PodStartCacheSource = 2
+)
+
+// Enum value maps for PodStartCacheSource.
+var (
+	PodStartCacheSource_name = map[int32]string{
+		0: "POD_START_CACHE_SOURCE_UNSPECIFIED",
+		1: "POD_START_CACHE_SOURCE_NODE_LOCAL_FIRECRACKER_SNAPSHOT",
+		2: "POD_START_CACHE_SOURCE_REMOTE_ROOTAR_CHECKPOINT",
+	}
+	PodStartCacheSource_value = map[string]int32{
+		"POD_START_CACHE_SOURCE_UNSPECIFIED":                     0,
+		"POD_START_CACHE_SOURCE_NODE_LOCAL_FIRECRACKER_SNAPSHOT": 1,
+		"POD_START_CACHE_SOURCE_REMOTE_ROOTAR_CHECKPOINT":        2,
+	}
+)
+
+func (x PodStartCacheSource) Enum() *PodStartCacheSource {
+	p := new(PodStartCacheSource)
+	*p = x
+	return p
+}
+
+func (x PodStartCacheSource) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PodStartCacheSource) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[7].Descriptor()
+}
+
+func (PodStartCacheSource) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[7]
+}
+
+func (x PodStartCacheSource) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PodStartCacheSource.Descriptor instead.
+func (PodStartCacheSource) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{7}
+}
+
+// Copied from: local:anyrun.v1.PrivateWorkerWaitReason (var: $Pr)
+type PrivateWorkerWaitReason int32
+
+const (
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_UNSPECIFIED                PrivateWorkerWaitReason = 0
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_NO_CONNECTED_WORKERS       PrivateWorkerWaitReason = 1
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_LABEL_MISMATCH             PrivateWorkerWaitReason = 2
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_OWNER_FILTERED             PrivateWorkerWaitReason = 3
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_SHARED_ASSIGNMENT_FILTERED PrivateWorkerWaitReason = 4
+	PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_ALL_BUSY                   PrivateWorkerWaitReason = 5
+)
+
+// Enum value maps for PrivateWorkerWaitReason.
+var (
+	PrivateWorkerWaitReason_name = map[int32]string{
+		0: "PRIVATE_WORKER_WAIT_REASON_UNSPECIFIED",
+		1: "PRIVATE_WORKER_WAIT_REASON_NO_CONNECTED_WORKERS",
+		2: "PRIVATE_WORKER_WAIT_REASON_LABEL_MISMATCH",
+		3: "PRIVATE_WORKER_WAIT_REASON_OWNER_FILTERED",
+		4: "PRIVATE_WORKER_WAIT_REASON_SHARED_ASSIGNMENT_FILTERED",
+		5: "PRIVATE_WORKER_WAIT_REASON_ALL_BUSY",
+	}
+	PrivateWorkerWaitReason_value = map[string]int32{
+		"PRIVATE_WORKER_WAIT_REASON_UNSPECIFIED":                0,
+		"PRIVATE_WORKER_WAIT_REASON_NO_CONNECTED_WORKERS":       1,
+		"PRIVATE_WORKER_WAIT_REASON_LABEL_MISMATCH":             2,
+		"PRIVATE_WORKER_WAIT_REASON_OWNER_FILTERED":             3,
+		"PRIVATE_WORKER_WAIT_REASON_SHARED_ASSIGNMENT_FILTERED": 4,
+		"PRIVATE_WORKER_WAIT_REASON_ALL_BUSY":                   5,
+	}
+)
+
+func (x PrivateWorkerWaitReason) Enum() *PrivateWorkerWaitReason {
+	p := new(PrivateWorkerWaitReason)
+	*p = x
+	return p
+}
+
+func (x PrivateWorkerWaitReason) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PrivateWorkerWaitReason) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[8].Descriptor()
+}
+
+func (PrivateWorkerWaitReason) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[8]
+}
+
+func (x PrivateWorkerWaitReason) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PrivateWorkerWaitReason.Descriptor instead.
+func (PrivateWorkerWaitReason) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{8}
+}
+
+// Copied from: local:anyrun.v1.RestartPolicy (var: RPr)
+type RestartPolicy int32
+
+const (
+	RestartPolicy_RESTART_POLICY_UNSPECIFIED RestartPolicy = 0
+	RestartPolicy_RESTART_POLICY_NEVER       RestartPolicy = 1
+	RestartPolicy_RESTART_POLICY_ON_FAILURE  RestartPolicy = 2
+	RestartPolicy_RESTART_POLICY_ALWAYS      RestartPolicy = 3
+)
+
+// Enum value maps for RestartPolicy.
+var (
+	RestartPolicy_name = map[int32]string{
+		0: "RESTART_POLICY_UNSPECIFIED",
+		1: "RESTART_POLICY_NEVER",
+		2: "RESTART_POLICY_ON_FAILURE",
+		3: "RESTART_POLICY_ALWAYS",
+	}
+	RestartPolicy_value = map[string]int32{
+		"RESTART_POLICY_UNSPECIFIED": 0,
+		"RESTART_POLICY_NEVER":       1,
+		"RESTART_POLICY_ON_FAILURE":  2,
+		"RESTART_POLICY_ALWAYS":      3,
+	}
+)
+
+func (x RestartPolicy) Enum() *RestartPolicy {
+	p := new(RestartPolicy)
+	*p = x
+	return p
+}
+
+func (x RestartPolicy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RestartPolicy) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[9].Descriptor()
+}
+
+func (RestartPolicy) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[9]
+}
+
+func (x RestartPolicy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RestartPolicy.Descriptor instead.
+func (RestartPolicy) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{9}
+}
+
+// Copied from: local:anyrun.v1.RestartReason (var: gh)
+type RestartReason int32
+
+const (
+	RestartReason_RESTART_REASON_UNSPECIFIED         RestartReason = 0
+	RestartReason_RESTART_REASON_PROCESS_EXITED      RestartReason = 1
+	RestartReason_RESTART_REASON_HEALTH_CHECK_FAILED RestartReason = 2
+)
+
+// Enum value maps for RestartReason.
+var (
+	RestartReason_name = map[int32]string{
+		0: "RESTART_REASON_UNSPECIFIED",
+		1: "RESTART_REASON_PROCESS_EXITED",
+		2: "RESTART_REASON_HEALTH_CHECK_FAILED",
+	}
+	RestartReason_value = map[string]int32{
+		"RESTART_REASON_UNSPECIFIED":         0,
+		"RESTART_REASON_PROCESS_EXITED":      1,
+		"RESTART_REASON_HEALTH_CHECK_FAILED": 2,
+	}
+)
+
+func (x RestartReason) Enum() *RestartReason {
+	p := new(RestartReason)
+	*p = x
+	return p
+}
+
+func (x RestartReason) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RestartReason) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[10].Descriptor()
+}
+
+func (RestartReason) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[10]
+}
+
+func (x RestartReason) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RestartReason.Descriptor instead.
+func (RestartReason) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{10}
+}
+
+// Copied from: local:anyrun.v1.SnapshotState (var: Xu)
 type SnapshotState int32
 
 const (
@@ -215,11 +660,11 @@ func (x SnapshotState) String() string {
 }
 
 func (SnapshotState) Descriptor() protoreflect.EnumDescriptor {
-	return file_anyrun_v1_proto_enumTypes[3].Descriptor()
+	return file_anyrun_v1_proto_enumTypes[11].Descriptor()
 }
 
 func (SnapshotState) Type() protoreflect.EnumType {
-	return &file_anyrun_v1_proto_enumTypes[3]
+	return &file_anyrun_v1_proto_enumTypes[11]
 }
 
 func (x SnapshotState) Number() protoreflect.EnumNumber {
@@ -228,10 +673,502 @@ func (x SnapshotState) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SnapshotState.Descriptor instead.
 func (SnapshotState) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{11}
+}
+
+// Copied from: local:anyrun.v1.DevContainerConfig.RegistryReferenceAlias (var: _jt)
+type DevContainerConfig_RegistryReferenceAlias int32
+
+const (
+	DevContainerConfig_REGISTRY_REFERENCE_ALIAS_UNSPECIFIED DevContainerConfig_RegistryReferenceAlias = 0
+	DevContainerConfig_REGISTRY_REFERENCE_ALIAS_BUILDER     DevContainerConfig_RegistryReferenceAlias = 1
+)
+
+// Enum value maps for DevContainerConfig_RegistryReferenceAlias.
+var (
+	DevContainerConfig_RegistryReferenceAlias_name = map[int32]string{
+		0: "REGISTRY_REFERENCE_ALIAS_UNSPECIFIED",
+		1: "REGISTRY_REFERENCE_ALIAS_BUILDER",
+	}
+	DevContainerConfig_RegistryReferenceAlias_value = map[string]int32{
+		"REGISTRY_REFERENCE_ALIAS_UNSPECIFIED": 0,
+		"REGISTRY_REFERENCE_ALIAS_BUILDER":     1,
+	}
+)
+
+func (x DevContainerConfig_RegistryReferenceAlias) Enum() *DevContainerConfig_RegistryReferenceAlias {
+	p := new(DevContainerConfig_RegistryReferenceAlias)
+	*p = x
+	return p
+}
+
+func (x DevContainerConfig_RegistryReferenceAlias) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DevContainerConfig_RegistryReferenceAlias) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[12].Descriptor()
+}
+
+func (DevContainerConfig_RegistryReferenceAlias) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[12]
+}
+
+func (x DevContainerConfig_RegistryReferenceAlias) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DevContainerConfig_RegistryReferenceAlias.Descriptor instead.
+func (DevContainerConfig_RegistryReferenceAlias) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{18, 0}
+}
+
+// Copied from: local:anyrun.v1.ScmConfig.AuthMethod (var: rJr)
+type ScmConfig_AuthMethod int32
+
+const (
+	ScmConfig_AUTH_METHOD_UNSPECIFIED ScmConfig_AuthMethod = 0
+	ScmConfig_AUTH_METHOD_BASIC       ScmConfig_AuthMethod = 1
+	ScmConfig_AUTH_METHOD_BEARER      ScmConfig_AuthMethod = 2
+)
+
+// Enum value maps for ScmConfig_AuthMethod.
+var (
+	ScmConfig_AuthMethod_name = map[int32]string{
+		0: "AUTH_METHOD_UNSPECIFIED",
+		1: "AUTH_METHOD_BASIC",
+		2: "AUTH_METHOD_BEARER",
+	}
+	ScmConfig_AuthMethod_value = map[string]int32{
+		"AUTH_METHOD_UNSPECIFIED": 0,
+		"AUTH_METHOD_BASIC":       1,
+		"AUTH_METHOD_BEARER":      2,
+	}
+)
+
+func (x ScmConfig_AuthMethod) Enum() *ScmConfig_AuthMethod {
+	p := new(ScmConfig_AuthMethod)
+	*p = x
+	return p
+}
+
+func (x ScmConfig_AuthMethod) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ScmConfig_AuthMethod) Descriptor() protoreflect.EnumDescriptor {
+	return file_anyrun_v1_proto_enumTypes[13].Descriptor()
+}
+
+func (ScmConfig_AuthMethod) Type() protoreflect.EnumType {
+	return &file_anyrun_v1_proto_enumTypes[13]
+}
+
+func (x ScmConfig_AuthMethod) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ScmConfig_AuthMethod.Descriptor instead.
+func (ScmConfig_AuthMethod) EnumDescriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{111, 0}
+}
+
+// Copied from: local:anyrun.v1.AgentStoreConfig (var: Sjt)
+type AgentStoreConfig struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Enabled            bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	SelfStoreId        string                 `protobuf:"bytes,2,opt,name=self_store_id,json=selfStoreId,proto3" json:"self_store_id,omitempty"`
+	AdditionalStoreIds []string               `protobuf:"bytes,3,rep,name=additional_store_ids,json=additionalStoreIds,proto3" json:"additional_store_ids,omitempty"`
+	PodGrant           *PodAgentStoreGrant    `protobuf:"bytes,4,opt,name=pod_grant,json=podGrant,proto3" json:"pod_grant,omitempty"`
+	BcsEndpoint        string                 `protobuf:"bytes,6,opt,name=bcs_endpoint,json=bcsEndpoint,proto3" json:"bcs_endpoint,omitempty"`
+	VsockPort          uint32                 `protobuf:"varint,7,opt,name=vsock_port,json=vsockPort,proto3" json:"vsock_port,omitempty"`
+	MountRoot          string                 `protobuf:"bytes,8,opt,name=mount_root,json=mountRoot,proto3" json:"mount_root,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *AgentStoreConfig) Reset() {
+	*x = AgentStoreConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AgentStoreConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AgentStoreConfig) ProtoMessage() {}
+
+func (x *AgentStoreConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AgentStoreConfig.ProtoReflect.Descriptor instead.
+func (*AgentStoreConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *AgentStoreConfig) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *AgentStoreConfig) GetSelfStoreId() string {
+	if x != nil {
+		return x.SelfStoreId
+	}
+	return ""
+}
+
+func (x *AgentStoreConfig) GetAdditionalStoreIds() []string {
+	if x != nil {
+		return x.AdditionalStoreIds
+	}
+	return nil
+}
+
+func (x *AgentStoreConfig) GetPodGrant() *PodAgentStoreGrant {
+	if x != nil {
+		return x.PodGrant
+	}
+	return nil
+}
+
+func (x *AgentStoreConfig) GetBcsEndpoint() string {
+	if x != nil {
+		return x.BcsEndpoint
+	}
+	return ""
+}
+
+func (x *AgentStoreConfig) GetVsockPort() uint32 {
+	if x != nil {
+		return x.VsockPort
+	}
+	return 0
+}
+
+func (x *AgentStoreConfig) GetMountRoot() string {
+	if x != nil {
+		return x.MountRoot
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.AllowedDomain (var: qjt)
+type AllowedDomain struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Domain        string                 `protobuf:"bytes,1,opt,name=domain,proto3" json:"domain,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AllowedDomain) Reset() {
+	*x = AllowedDomain{}
+	mi := &file_anyrun_v1_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AllowedDomain) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AllowedDomain) ProtoMessage() {}
+
+func (x *AllowedDomain) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AllowedDomain.ProtoReflect.Descriptor instead.
+func (*AllowedDomain) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *AllowedDomain) GetDomain() string {
+	if x != nil {
+		return x.Domain
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.AnygressLocalPodDenyRules (var: XPr)
+type AnygressLocalPodDenyRules struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Version       uint32                   `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
+	PodId         string                   `protobuf:"bytes,2,opt,name=pod_id,json=podId,proto3" json:"pod_id,omitempty"`
+	DenyRules     *AnygressPerPodDenyRules `protobuf:"bytes,3,opt,name=deny_rules,json=denyRules,proto3" json:"deny_rules,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnygressLocalPodDenyRules) Reset() {
+	*x = AnygressLocalPodDenyRules{}
+	mi := &file_anyrun_v1_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnygressLocalPodDenyRules) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnygressLocalPodDenyRules) ProtoMessage() {}
+
+func (x *AnygressLocalPodDenyRules) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnygressLocalPodDenyRules.ProtoReflect.Descriptor instead.
+func (*AnygressLocalPodDenyRules) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AnygressLocalPodDenyRules) GetVersion() uint32 {
+	if x != nil {
+		return x.Version
+	}
+	return 0
+}
+
+func (x *AnygressLocalPodDenyRules) GetPodId() string {
+	if x != nil {
+		return x.PodId
+	}
+	return ""
+}
+
+func (x *AnygressLocalPodDenyRules) GetDenyRules() *AnygressPerPodDenyRules {
+	if x != nil {
+		return x.DenyRules
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.AnygressPerPodDenyRules (var: gjt)
+type AnygressPerPodDenyRules struct {
+	state         protoimpl.MessageState              `protogen:"open.v1"`
+	Denies        map[string]*AnygressPodDenyRuleList `protobuf:"bytes,1,rep,name=denies,proto3" json:"denies,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnygressPerPodDenyRules) Reset() {
+	*x = AnygressPerPodDenyRules{}
+	mi := &file_anyrun_v1_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnygressPerPodDenyRules) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnygressPerPodDenyRules) ProtoMessage() {}
+
+func (x *AnygressPerPodDenyRules) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnygressPerPodDenyRules.ProtoReflect.Descriptor instead.
+func (*AnygressPerPodDenyRules) Descriptor() ([]byte, []int) {
 	return file_anyrun_v1_proto_rawDescGZIP(), []int{3}
 }
 
-// Copied from: local:anyrun.v1.Build (var: qje, class: Oce)
+func (x *AnygressPerPodDenyRules) GetDenies() map[string]*AnygressPodDenyRuleList {
+	if x != nil {
+		return x.Denies
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.AnygressPodDenyRule (var: pjt)
+type AnygressPodDenyRule struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Verb          string                 `protobuf:"bytes,1,opt,name=verb,proto3" json:"verb,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnygressPodDenyRule) Reset() {
+	*x = AnygressPodDenyRule{}
+	mi := &file_anyrun_v1_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnygressPodDenyRule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnygressPodDenyRule) ProtoMessage() {}
+
+func (x *AnygressPodDenyRule) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnygressPodDenyRule.ProtoReflect.Descriptor instead.
+func (*AnygressPodDenyRule) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AnygressPodDenyRule) GetVerb() string {
+	if x != nil {
+		return x.Verb
+	}
+	return ""
+}
+
+func (x *AnygressPodDenyRule) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.AnygressPodDenyRuleList (var: hjt)
+type AnygressPodDenyRuleList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Rules         []*AnygressPodDenyRule `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnygressPodDenyRuleList) Reset() {
+	*x = AnygressPodDenyRuleList{}
+	mi := &file_anyrun_v1_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnygressPodDenyRuleList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnygressPodDenyRuleList) ProtoMessage() {}
+
+func (x *AnygressPodDenyRuleList) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnygressPodDenyRuleList.ProtoReflect.Descriptor instead.
+func (*AnygressPodDenyRuleList) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AnygressPodDenyRuleList) GetRules() []*AnygressPodDenyRule {
+	if x != nil {
+		return x.Rules
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.AttachProcessRequest (var: JPr)
+type AttachProcessRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Pid           int64                  `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	LastEventId   *string                `protobuf:"bytes,2,opt,name=last_event_id,json=lastEventId,proto3,oneof" json:"last_event_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AttachProcessRequest) Reset() {
+	*x = AttachProcessRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AttachProcessRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AttachProcessRequest) ProtoMessage() {}
+
+func (x *AttachProcessRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AttachProcessRequest.ProtoReflect.Descriptor instead.
+func (*AttachProcessRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AttachProcessRequest) GetPid() int64 {
+	if x != nil {
+		return x.Pid
+	}
+	return 0
+}
+
+func (x *AttachProcessRequest) GetLastEventId() string {
+	if x != nil && x.LastEventId != nil {
+		return *x.LastEventId
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.Build (var: kjt)
 type Build struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Dockerfile    string                 `protobuf:"bytes,1,opt,name=dockerfile,proto3" json:"dockerfile,omitempty"`
@@ -242,7 +1179,7 @@ type Build struct {
 
 func (x *Build) Reset() {
 	*x = Build{}
-	mi := &file_anyrun_v1_proto_msgTypes[0]
+	mi := &file_anyrun_v1_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -254,7 +1191,7 @@ func (x *Build) String() string {
 func (*Build) ProtoMessage() {}
 
 func (x *Build) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[0]
+	mi := &file_anyrun_v1_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -267,7 +1204,7 @@ func (x *Build) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Build.ProtoReflect.Descriptor instead.
 func (*Build) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{0}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Build) GetDockerfile() string {
@@ -284,7 +1221,7 @@ func (x *Build) GetContext() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.BuildStatusLine (var: qes, class: ple)
+// Copied from: local:anyrun.v1.BuildStatusLine (var: $Kt)
 type BuildStatusLine struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StreamId      uint32                 `protobuf:"varint,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"`
@@ -296,7 +1233,7 @@ type BuildStatusLine struct {
 
 func (x *BuildStatusLine) Reset() {
 	*x = BuildStatusLine{}
-	mi := &file_anyrun_v1_proto_msgTypes[1]
+	mi := &file_anyrun_v1_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -308,7 +1245,7 @@ func (x *BuildStatusLine) String() string {
 func (*BuildStatusLine) ProtoMessage() {}
 
 func (x *BuildStatusLine) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[1]
+	mi := &file_anyrun_v1_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -321,7 +1258,7 @@ func (x *BuildStatusLine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildStatusLine.ProtoReflect.Descriptor instead.
 func (*BuildStatusLine) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{1}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *BuildStatusLine) GetStreamId() uint32 {
@@ -345,7 +1282,7 @@ func (x *BuildStatusLine) GetContent() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.BuildStepStarted (var: Bes, class: fle)
+// Copied from: local:anyrun.v1.BuildStepStarted (var: WKt)
 type BuildStepStarted struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StreamId      uint32                 `protobuf:"varint,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"`
@@ -358,7 +1295,7 @@ type BuildStepStarted struct {
 
 func (x *BuildStepStarted) Reset() {
 	*x = BuildStepStarted{}
-	mi := &file_anyrun_v1_proto_msgTypes[2]
+	mi := &file_anyrun_v1_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -370,7 +1307,7 @@ func (x *BuildStepStarted) String() string {
 func (*BuildStepStarted) ProtoMessage() {}
 
 func (x *BuildStepStarted) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[2]
+	mi := &file_anyrun_v1_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -383,7 +1320,7 @@ func (x *BuildStepStarted) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildStepStarted.ProtoReflect.Descriptor instead.
 func (*BuildStepStarted) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{2}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *BuildStepStarted) GetStreamId() uint32 {
@@ -414,7 +1351,7 @@ func (x *BuildStepStarted) GetCommand() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.CloneCompleted (var: Hes, class: Ele)
+// Copied from: local:anyrun.v1.CloneCompleted (var: ejt)
 type CloneCompleted struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Purpose       ClonePurpose           `protobuf:"varint,1,opt,name=purpose,proto3,enum=anyrun.v1.ClonePurpose" json:"purpose,omitempty"`
@@ -424,7 +1361,7 @@ type CloneCompleted struct {
 
 func (x *CloneCompleted) Reset() {
 	*x = CloneCompleted{}
-	mi := &file_anyrun_v1_proto_msgTypes[3]
+	mi := &file_anyrun_v1_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -436,7 +1373,7 @@ func (x *CloneCompleted) String() string {
 func (*CloneCompleted) ProtoMessage() {}
 
 func (x *CloneCompleted) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[3]
+	mi := &file_anyrun_v1_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -449,7 +1386,7 @@ func (x *CloneCompleted) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneCompleted.ProtoReflect.Descriptor instead.
 func (*CloneCompleted) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{3}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CloneCompleted) GetPurpose() ClonePurpose {
@@ -459,7 +1396,7 @@ func (x *CloneCompleted) GetPurpose() ClonePurpose {
 	return ClonePurpose_CLONE_PURPOSE_UNSPECIFIED
 }
 
-// Copied from: local:anyrun.v1.CloneStarted (var: Ges, class: _le)
+// Copied from: local:anyrun.v1.CloneStarted (var: ZKt)
 type CloneStarted struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Purpose       ClonePurpose           `protobuf:"varint,1,opt,name=purpose,proto3,enum=anyrun.v1.ClonePurpose" json:"purpose,omitempty"`
@@ -469,7 +1406,7 @@ type CloneStarted struct {
 
 func (x *CloneStarted) Reset() {
 	*x = CloneStarted{}
-	mi := &file_anyrun_v1_proto_msgTypes[4]
+	mi := &file_anyrun_v1_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -481,7 +1418,7 @@ func (x *CloneStarted) String() string {
 func (*CloneStarted) ProtoMessage() {}
 
 func (x *CloneStarted) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[4]
+	mi := &file_anyrun_v1_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -494,7 +1431,7 @@ func (x *CloneStarted) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneStarted.ProtoReflect.Descriptor instead.
 func (*CloneStarted) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{4}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CloneStarted) GetPurpose() ClonePurpose {
@@ -504,20 +1441,274 @@ func (x *CloneStarted) GetPurpose() ClonePurpose {
 	return ClonePurpose_CLONE_PURPOSE_UNSPECIFIED
 }
 
-// Copied from: local:anyrun.v1.DaemonPod (var: qPs, class: ale)
-type DaemonPod struct {
+// Copied from: local:anyrun.v1.ContainerWaitFailure (var: mYt)
+type ContainerWaitFailure struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int64                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ContainerWaitFailure) Reset() {
+	*x = ContainerWaitFailure{}
+	mi := &file_anyrun_v1_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContainerWaitFailure) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContainerWaitFailure) ProtoMessage() {}
+
+func (x *ContainerWaitFailure) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContainerWaitFailure.ProtoReflect.Descriptor instead.
+func (*ContainerWaitFailure) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ContainerWaitFailure) GetExitCode() int64 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+func (x *ContainerWaitFailure) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.CreateProcessRequest (var: CPr)
+type CreateProcessRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Command          []string               `protobuf:"bytes,1,rep,name=command,proto3" json:"command,omitempty"`
+	User             string                 `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	WorkingDirectory string                 `protobuf:"bytes,3,opt,name=working_directory,json=workingDirectory,proto3" json:"working_directory,omitempty"`
+	Env              map[string]string      `protobuf:"bytes,4,rep,name=env,proto3" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	IdempotencyKey   *string                `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3,oneof" json:"idempotency_key,omitempty"`
+	Supervision      *ProcessSupervision    `protobuf:"bytes,6,opt,name=supervision,proto3,oneof" json:"supervision,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *CreateProcessRequest) Reset() {
+	*x = CreateProcessRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateProcessRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateProcessRequest) ProtoMessage() {}
+
+func (x *CreateProcessRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateProcessRequest.ProtoReflect.Descriptor instead.
+func (*CreateProcessRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateProcessRequest) GetCommand() []string {
+	if x != nil {
+		return x.Command
+	}
+	return nil
+}
+
+func (x *CreateProcessRequest) GetUser() string {
+	if x != nil {
+		return x.User
+	}
+	return ""
+}
+
+func (x *CreateProcessRequest) GetWorkingDirectory() string {
+	if x != nil {
+		return x.WorkingDirectory
+	}
+	return ""
+}
+
+func (x *CreateProcessRequest) GetEnv() map[string]string {
+	if x != nil {
+		return x.Env
+	}
+	return nil
+}
+
+func (x *CreateProcessRequest) GetIdempotencyKey() string {
+	if x != nil && x.IdempotencyKey != nil {
+		return *x.IdempotencyKey
+	}
+	return ""
+}
+
+func (x *CreateProcessRequest) GetSupervision() *ProcessSupervision {
+	if x != nil {
+		return x.Supervision
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.CreateProcessResponse (var: PPr)
+type CreateProcessResponse struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	Ports             *PodPortState          `protobuf:"bytes,1,opt,name=ports,proto3" json:"ports,omitempty"`
-	Status            *PodStatus             `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	InternalProxyPort *uint32                `protobuf:"varint,3,opt,name=internal_proxy_port,json=internalProxyPort,proto3,oneof" json:"internal_proxy_port,omitempty"`
-	DefaultPortConfig *DefaultPortConfig     `protobuf:"bytes,4,opt,name=default_port_config,json=defaultPortConfig,proto3,oneof" json:"default_port_config,omitempty"`
+	Pid               int64                  `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	ReusedExistingPid bool                   `protobuf:"varint,2,opt,name=reused_existing_pid,json=reusedExistingPid,proto3" json:"reused_existing_pid,omitempty"`
+	ProcessPid        *int64                 `protobuf:"varint,3,opt,name=process_pid,json=processPid,proto3,oneof" json:"process_pid,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
 
+func (x *CreateProcessResponse) Reset() {
+	*x = CreateProcessResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateProcessResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateProcessResponse) ProtoMessage() {}
+
+func (x *CreateProcessResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateProcessResponse.ProtoReflect.Descriptor instead.
+func (*CreateProcessResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateProcessResponse) GetPid() int64 {
+	if x != nil {
+		return x.Pid
+	}
+	return 0
+}
+
+func (x *CreateProcessResponse) GetReusedExistingPid() bool {
+	if x != nil {
+		return x.ReusedExistingPid
+	}
+	return false
+}
+
+func (x *CreateProcessResponse) GetProcessPid() int64 {
+	if x != nil && x.ProcessPid != nil {
+		return *x.ProcessPid
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DaemonCommandHandlerPersistentState (var: Yjt)
+type DaemonCommandHandlerPersistentState struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vpid          int64                  `protobuf:"varint,1,opt,name=vpid,proto3" json:"vpid,omitempty"`
+	LastEventId   *string                `protobuf:"bytes,2,opt,name=last_event_id,json=lastEventId,proto3,oneof" json:"last_event_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DaemonCommandHandlerPersistentState) Reset() {
+	*x = DaemonCommandHandlerPersistentState{}
+	mi := &file_anyrun_v1_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DaemonCommandHandlerPersistentState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DaemonCommandHandlerPersistentState) ProtoMessage() {}
+
+func (x *DaemonCommandHandlerPersistentState) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DaemonCommandHandlerPersistentState.ProtoReflect.Descriptor instead.
+func (*DaemonCommandHandlerPersistentState) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *DaemonCommandHandlerPersistentState) GetVpid() int64 {
+	if x != nil {
+		return x.Vpid
+	}
+	return 0
+}
+
+func (x *DaemonCommandHandlerPersistentState) GetLastEventId() string {
+	if x != nil && x.LastEventId != nil {
+		return *x.LastEventId
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.DaemonPod (var: lJr)
+type DaemonPod struct {
+	state                                  protoimpl.MessageState `protogen:"open.v1"`
+	Status                                 *PodStatus             `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	InternalProxyPort                      *uint32                `protobuf:"varint,3,opt,name=internal_proxy_port,json=internalProxyPort,proto3,oneof" json:"internal_proxy_port,omitempty"`
+	DefaultPortConfig                      *DefaultPortConfig     `protobuf:"bytes,4,opt,name=default_port_config,json=defaultPortConfig,proto3,oneof" json:"default_port_config,omitempty"`
+	StartedFromCheckpointGroupId           *string                `protobuf:"bytes,5,opt,name=started_from_checkpoint_group_id,json=startedFromCheckpointGroupId,proto3,oneof" json:"started_from_checkpoint_group_id,omitempty"`
+	StartedFromCacheSource                 *PodStartCacheSource   `protobuf:"varint,6,opt,name=started_from_cache_source,json=startedFromCacheSource,proto3,enum=anyrun.v1.PodStartCacheSource,oneof" json:"started_from_cache_source,omitempty"`
+	StartedFromCheckpointCreationTimestamp *uint64                `protobuf:"varint,7,opt,name=started_from_checkpoint_creation_timestamp,json=startedFromCheckpointCreationTimestamp,proto3,oneof" json:"started_from_checkpoint_creation_timestamp,omitempty"`
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
+}
+
 func (x *DaemonPod) Reset() {
 	*x = DaemonPod{}
-	mi := &file_anyrun_v1_proto_msgTypes[5]
+	mi := &file_anyrun_v1_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -529,7 +1720,7 @@ func (x *DaemonPod) String() string {
 func (*DaemonPod) ProtoMessage() {}
 
 func (x *DaemonPod) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[5]
+	mi := &file_anyrun_v1_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -542,14 +1733,7 @@ func (x *DaemonPod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DaemonPod.ProtoReflect.Descriptor instead.
 func (*DaemonPod) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *DaemonPod) GetPorts() *PodPortState {
-	if x != nil {
-		return x.Ports
-	}
-	return nil
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DaemonPod) GetStatus() *PodStatus {
@@ -573,7 +1757,28 @@ func (x *DaemonPod) GetDefaultPortConfig() *DefaultPortConfig {
 	return nil
 }
 
-// Copied from: local:anyrun.v1.DefaultPortConfig (var: $Be, class: Rce)
+func (x *DaemonPod) GetStartedFromCheckpointGroupId() string {
+	if x != nil && x.StartedFromCheckpointGroupId != nil {
+		return *x.StartedFromCheckpointGroupId
+	}
+	return ""
+}
+
+func (x *DaemonPod) GetStartedFromCacheSource() PodStartCacheSource {
+	if x != nil && x.StartedFromCacheSource != nil {
+		return *x.StartedFromCacheSource
+	}
+	return PodStartCacheSource_POD_START_CACHE_SOURCE_UNSPECIFIED
+}
+
+func (x *DaemonPod) GetStartedFromCheckpointCreationTimestamp() uint64 {
+	if x != nil && x.StartedFromCheckpointCreationTimestamp != nil {
+		return *x.StartedFromCheckpointCreationTimestamp
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DefaultPortConfig (var: njt)
 type DefaultPortConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Authentication:
@@ -592,7 +1797,7 @@ type DefaultPortConfig struct {
 
 func (x *DefaultPortConfig) Reset() {
 	*x = DefaultPortConfig{}
-	mi := &file_anyrun_v1_proto_msgTypes[6]
+	mi := &file_anyrun_v1_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -604,7 +1809,7 @@ func (x *DefaultPortConfig) String() string {
 func (*DefaultPortConfig) ProtoMessage() {}
 
 func (x *DefaultPortConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[6]
+	mi := &file_anyrun_v1_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -617,7 +1822,7 @@ func (x *DefaultPortConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DefaultPortConfig.ProtoReflect.Descriptor instead.
 func (*DefaultPortConfig) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{6}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DefaultPortConfig) GetAuthentication() isDefaultPortConfig_Authentication {
@@ -702,30 +1907,36 @@ func (*DefaultPortConfig_Public) isDefaultPortConfig_Visibility() {}
 
 func (*DefaultPortConfig_Private) isDefaultPortConfig_Visibility() {}
 
-// Copied from: local:anyrun.v1.DevContainerConfig (var: fes, class: Ace)
+// Copied from: local:anyrun.v1.DevContainerConfig (var: yjt)
 type DevContainerConfig struct {
-	state                 protoimpl.MessageState     `protogen:"open.v1"`
-	PrepareCommandsTag    []byte                     `protobuf:"bytes,19,opt,name=prepare_commands_tag,json=prepareCommandsTag,proto3,oneof" json:"prepare_commands_tag,omitempty"`
-	PrepareCommands       []*DevContainerExecCommand `protobuf:"bytes,8,rep,name=prepare_commands,json=prepareCommands,proto3" json:"prepare_commands,omitempty"`
-	InstallCommandsTag    []byte                     `protobuf:"bytes,20,opt,name=install_commands_tag,json=installCommandsTag,proto3,oneof" json:"install_commands_tag,omitempty"`
-	InstallCommands       []*DevContainerExecCommand `protobuf:"bytes,9,rep,name=install_commands,json=installCommands,proto3" json:"install_commands,omitempty"`
-	VerifyCommandsTag     []byte                     `protobuf:"bytes,24,opt,name=verify_commands_tag,json=verifyCommandsTag,proto3,oneof" json:"verify_commands_tag,omitempty"`
-	VerifyCommands        []*DevContainerExecCommand `protobuf:"bytes,25,rep,name=verify_commands,json=verifyCommands,proto3" json:"verify_commands,omitempty"`
-	StartCommandsTag      []byte                     `protobuf:"bytes,21,opt,name=start_commands_tag,json=startCommandsTag,proto3,oneof" json:"start_commands_tag,omitempty"`
-	StartCommands         []*DevContainerExecCommand `protobuf:"bytes,10,rep,name=start_commands,json=startCommands,proto3" json:"start_commands,omitempty"`
-	Ports                 []*PortDefinition          `protobuf:"bytes,11,rep,name=ports,proto3" json:"ports,omitempty"`
-	DefaultPortConfig     *DefaultPortConfig         `protobuf:"bytes,26,opt,name=default_port_config,json=defaultPortConfig,proto3,oneof" json:"default_port_config,omitempty"`
-	User                  *string                    `protobuf:"bytes,12,opt,name=user,proto3,oneof" json:"user,omitempty"`
-	Env                   []*DevContainerEnv         `protobuf:"bytes,13,rep,name=env,proto3" json:"env,omitempty"`
-	Shell                 string                     `protobuf:"bytes,14,opt,name=shell,proto3" json:"shell,omitempty"`
-	Privileged            *bool                      `protobuf:"varint,17,opt,name=privileged,proto3,oneof" json:"privileged,omitempty"`
-	CheckpointThresholdMs *uint64                    `protobuf:"varint,23,opt,name=checkpoint_threshold_ms,json=checkpointThresholdMs,proto3,oneof" json:"checkpoint_threshold_ms,omitempty"`
+	state                        protoimpl.MessageState     `protogen:"open.v1"`
+	PrepareCommandsTag           []byte                     `protobuf:"bytes,19,opt,name=prepare_commands_tag,json=prepareCommandsTag,proto3,oneof" json:"prepare_commands_tag,omitempty"`
+	PrepareCommands              []*DevContainerExecCommand `protobuf:"bytes,8,rep,name=prepare_commands,json=prepareCommands,proto3" json:"prepare_commands,omitempty"`
+	InstallCommandsTag           []byte                     `protobuf:"bytes,20,opt,name=install_commands_tag,json=installCommandsTag,proto3,oneof" json:"install_commands_tag,omitempty"`
+	InstallCommands              []*DevContainerExecCommand `protobuf:"bytes,9,rep,name=install_commands,json=installCommands,proto3" json:"install_commands,omitempty"`
+	VerifyCommandsTag            []byte                     `protobuf:"bytes,24,opt,name=verify_commands_tag,json=verifyCommandsTag,proto3,oneof" json:"verify_commands_tag,omitempty"`
+	VerifyCommands               []*DevContainerExecCommand `protobuf:"bytes,25,rep,name=verify_commands,json=verifyCommands,proto3" json:"verify_commands,omitempty"`
+	StartCommandsTag             []byte                     `protobuf:"bytes,21,opt,name=start_commands_tag,json=startCommandsTag,proto3,oneof" json:"start_commands_tag,omitempty"`
+	StartCommands                []*DevContainerExecCommand `protobuf:"bytes,10,rep,name=start_commands,json=startCommands,proto3" json:"start_commands,omitempty"`
+	Ports                        []*PortDefinition          `protobuf:"bytes,11,rep,name=ports,proto3" json:"ports,omitempty"`
+	DefaultPortConfig            *DefaultPortConfig         `protobuf:"bytes,26,opt,name=default_port_config,json=defaultPortConfig,proto3,oneof" json:"default_port_config,omitempty"`
+	User                         *string                    `protobuf:"bytes,12,opt,name=user,proto3,oneof" json:"user,omitempty"`
+	Env                          []*DevContainerEnv         `protobuf:"bytes,13,rep,name=env,proto3" json:"env,omitempty"`
+	Shell                        string                     `protobuf:"bytes,14,opt,name=shell,proto3" json:"shell,omitempty"`
+	Privileged                   *bool                      `protobuf:"varint,17,opt,name=privileged,proto3,oneof" json:"privileged,omitempty"`
+	BuildContainer               *bool                      `protobuf:"varint,29,opt,name=build_container,json=buildContainer,proto3,oneof" json:"build_container,omitempty"`
+	CheckpointThresholdMs        *uint64                    `protobuf:"varint,23,opt,name=checkpoint_threshold_ms,json=checkpointThresholdMs,proto3,oneof" json:"checkpoint_threshold_ms,omitempty"`
+	EnableCgroupSubtreeControl   *bool                      `protobuf:"varint,30,opt,name=enable_cgroup_subtree_control,json=enableCgroupSubtreeControl,proto3,oneof" json:"enable_cgroup_subtree_control,omitempty"`
+	EnableCheckpointScratchDrive *bool                      `protobuf:"varint,34,opt,name=enable_checkpoint_scratch_drive,json=enableCheckpointScratchDrive,proto3,oneof" json:"enable_checkpoint_scratch_drive,omitempty"`
 	// Types that are valid to be assigned to Image:
 	//
 	//	*DevContainerConfig_RegistryReference
 	//	*DevContainerConfig_SnapshotId
 	//	*DevContainerConfig_Build
 	//	*DevContainerConfig_ExternalSnapshot
+	//	*DevContainerConfig_CheckpointGroupId
+	//	*DevContainerConfig_RegistryReferenceAlias_
+	//	*DevContainerConfig_InlineBuild
 	Image isDevContainerConfig_Image `protobuf_oneof:"image"`
 	// Types that are valid to be assigned to Source:
 	//
@@ -734,6 +1945,7 @@ type DevContainerConfig struct {
 	//	*DevContainerConfig_Local
 	//	*DevContainerConfig_TarGzipUrl
 	//	*DevContainerConfig_Noop
+	//	*DevContainerConfig_Multi
 	Source isDevContainerConfig_Source `protobuf_oneof:"source"`
 	// Types that are valid to be assigned to Workspace:
 	//
@@ -746,7 +1958,7 @@ type DevContainerConfig struct {
 
 func (x *DevContainerConfig) Reset() {
 	*x = DevContainerConfig{}
-	mi := &file_anyrun_v1_proto_msgTypes[7]
+	mi := &file_anyrun_v1_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -758,7 +1970,7 @@ func (x *DevContainerConfig) String() string {
 func (*DevContainerConfig) ProtoMessage() {}
 
 func (x *DevContainerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[7]
+	mi := &file_anyrun_v1_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -771,7 +1983,7 @@ func (x *DevContainerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevContainerConfig.ProtoReflect.Descriptor instead.
 func (*DevContainerConfig) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{7}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DevContainerConfig) GetPrepareCommandsTag() []byte {
@@ -872,11 +2084,32 @@ func (x *DevContainerConfig) GetPrivileged() bool {
 	return false
 }
 
+func (x *DevContainerConfig) GetBuildContainer() bool {
+	if x != nil && x.BuildContainer != nil {
+		return *x.BuildContainer
+	}
+	return false
+}
+
 func (x *DevContainerConfig) GetCheckpointThresholdMs() uint64 {
 	if x != nil && x.CheckpointThresholdMs != nil {
 		return *x.CheckpointThresholdMs
 	}
 	return 0
+}
+
+func (x *DevContainerConfig) GetEnableCgroupSubtreeControl() bool {
+	if x != nil && x.EnableCgroupSubtreeControl != nil {
+		return *x.EnableCgroupSubtreeControl
+	}
+	return false
+}
+
+func (x *DevContainerConfig) GetEnableCheckpointScratchDrive() bool {
+	if x != nil && x.EnableCheckpointScratchDrive != nil {
+		return *x.EnableCheckpointScratchDrive
+	}
+	return false
 }
 
 func (x *DevContainerConfig) GetImage() isDevContainerConfig_Image {
@@ -917,6 +2150,33 @@ func (x *DevContainerConfig) GetExternalSnapshot() *ExternalSnapshot {
 	if x != nil {
 		if x, ok := x.Image.(*DevContainerConfig_ExternalSnapshot); ok {
 			return x.ExternalSnapshot
+		}
+	}
+	return nil
+}
+
+func (x *DevContainerConfig) GetCheckpointGroupId() string {
+	if x != nil {
+		if x, ok := x.Image.(*DevContainerConfig_CheckpointGroupId); ok {
+			return x.CheckpointGroupId
+		}
+	}
+	return ""
+}
+
+func (x *DevContainerConfig) GetRegistryReferenceAlias() DevContainerConfig_RegistryReferenceAlias {
+	if x != nil {
+		if x, ok := x.Image.(*DevContainerConfig_RegistryReferenceAlias_); ok {
+			return x.RegistryReferenceAlias
+		}
+	}
+	return DevContainerConfig_REGISTRY_REFERENCE_ALIAS_UNSPECIFIED
+}
+
+func (x *DevContainerConfig) GetInlineBuild() *InlineBuild {
+	if x != nil {
+		if x, ok := x.Image.(*DevContainerConfig_InlineBuild); ok {
+			return x.InlineBuild
 		}
 	}
 	return nil
@@ -974,6 +2234,15 @@ func (x *DevContainerConfig) GetNoop() *NoopSourceReference {
 	return nil
 }
 
+func (x *DevContainerConfig) GetMulti() *MultiSourceReference {
+	if x != nil {
+		if x, ok := x.Source.(*DevContainerConfig_Multi); ok {
+			return x.Multi
+		}
+	}
+	return nil
+}
+
 func (x *DevContainerConfig) GetWorkspace() isDevContainerConfig_Workspace {
 	if x != nil {
 		return x.Workspace
@@ -1019,6 +2288,18 @@ type DevContainerConfig_ExternalSnapshot struct {
 	ExternalSnapshot *ExternalSnapshot `protobuf:"bytes,27,opt,name=external_snapshot,json=externalSnapshot,proto3,oneof"`
 }
 
+type DevContainerConfig_CheckpointGroupId struct {
+	CheckpointGroupId string `protobuf:"bytes,28,opt,name=checkpoint_group_id,json=checkpointGroupId,proto3,oneof"`
+}
+
+type DevContainerConfig_RegistryReferenceAlias_ struct {
+	RegistryReferenceAlias DevContainerConfig_RegistryReferenceAlias `protobuf:"varint,32,opt,name=registry_reference_alias,json=registryReferenceAlias,proto3,enum=anyrun.v1.DevContainerConfig_RegistryReferenceAlias,oneof"`
+}
+
+type DevContainerConfig_InlineBuild struct {
+	InlineBuild *InlineBuild `protobuf:"bytes,33,opt,name=inline_build,json=inlineBuild,proto3,oneof"`
+}
+
 func (*DevContainerConfig_RegistryReference) isDevContainerConfig_Image() {}
 
 func (*DevContainerConfig_SnapshotId) isDevContainerConfig_Image() {}
@@ -1026,6 +2307,12 @@ func (*DevContainerConfig_SnapshotId) isDevContainerConfig_Image() {}
 func (*DevContainerConfig_Build) isDevContainerConfig_Image() {}
 
 func (*DevContainerConfig_ExternalSnapshot) isDevContainerConfig_Image() {}
+
+func (*DevContainerConfig_CheckpointGroupId) isDevContainerConfig_Image() {}
+
+func (*DevContainerConfig_RegistryReferenceAlias_) isDevContainerConfig_Image() {}
+
+func (*DevContainerConfig_InlineBuild) isDevContainerConfig_Image() {}
 
 type isDevContainerConfig_Source interface {
 	isDevContainerConfig_Source()
@@ -1051,6 +2338,10 @@ type DevContainerConfig_Noop struct {
 	Noop *NoopSourceReference `protobuf:"bytes,22,opt,name=noop,proto3,oneof"`
 }
 
+type DevContainerConfig_Multi struct {
+	Multi *MultiSourceReference `protobuf:"bytes,31,opt,name=multi,proto3,oneof"`
+}
+
 func (*DevContainerConfig_Git) isDevContainerConfig_Source() {}
 
 func (*DevContainerConfig_Tar) isDevContainerConfig_Source() {}
@@ -1060,6 +2351,8 @@ func (*DevContainerConfig_Local) isDevContainerConfig_Source() {}
 func (*DevContainerConfig_TarGzipUrl) isDevContainerConfig_Source() {}
 
 func (*DevContainerConfig_Noop) isDevContainerConfig_Source() {}
+
+func (*DevContainerConfig_Multi) isDevContainerConfig_Source() {}
 
 type isDevContainerConfig_Workspace interface {
 	isDevContainerConfig_Workspace()
@@ -1077,10 +2370,11 @@ func (*DevContainerConfig_WorkspacePath) isDevContainerConfig_Workspace() {}
 
 func (*DevContainerConfig_WorkdirRelativePath) isDevContainerConfig_Workspace() {}
 
-// Copied from: local:anyrun.v1.DevContainerEnv (var: des, class: Dce)
+// Copied from: local:anyrun.v1.DevContainerEnv (var: vjt)
 type DevContainerEnv struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	ValueHash *string                `protobuf:"bytes,4,opt,name=value_hash,json=valueHash,proto3,oneof" json:"value_hash,omitempty"`
 	// Types that are valid to be assigned to Value:
 	//
 	//	*DevContainerEnv_Inline
@@ -1092,7 +2386,7 @@ type DevContainerEnv struct {
 
 func (x *DevContainerEnv) Reset() {
 	*x = DevContainerEnv{}
-	mi := &file_anyrun_v1_proto_msgTypes[8]
+	mi := &file_anyrun_v1_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1104,7 +2398,7 @@ func (x *DevContainerEnv) String() string {
 func (*DevContainerEnv) ProtoMessage() {}
 
 func (x *DevContainerEnv) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[8]
+	mi := &file_anyrun_v1_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1117,12 +2411,19 @@ func (x *DevContainerEnv) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevContainerEnv.ProtoReflect.Descriptor instead.
 func (*DevContainerEnv) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{8}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DevContainerEnv) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *DevContainerEnv) GetValueHash() string {
+	if x != nil && x.ValueHash != nil {
+		return *x.ValueHash
 	}
 	return ""
 }
@@ -1168,21 +2469,25 @@ func (*DevContainerEnv_Inline) isDevContainerEnv_Value() {}
 
 func (*DevContainerEnv_Encrypted) isDevContainerEnv_Value() {}
 
-// Copied from: local:anyrun.v1.DevContainerExecCommand (var: Fo, class: Pce)
+// Copied from: local:anyrun.v1.DevContainerExecCommand (var: sjt)
 type DevContainerExecCommand struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	User          *string                `protobuf:"bytes,2,opt,name=user,proto3,oneof" json:"user,omitempty"`
-	Command       string                 `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`
-	IsSystem      bool                   `protobuf:"varint,4,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
-	CacheKey      *string                `protobuf:"bytes,5,opt,name=cache_key,json=cacheKey,proto3,oneof" json:"cache_key,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Name                 string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	User                 *string                `protobuf:"bytes,2,opt,name=user,proto3,oneof" json:"user,omitempty"`
+	Command              string                 `protobuf:"bytes,3,opt,name=command,proto3" json:"command,omitempty"`
+	IsSystem             bool                   `protobuf:"varint,4,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
+	CacheKey             *string                `protobuf:"bytes,5,opt,name=cache_key,json=cacheKey,proto3,oneof" json:"cache_key,omitempty"`
+	FailureTolerant      bool                   `protobuf:"varint,6,opt,name=failure_tolerant,json=failureTolerant,proto3" json:"failure_tolerant,omitempty"`
+	DependsOn            []string               `protobuf:"bytes,7,rep,name=depends_on,json=dependsOn,proto3" json:"depends_on,omitempty"`
+	DependsOnGitCheckout bool                   `protobuf:"varint,8,opt,name=depends_on_git_checkout,json=dependsOnGitCheckout,proto3" json:"depends_on_git_checkout,omitempty"`
+	Supervision          *ProcessSupervision    `protobuf:"bytes,9,opt,name=supervision,proto3,oneof" json:"supervision,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *DevContainerExecCommand) Reset() {
 	*x = DevContainerExecCommand{}
-	mi := &file_anyrun_v1_proto_msgTypes[9]
+	mi := &file_anyrun_v1_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1194,7 +2499,7 @@ func (x *DevContainerExecCommand) String() string {
 func (*DevContainerExecCommand) ProtoMessage() {}
 
 func (x *DevContainerExecCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[9]
+	mi := &file_anyrun_v1_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1207,7 +2512,7 @@ func (x *DevContainerExecCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevContainerExecCommand.ProtoReflect.Descriptor instead.
 func (*DevContainerExecCommand) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{9}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *DevContainerExecCommand) GetName() string {
@@ -1245,36 +2550,67 @@ func (x *DevContainerExecCommand) GetCacheKey() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.DevContainerSpec (var: NPs, class: qce)
+func (x *DevContainerExecCommand) GetFailureTolerant() bool {
+	if x != nil {
+		return x.FailureTolerant
+	}
+	return false
+}
+
+func (x *DevContainerExecCommand) GetDependsOn() []string {
+	if x != nil {
+		return x.DependsOn
+	}
+	return nil
+}
+
+func (x *DevContainerExecCommand) GetDependsOnGitCheckout() bool {
+	if x != nil {
+		return x.DependsOnGitCheckout
+	}
+	return false
+}
+
+func (x *DevContainerExecCommand) GetSupervision() *ProcessSupervision {
+	if x != nil {
+		return x.Supervision
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.DevContainerSpec (var: ZPr)
 type DevContainerSpec struct {
-	state                    protoimpl.MessageState `protogen:"open.v1"`
-	Name                     string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
-	Platform                 *string                `protobuf:"bytes,23,opt,name=platform,proto3,oneof" json:"platform,omitempty"`
-	DeletionTimestamp        *uint64                `protobuf:"varint,6,opt,name=deletion_timestamp,json=deletionTimestamp,proto3,oneof" json:"deletion_timestamp,omitempty"`
-	HibernationTimestamp     *uint64                `protobuf:"varint,14,opt,name=hibernation_timestamp,json=hibernationTimestamp,proto3,oneof" json:"hibernation_timestamp,omitempty"`
-	PodLabels                map[string]string      `protobuf:"bytes,7,rep,name=pod_labels,json=podLabels,proto3" json:"pod_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	NodeLabels               map[string]string      `protobuf:"bytes,8,rep,name=node_labels,json=nodeLabels,proto3" json:"node_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Requests                 *ResourceRequests      `protobuf:"bytes,9,opt,name=requests,proto3" json:"requests,omitempty"`
-	HibernatedRequests       *ResourceRequests      `protobuf:"bytes,16,opt,name=hibernated_requests,json=hibernatedRequests,proto3" json:"hibernated_requests,omitempty"`
-	Limits                   *ResourceLimits        `protobuf:"bytes,10,opt,name=limits,proto3" json:"limits,omitempty"`
-	Cache                    *bool                  `protobuf:"varint,13,opt,name=cache,proto3,oneof" json:"cache,omitempty"`
-	EnableBaseContainerCache *bool                  `protobuf:"varint,20,opt,name=enable_base_container_cache,json=enableBaseContainerCache,proto3,oneof" json:"enable_base_container_cache,omitempty"`
-	EnableCheckpointRead     *bool                  `protobuf:"varint,18,opt,name=enable_checkpoint_read,json=enableCheckpointRead,proto3,oneof" json:"enable_checkpoint_read,omitempty"`
-	EnableCheckpointWrite    *bool                  `protobuf:"varint,19,opt,name=enable_checkpoint_write,json=enableCheckpointWrite,proto3,oneof" json:"enable_checkpoint_write,omitempty"`
-	BlobStorageFormat        BlobStorageFormat      `protobuf:"varint,17,opt,name=blob_storage_format,json=blobStorageFormat,proto3,enum=anyrun.v1.BlobStorageFormat" json:"blob_storage_format,omitempty"`
-	CacheTag                 *string                `protobuf:"bytes,15,opt,name=cache_tag,json=cacheTag,proto3,oneof" json:"cache_tag,omitempty"`
-	Workload                 string                 `protobuf:"bytes,21,opt,name=workload,proto3" json:"workload,omitempty"`
-	Config                   *DevContainerConfig    `protobuf:"bytes,12,opt,name=config,proto3" json:"config,omitempty"`
-	PersistConfig            *bool                  `protobuf:"varint,22,opt,name=persist_config,json=persistConfig,proto3,oneof" json:"persist_config,omitempty"`
-	ExpectedForkCount        *uint32                `protobuf:"varint,24,opt,name=expected_fork_count,json=expectedForkCount,proto3,oneof" json:"expected_fork_count,omitempty"`
-	TwoPassDownload          bool                   `protobuf:"varint,25,opt,name=two_pass_download,json=twoPassDownload,proto3" json:"two_pass_download,omitempty"`
+	state                    protoimpl.MessageState   `protogen:"open.v1"`
+	Name                     string                   `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
+	Platform                 *string                  `protobuf:"bytes,23,opt,name=platform,proto3,oneof" json:"platform,omitempty"`
+	DeletionTimestamp        *uint64                  `protobuf:"varint,6,opt,name=deletion_timestamp,json=deletionTimestamp,proto3,oneof" json:"deletion_timestamp,omitempty"`
+	HibernationTimestamp     *uint64                  `protobuf:"varint,14,opt,name=hibernation_timestamp,json=hibernationTimestamp,proto3,oneof" json:"hibernation_timestamp,omitempty"`
+	PodLabels                map[string]string        `protobuf:"bytes,7,rep,name=pod_labels,json=podLabels,proto3" json:"pod_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	NodeLabels               map[string]string        `protobuf:"bytes,8,rep,name=node_labels,json=nodeLabels,proto3" json:"node_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	LowCardinalityPodLabels  []string                 `protobuf:"bytes,27,rep,name=low_cardinality_pod_labels,json=lowCardinalityPodLabels,proto3" json:"low_cardinality_pod_labels,omitempty"`
+	Requests                 *ResourceRequests        `protobuf:"bytes,9,opt,name=requests,proto3" json:"requests,omitempty"`
+	HibernatedRequests       *ResourceRequests        `protobuf:"bytes,16,opt,name=hibernated_requests,json=hibernatedRequests,proto3" json:"hibernated_requests,omitempty"`
+	Limits                   *ResourceLimits          `protobuf:"bytes,10,opt,name=limits,proto3" json:"limits,omitempty"`
+	Cache                    *bool                    `protobuf:"varint,13,opt,name=cache,proto3,oneof" json:"cache,omitempty"`
+	EnableBaseContainerCache *bool                    `protobuf:"varint,20,opt,name=enable_base_container_cache,json=enableBaseContainerCache,proto3,oneof" json:"enable_base_container_cache,omitempty"`
+	EnableCheckpointRead     *bool                    `protobuf:"varint,18,opt,name=enable_checkpoint_read,json=enableCheckpointRead,proto3,oneof" json:"enable_checkpoint_read,omitempty"`
+	EnableCheckpointWrite    *bool                    `protobuf:"varint,19,opt,name=enable_checkpoint_write,json=enableCheckpointWrite,proto3,oneof" json:"enable_checkpoint_write,omitempty"`
+	BlobStorageFormat        BlobStorageFormat        `protobuf:"varint,17,opt,name=blob_storage_format,json=blobStorageFormat,proto3,enum=anyrun.v1.BlobStorageFormat" json:"blob_storage_format,omitempty"`
+	CacheTag                 *string                  `protobuf:"bytes,15,opt,name=cache_tag,json=cacheTag,proto3,oneof" json:"cache_tag,omitempty"`
+	Workload                 string                   `protobuf:"bytes,21,opt,name=workload,proto3" json:"workload,omitempty"`
+	Config                   *DevContainerConfig      `protobuf:"bytes,12,opt,name=config,proto3" json:"config,omitempty"`
+	PersistConfig            *bool                    `protobuf:"varint,22,opt,name=persist_config,json=persistConfig,proto3,oneof" json:"persist_config,omitempty"`
+	ExpectedForkCount        *uint32                  `protobuf:"varint,24,opt,name=expected_fork_count,json=expectedForkCount,proto3,oneof" json:"expected_fork_count,omitempty"`
+	EgressPolicy             *EgressPolicy            `protobuf:"bytes,26,opt,name=egress_policy,json=egressPolicy,proto3,oneof" json:"egress_policy,omitempty"`
+	AnygressPerPodDenyRules  *AnygressPerPodDenyRules `protobuf:"bytes,28,opt,name=anygress_per_pod_deny_rules,json=anygressPerPodDenyRules,proto3,oneof" json:"anygress_per_pod_deny_rules,omitempty"`
+	AgentStoreConfig         *AgentStoreConfig        `protobuf:"bytes,30,opt,name=agent_store_config,json=agentStoreConfig,proto3,oneof" json:"agent_store_config,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
 
 func (x *DevContainerSpec) Reset() {
 	*x = DevContainerSpec{}
-	mi := &file_anyrun_v1_proto_msgTypes[10]
+	mi := &file_anyrun_v1_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1286,7 +2622,7 @@ func (x *DevContainerSpec) String() string {
 func (*DevContainerSpec) ProtoMessage() {}
 
 func (x *DevContainerSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[10]
+	mi := &file_anyrun_v1_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1299,7 +2635,7 @@ func (x *DevContainerSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevContainerSpec.ProtoReflect.Descriptor instead.
 func (*DevContainerSpec) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{10}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *DevContainerSpec) GetName() string {
@@ -1340,6 +2676,13 @@ func (x *DevContainerSpec) GetPodLabels() map[string]string {
 func (x *DevContainerSpec) GetNodeLabels() map[string]string {
 	if x != nil {
 		return x.NodeLabels
+	}
+	return nil
+}
+
+func (x *DevContainerSpec) GetLowCardinalityPodLabels() []string {
+	if x != nil {
+		return x.LowCardinalityPodLabels
 	}
 	return nil
 }
@@ -1435,25 +2778,117 @@ func (x *DevContainerSpec) GetExpectedForkCount() uint32 {
 	return 0
 }
 
-func (x *DevContainerSpec) GetTwoPassDownload() bool {
+func (x *DevContainerSpec) GetEgressPolicy() *EgressPolicy {
 	if x != nil {
-		return x.TwoPassDownload
+		return x.EgressPolicy
 	}
-	return false
+	return nil
 }
 
-// Copied from: local:anyrun.v1.DiskUsage (var: xPs, class: Jce)
+func (x *DevContainerSpec) GetAnygressPerPodDenyRules() *AnygressPerPodDenyRules {
+	if x != nil {
+		return x.AnygressPerPodDenyRules
+	}
+	return nil
+}
+
+func (x *DevContainerSpec) GetAgentStoreConfig() *AgentStoreConfig {
+	if x != nil {
+		return x.AgentStoreConfig
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.DirectoryEntry (var: bKt)
+type DirectoryEntry struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Name             string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Path             string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Type             EntryType              `protobuf:"varint,3,opt,name=type,proto3,enum=anyrun.v1.EntryType" json:"type,omitempty"`
+	SizeBytes        uint64                 `protobuf:"varint,4,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	ModifiedAtUnixMs int64                  `protobuf:"varint,5,opt,name=modified_at_unix_ms,json=modifiedAtUnixMs,proto3" json:"modified_at_unix_ms,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *DirectoryEntry) Reset() {
+	*x = DirectoryEntry{}
+	mi := &file_anyrun_v1_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DirectoryEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DirectoryEntry) ProtoMessage() {}
+
+func (x *DirectoryEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DirectoryEntry.ProtoReflect.Descriptor instead.
+func (*DirectoryEntry) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *DirectoryEntry) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DirectoryEntry) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *DirectoryEntry) GetType() EntryType {
+	if x != nil {
+		return x.Type
+	}
+	return EntryType_ENTRY_TYPE_UNSPECIFIED
+}
+
+func (x *DirectoryEntry) GetSizeBytes() uint64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
+func (x *DirectoryEntry) GetModifiedAtUnixMs() int64 {
+	if x != nil {
+		return x.ModifiedAtUnixMs
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DiskUsage (var: QPr)
 type DiskUsage struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BytesUsed     uint64                 `protobuf:"varint,1,opt,name=bytes_used,json=bytesUsed,proto3" json:"bytes_used,omitempty"`
-	BytesTotal    uint64                 `protobuf:"varint,2,opt,name=bytes_total,json=bytesTotal,proto3" json:"bytes_total,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	BytesUsed      uint64                 `protobuf:"varint,1,opt,name=bytes_used,json=bytesUsed,proto3" json:"bytes_used,omitempty"`
+	BytesTotal     uint64                 `protobuf:"varint,2,opt,name=bytes_total,json=bytesTotal,proto3" json:"bytes_total,omitempty"`
+	BusyPercentage *float64               `protobuf:"fixed64,3,opt,name=busy_percentage,json=busyPercentage,proto3,oneof" json:"busy_percentage,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DiskUsage) Reset() {
 	*x = DiskUsage{}
-	mi := &file_anyrun_v1_proto_msgTypes[11]
+	mi := &file_anyrun_v1_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1465,7 +2900,7 @@ func (x *DiskUsage) String() string {
 func (*DiskUsage) ProtoMessage() {}
 
 func (x *DiskUsage) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[11]
+	mi := &file_anyrun_v1_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1478,7 +2913,7 @@ func (x *DiskUsage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiskUsage.ProtoReflect.Descriptor instead.
 func (*DiskUsage) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{11}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DiskUsage) GetBytesUsed() uint64 {
@@ -1495,20 +2930,904 @@ func (x *DiskUsage) GetBytesTotal() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.ExternalSnapshot (var: hes, class: Fce)
+func (x *DiskUsage) GetBusyPercentage() float64 {
+	if x != nil && x.BusyPercentage != nil {
+		return *x.BusyPercentage
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DockerBuildConfig (var: eJr)
+type DockerBuildConfig struct {
+	state                    protoimpl.MessageState    `protogen:"open.v1"`
+	Dockerfile               string                    `protobuf:"bytes,1,opt,name=dockerfile,proto3" json:"dockerfile,omitempty"`
+	Context                  string                    `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+	User                     string                    `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
+	RegistryCacheRef         string                    `protobuf:"bytes,4,opt,name=registry_cache_ref,json=registryCacheRef,proto3" json:"registry_cache_ref,omitempty"`
+	CacheRegistryCredentials *RegistryCredentials      `protobuf:"bytes,5,opt,name=cache_registry_credentials,json=cacheRegistryCredentials,proto3" json:"cache_registry_credentials,omitempty"`
+	BuildSecrets             []*DockerBuildSecretEntry `protobuf:"bytes,6,rep,name=build_secrets,json=buildSecrets,proto3" json:"build_secrets,omitempty"`
+	CacheFromRefs            []string                  `protobuf:"bytes,7,rep,name=cache_from_refs,json=cacheFromRefs,proto3" json:"cache_from_refs,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
+}
+
+func (x *DockerBuildConfig) Reset() {
+	*x = DockerBuildConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerBuildConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerBuildConfig) ProtoMessage() {}
+
+func (x *DockerBuildConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerBuildConfig.ProtoReflect.Descriptor instead.
+func (*DockerBuildConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *DockerBuildConfig) GetDockerfile() string {
+	if x != nil {
+		return x.Dockerfile
+	}
+	return ""
+}
+
+func (x *DockerBuildConfig) GetContext() string {
+	if x != nil {
+		return x.Context
+	}
+	return ""
+}
+
+func (x *DockerBuildConfig) GetUser() string {
+	if x != nil {
+		return x.User
+	}
+	return ""
+}
+
+func (x *DockerBuildConfig) GetRegistryCacheRef() string {
+	if x != nil {
+		return x.RegistryCacheRef
+	}
+	return ""
+}
+
+func (x *DockerBuildConfig) GetCacheRegistryCredentials() *RegistryCredentials {
+	if x != nil {
+		return x.CacheRegistryCredentials
+	}
+	return nil
+}
+
+func (x *DockerBuildConfig) GetBuildSecrets() []*DockerBuildSecretEntry {
+	if x != nil {
+		return x.BuildSecrets
+	}
+	return nil
+}
+
+func (x *DockerBuildConfig) GetCacheFromRefs() []string {
+	if x != nil {
+		return x.CacheFromRefs
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.DockerBuildFailure (var: fYt)
+type DockerBuildFailure struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int64                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DockerBuildFailure) Reset() {
+	*x = DockerBuildFailure{}
+	mi := &file_anyrun_v1_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerBuildFailure) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerBuildFailure) ProtoMessage() {}
+
+func (x *DockerBuildFailure) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerBuildFailure.ProtoReflect.Descriptor instead.
+func (*DockerBuildFailure) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *DockerBuildFailure) GetExitCode() int64 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DockerBuildResult (var: Jjt)
+type DockerBuildResult struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Image         *DockerImageRef        `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DockerBuildResult) Reset() {
+	*x = DockerBuildResult{}
+	mi := &file_anyrun_v1_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerBuildResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerBuildResult) ProtoMessage() {}
+
+func (x *DockerBuildResult) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerBuildResult.ProtoReflect.Descriptor instead.
+func (*DockerBuildResult) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *DockerBuildResult) GetImage() *DockerImageRef {
+	if x != nil {
+		return x.Image
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.DockerBuildSecretEntry (var: Ejt)
+type DockerBuildSecretEntry struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	Name      string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	ValueHash *string                `protobuf:"bytes,4,opt,name=value_hash,json=valueHash,proto3,oneof" json:"value_hash,omitempty"`
+	// Types that are valid to be assigned to Value:
+	//
+	//	*DockerBuildSecretEntry_Inline
+	//	*DockerBuildSecretEntry_Encrypted
+	Value         isDockerBuildSecretEntry_Value `protobuf_oneof:"value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DockerBuildSecretEntry) Reset() {
+	*x = DockerBuildSecretEntry{}
+	mi := &file_anyrun_v1_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerBuildSecretEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerBuildSecretEntry) ProtoMessage() {}
+
+func (x *DockerBuildSecretEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerBuildSecretEntry.ProtoReflect.Descriptor instead.
+func (*DockerBuildSecretEntry) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *DockerBuildSecretEntry) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DockerBuildSecretEntry) GetValueHash() string {
+	if x != nil && x.ValueHash != nil {
+		return *x.ValueHash
+	}
+	return ""
+}
+
+func (x *DockerBuildSecretEntry) GetValue() isDockerBuildSecretEntry_Value {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *DockerBuildSecretEntry) GetInline() string {
+	if x != nil {
+		if x, ok := x.Value.(*DockerBuildSecretEntry_Inline); ok {
+			return x.Inline
+		}
+	}
+	return ""
+}
+
+func (x *DockerBuildSecretEntry) GetEncrypted() string {
+	if x != nil {
+		if x, ok := x.Value.(*DockerBuildSecretEntry_Encrypted); ok {
+			return x.Encrypted
+		}
+	}
+	return ""
+}
+
+type isDockerBuildSecretEntry_Value interface {
+	isDockerBuildSecretEntry_Value()
+}
+
+type DockerBuildSecretEntry_Inline struct {
+	Inline string `protobuf:"bytes,2,opt,name=inline,proto3,oneof"`
+}
+
+type DockerBuildSecretEntry_Encrypted struct {
+	Encrypted string `protobuf:"bytes,3,opt,name=encrypted,proto3,oneof"`
+}
+
+func (*DockerBuildSecretEntry_Inline) isDockerBuildSecretEntry_Value() {}
+
+func (*DockerBuildSecretEntry_Encrypted) isDockerBuildSecretEntry_Value() {}
+
+// Copied from: local:anyrun.v1.DockerContainerPersistentState (var: Kjt)
+type DockerContainerPersistentState struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	Id                      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                    string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Stopped                 bool                   `protobuf:"varint,3,opt,name=stopped,proto3" json:"stopped,omitempty"`
+	Removed                 bool                   `protobuf:"varint,4,opt,name=removed,proto3" json:"removed,omitempty"`
+	Leaked                  bool                   `protobuf:"varint,5,opt,name=leaked,proto3" json:"leaked,omitempty"`
+	PostPauseUnpauseDelayMs *uint64                `protobuf:"varint,6,opt,name=post_pause_unpause_delay_ms,json=postPauseUnpauseDelayMs,proto3,oneof" json:"post_pause_unpause_delay_ms,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *DockerContainerPersistentState) Reset() {
+	*x = DockerContainerPersistentState{}
+	mi := &file_anyrun_v1_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerContainerPersistentState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerContainerPersistentState) ProtoMessage() {}
+
+func (x *DockerContainerPersistentState) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerContainerPersistentState.ProtoReflect.Descriptor instead.
+func (*DockerContainerPersistentState) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *DockerContainerPersistentState) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DockerContainerPersistentState) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DockerContainerPersistentState) GetStopped() bool {
+	if x != nil {
+		return x.Stopped
+	}
+	return false
+}
+
+func (x *DockerContainerPersistentState) GetRemoved() bool {
+	if x != nil {
+		return x.Removed
+	}
+	return false
+}
+
+func (x *DockerContainerPersistentState) GetLeaked() bool {
+	if x != nil {
+		return x.Leaked
+	}
+	return false
+}
+
+func (x *DockerContainerPersistentState) GetPostPauseUnpauseDelayMs() uint64 {
+	if x != nil && x.PostPauseUnpauseDelayMs != nil {
+		return *x.PostPauseUnpauseDelayMs
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.DockerDevContainerPersistentState (var: zjt)
+type DockerDevContainerPersistentState struct {
+	state         protoimpl.MessageState          `protogen:"open.v1"`
+	Name          string                          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Container     *DockerContainerPersistentState `protobuf:"bytes,2,opt,name=container,proto3" json:"container,omitempty"`
+	RuntimeState  *RuntimeStatePersistentState    `protobuf:"bytes,3,opt,name=runtime_state,json=runtimeState,proto3" json:"runtime_state,omitempty"`
+	ImageMetadata *ImageMetadata                  `protobuf:"bytes,4,opt,name=image_metadata,json=imageMetadata,proto3" json:"image_metadata,omitempty"`
+	NetworkInfo   *NetworkInfo                    `protobuf:"bytes,5,opt,name=network_info,json=networkInfo,proto3" json:"network_info,omitempty"`
+	User          *string                         `protobuf:"bytes,6,opt,name=user,proto3,oneof" json:"user,omitempty"`
+	Shell         string                          `protobuf:"bytes,7,opt,name=shell,proto3" json:"shell,omitempty"`
+	DaemonPort    uint32                          `protobuf:"varint,8,opt,name=daemon_port,json=daemonPort,proto3" json:"daemon_port,omitempty"`
+	Workspace     *WorkspaceConfig                `protobuf:"bytes,9,opt,name=workspace,proto3" json:"workspace,omitempty"`
+	V2Hydrated    bool                            `protobuf:"varint,10,opt,name=v2_hydrated,json=v2Hydrated,proto3" json:"v2_hydrated,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DockerDevContainerPersistentState) Reset() {
+	*x = DockerDevContainerPersistentState{}
+	mi := &file_anyrun_v1_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerDevContainerPersistentState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerDevContainerPersistentState) ProtoMessage() {}
+
+func (x *DockerDevContainerPersistentState) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerDevContainerPersistentState.ProtoReflect.Descriptor instead.
+func (*DockerDevContainerPersistentState) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *DockerDevContainerPersistentState) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DockerDevContainerPersistentState) GetContainer() *DockerContainerPersistentState {
+	if x != nil {
+		return x.Container
+	}
+	return nil
+}
+
+func (x *DockerDevContainerPersistentState) GetRuntimeState() *RuntimeStatePersistentState {
+	if x != nil {
+		return x.RuntimeState
+	}
+	return nil
+}
+
+func (x *DockerDevContainerPersistentState) GetImageMetadata() *ImageMetadata {
+	if x != nil {
+		return x.ImageMetadata
+	}
+	return nil
+}
+
+func (x *DockerDevContainerPersistentState) GetNetworkInfo() *NetworkInfo {
+	if x != nil {
+		return x.NetworkInfo
+	}
+	return nil
+}
+
+func (x *DockerDevContainerPersistentState) GetUser() string {
+	if x != nil && x.User != nil {
+		return *x.User
+	}
+	return ""
+}
+
+func (x *DockerDevContainerPersistentState) GetShell() string {
+	if x != nil {
+		return x.Shell
+	}
+	return ""
+}
+
+func (x *DockerDevContainerPersistentState) GetDaemonPort() uint32 {
+	if x != nil {
+		return x.DaemonPort
+	}
+	return 0
+}
+
+func (x *DockerDevContainerPersistentState) GetWorkspace() *WorkspaceConfig {
+	if x != nil {
+		return x.Workspace
+	}
+	return nil
+}
+
+func (x *DockerDevContainerPersistentState) GetV2Hydrated() bool {
+	if x != nil {
+		return x.V2Hydrated
+	}
+	return false
+}
+
+// Copied from: local:anyrun.v1.DockerImageBuildEvent (var: tJr)
+type DockerImageBuildEvent struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	CreationTimestamp uint64                 `protobuf:"varint,1,opt,name=creation_timestamp,json=creationTimestamp,proto3" json:"creation_timestamp,omitempty"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*DockerImageBuildEvent_Queued
+	//	*DockerImageBuildEvent_Started
+	//	*DockerImageBuildEvent_BuildStatusMessage
+	//	*DockerImageBuildEvent_BuildStepStarted
+	//	*DockerImageBuildEvent_BuildStatusLine
+	//	*DockerImageBuildEvent_InternalBuildMessage
+	//	*DockerImageBuildEvent_Error
+	//	*DockerImageBuildEvent_Completed
+	//	*DockerImageBuildEvent_BuildExitCode
+	Payload       isDockerImageBuildEvent_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DockerImageBuildEvent) Reset() {
+	*x = DockerImageBuildEvent{}
+	mi := &file_anyrun_v1_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerImageBuildEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerImageBuildEvent) ProtoMessage() {}
+
+func (x *DockerImageBuildEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerImageBuildEvent.ProtoReflect.Descriptor instead.
+func (*DockerImageBuildEvent) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *DockerImageBuildEvent) GetCreationTimestamp() uint64 {
+	if x != nil {
+		return x.CreationTimestamp
+	}
+	return 0
+}
+
+func (x *DockerImageBuildEvent) GetPayload() isDockerImageBuildEvent_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetQueued() *emptypb.Empty {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_Queued); ok {
+			return x.Queued
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetStarted() *emptypb.Empty {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_Started); ok {
+			return x.Started
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetBuildStatusMessage() string {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_BuildStatusMessage); ok {
+			return x.BuildStatusMessage
+		}
+	}
+	return ""
+}
+
+func (x *DockerImageBuildEvent) GetBuildStepStarted() *BuildStepStarted {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_BuildStepStarted); ok {
+			return x.BuildStepStarted
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetBuildStatusLine() *BuildStatusLine {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_BuildStatusLine); ok {
+			return x.BuildStatusLine
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetInternalBuildMessage() *InternalBuildMessage {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_InternalBuildMessage); ok {
+			return x.InternalBuildMessage
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetError() *PodErrorEvent {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetCompleted() *DockerBuildResult {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_Completed); ok {
+			return x.Completed
+		}
+	}
+	return nil
+}
+
+func (x *DockerImageBuildEvent) GetBuildExitCode() int32 {
+	if x != nil {
+		if x, ok := x.Payload.(*DockerImageBuildEvent_BuildExitCode); ok {
+			return x.BuildExitCode
+		}
+	}
+	return 0
+}
+
+type isDockerImageBuildEvent_Payload interface {
+	isDockerImageBuildEvent_Payload()
+}
+
+type DockerImageBuildEvent_Queued struct {
+	Queued *emptypb.Empty `protobuf:"bytes,2,opt,name=queued,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_Started struct {
+	Started *emptypb.Empty `protobuf:"bytes,3,opt,name=started,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_BuildStatusMessage struct {
+	BuildStatusMessage string `protobuf:"bytes,4,opt,name=build_status_message,json=buildStatusMessage,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_BuildStepStarted struct {
+	BuildStepStarted *BuildStepStarted `protobuf:"bytes,5,opt,name=build_step_started,json=buildStepStarted,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_BuildStatusLine struct {
+	BuildStatusLine *BuildStatusLine `protobuf:"bytes,6,opt,name=build_status_line,json=buildStatusLine,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_InternalBuildMessage struct {
+	InternalBuildMessage *InternalBuildMessage `protobuf:"bytes,7,opt,name=internal_build_message,json=internalBuildMessage,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_Error struct {
+	Error *PodErrorEvent `protobuf:"bytes,8,opt,name=error,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_Completed struct {
+	Completed *DockerBuildResult `protobuf:"bytes,9,opt,name=completed,proto3,oneof"`
+}
+
+type DockerImageBuildEvent_BuildExitCode struct {
+	BuildExitCode int32 `protobuf:"varint,10,opt,name=build_exit_code,json=buildExitCode,proto3,oneof"`
+}
+
+func (*DockerImageBuildEvent_Queued) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_Started) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_BuildStatusMessage) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_BuildStepStarted) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_BuildStatusLine) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_InternalBuildMessage) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_Error) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_Completed) isDockerImageBuildEvent_Payload() {}
+
+func (*DockerImageBuildEvent_BuildExitCode) isDockerImageBuildEvent_Payload() {}
+
+// Copied from: local:anyrun.v1.DockerImageRef (var: Pjt)
+type DockerImageRef struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	RegistryReference string                 `protobuf:"bytes,1,opt,name=registry_reference,json=registryReference,proto3" json:"registry_reference,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *DockerImageRef) Reset() {
+	*x = DockerImageRef{}
+	mi := &file_anyrun_v1_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DockerImageRef) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DockerImageRef) ProtoMessage() {}
+
+func (x *DockerImageRef) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DockerImageRef.ProtoReflect.Descriptor instead.
+func (*DockerImageRef) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *DockerImageRef) GetRegistryReference() string {
+	if x != nil {
+		return x.RegistryReference
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.EgressPolicy (var: Ijt)
+type EgressPolicy struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Scm                []*ScmConfig           `protobuf:"bytes,3,rep,name=scm,proto3" json:"scm,omitempty"`
+	UseScmEgressConfig bool                   `protobuf:"varint,4,opt,name=use_scm_egress_config,json=useScmEgressConfig,proto3" json:"use_scm_egress_config,omitempty"`
+	// Types that are valid to be assigned to Policy:
+	//
+	//	*EgressPolicy_AllowAll
+	//	*EgressPolicy_Restricted
+	Policy        isEgressPolicy_Policy `protobuf_oneof:"policy"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EgressPolicy) Reset() {
+	*x = EgressPolicy{}
+	mi := &file_anyrun_v1_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EgressPolicy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EgressPolicy) ProtoMessage() {}
+
+func (x *EgressPolicy) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EgressPolicy.ProtoReflect.Descriptor instead.
+func (*EgressPolicy) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *EgressPolicy) GetScm() []*ScmConfig {
+	if x != nil {
+		return x.Scm
+	}
+	return nil
+}
+
+func (x *EgressPolicy) GetUseScmEgressConfig() bool {
+	if x != nil {
+		return x.UseScmEgressConfig
+	}
+	return false
+}
+
+func (x *EgressPolicy) GetPolicy() isEgressPolicy_Policy {
+	if x != nil {
+		return x.Policy
+	}
+	return nil
+}
+
+func (x *EgressPolicy) GetAllowAll() *emptypb.Empty {
+	if x != nil {
+		if x, ok := x.Policy.(*EgressPolicy_AllowAll); ok {
+			return x.AllowAll
+		}
+	}
+	return nil
+}
+
+func (x *EgressPolicy) GetRestricted() *EgressRestricted {
+	if x != nil {
+		if x, ok := x.Policy.(*EgressPolicy_Restricted); ok {
+			return x.Restricted
+		}
+	}
+	return nil
+}
+
+type isEgressPolicy_Policy interface {
+	isEgressPolicy_Policy()
+}
+
+type EgressPolicy_AllowAll struct {
+	AllowAll *emptypb.Empty `protobuf:"bytes,1,opt,name=allow_all,json=allowAll,proto3,oneof"`
+}
+
+type EgressPolicy_Restricted struct {
+	Restricted *EgressRestricted `protobuf:"bytes,2,opt,name=restricted,proto3,oneof"`
+}
+
+func (*EgressPolicy_AllowAll) isEgressPolicy_Policy() {}
+
+func (*EgressPolicy_Restricted) isEgressPolicy_Policy() {}
+
+// Copied from: local:anyrun.v1.EgressRestricted (var: bjt)
+type EgressRestricted struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	AllowedDomains []*AllowedDomain       `protobuf:"bytes,1,rep,name=allowed_domains,json=allowedDomains,proto3" json:"allowed_domains,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *EgressRestricted) Reset() {
+	*x = EgressRestricted{}
+	mi := &file_anyrun_v1_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EgressRestricted) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EgressRestricted) ProtoMessage() {}
+
+func (x *EgressRestricted) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EgressRestricted.ProtoReflect.Descriptor instead.
+func (*EgressRestricted) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *EgressRestricted) GetAllowedDomains() []*AllowedDomain {
+	if x != nil {
+		return x.AllowedDomains
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ExternalSnapshot (var: wjt)
 type ExternalSnapshot struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	SnapshotId        string                 `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
 	PresignedUrl      string                 `protobuf:"bytes,2,opt,name=presigned_url,json=presignedUrl,proto3" json:"presigned_url,omitempty"`
 	ImageMetadata     *ImageMetadata         `protobuf:"bytes,3,opt,name=image_metadata,json=imageMetadata,proto3" json:"image_metadata,omitempty"`
 	BlobStorageFormat BlobStorageFormat      `protobuf:"varint,4,opt,name=blob_storage_format,json=blobStorageFormat,proto3,enum=anyrun.v1.BlobStorageFormat" json:"blob_storage_format,omitempty"`
+	NodeMachineType   *string                `protobuf:"bytes,5,opt,name=node_machine_type,json=nodeMachineType,proto3,oneof" json:"node_machine_type,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
 
 func (x *ExternalSnapshot) Reset() {
 	*x = ExternalSnapshot{}
-	mi := &file_anyrun_v1_proto_msgTypes[12]
+	mi := &file_anyrun_v1_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1520,7 +3839,7 @@ func (x *ExternalSnapshot) String() string {
 func (*ExternalSnapshot) ProtoMessage() {}
 
 func (x *ExternalSnapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[12]
+	mi := &file_anyrun_v1_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1533,7 +3852,7 @@ func (x *ExternalSnapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExternalSnapshot.ProtoReflect.Descriptor instead.
 func (*ExternalSnapshot) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{12}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ExternalSnapshot) GetSnapshotId() string {
@@ -1564,7 +3883,14 @@ func (x *ExternalSnapshot) GetBlobStorageFormat() BlobStorageFormat {
 	return BlobStorageFormat_BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED
 }
 
-// Copied from: local:anyrun.v1.FeatureExitCode (var: Aje, class: hle)
+func (x *ExternalSnapshot) GetNodeMachineType() string {
+	if x != nil && x.NodeMachineType != nil {
+		return *x.NodeMachineType
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.FeatureExitCode (var: HKt)
 type FeatureExitCode struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FeatureId     string                 `protobuf:"bytes,1,opt,name=feature_id,json=featureId,proto3" json:"feature_id,omitempty"`
@@ -1575,7 +3901,7 @@ type FeatureExitCode struct {
 
 func (x *FeatureExitCode) Reset() {
 	*x = FeatureExitCode{}
-	mi := &file_anyrun_v1_proto_msgTypes[13]
+	mi := &file_anyrun_v1_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1587,7 +3913,7 @@ func (x *FeatureExitCode) String() string {
 func (*FeatureExitCode) ProtoMessage() {}
 
 func (x *FeatureExitCode) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[13]
+	mi := &file_anyrun_v1_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1600,7 +3926,7 @@ func (x *FeatureExitCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FeatureExitCode.ProtoReflect.Descriptor instead.
 func (*FeatureExitCode) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{13}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *FeatureExitCode) GetFeatureId() string {
@@ -1617,7 +3943,7 @@ func (x *FeatureExitCode) GetExitCode() int64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.FeatureOutput (var: $Pe, class: dle)
+// Copied from: local:anyrun.v1.FeatureOutput (var: MKt)
 type FeatureOutput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FeatureId     string                 `protobuf:"bytes,1,opt,name=feature_id,json=featureId,proto3" json:"feature_id,omitempty"`
@@ -1628,7 +3954,7 @@ type FeatureOutput struct {
 
 func (x *FeatureOutput) Reset() {
 	*x = FeatureOutput{}
-	mi := &file_anyrun_v1_proto_msgTypes[14]
+	mi := &file_anyrun_v1_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1640,7 +3966,7 @@ func (x *FeatureOutput) String() string {
 func (*FeatureOutput) ProtoMessage() {}
 
 func (x *FeatureOutput) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[14]
+	mi := &file_anyrun_v1_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1653,7 +3979,7 @@ func (x *FeatureOutput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FeatureOutput.ProtoReflect.Descriptor instead.
 func (*FeatureOutput) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{14}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *FeatureOutput) GetFeatureId() string {
@@ -1670,20 +3996,272 @@ func (x *FeatureOutput) GetOutput() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.GitRepoSourceReference (var: oes, class: bce)
+// Copied from: local:anyrun.v1.GetProcessStatusRequest (var: qPr)
+type GetProcessStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Pid           int64                  `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProcessStatusRequest) Reset() {
+	*x = GetProcessStatusRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProcessStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProcessStatusRequest) ProtoMessage() {}
+
+func (x *GetProcessStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProcessStatusRequest.ProtoReflect.Descriptor instead.
+func (*GetProcessStatusRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *GetProcessStatusRequest) GetPid() int64 {
+	if x != nil {
+		return x.Pid
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.GetProcessStatusResponse (var: SKt)
+type GetProcessStatusResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Status:
+	//
+	//	*GetProcessStatusResponse_Running_
+	//	*GetProcessStatusResponse_Completed_
+	Status        isGetProcessStatusResponse_Status `protobuf_oneof:"status"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProcessStatusResponse) Reset() {
+	*x = GetProcessStatusResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProcessStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProcessStatusResponse) ProtoMessage() {}
+
+func (x *GetProcessStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProcessStatusResponse.ProtoReflect.Descriptor instead.
+func (*GetProcessStatusResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *GetProcessStatusResponse) GetStatus() isGetProcessStatusResponse_Status {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+func (x *GetProcessStatusResponse) GetRunning() *GetProcessStatusResponse_Running {
+	if x != nil {
+		if x, ok := x.Status.(*GetProcessStatusResponse_Running_); ok {
+			return x.Running
+		}
+	}
+	return nil
+}
+
+func (x *GetProcessStatusResponse) GetCompleted() *GetProcessStatusResponse_Completed {
+	if x != nil {
+		if x, ok := x.Status.(*GetProcessStatusResponse_Completed_); ok {
+			return x.Completed
+		}
+	}
+	return nil
+}
+
+type isGetProcessStatusResponse_Status interface {
+	isGetProcessStatusResponse_Status()
+}
+
+type GetProcessStatusResponse_Running_ struct {
+	Running *GetProcessStatusResponse_Running `protobuf:"bytes,1,opt,name=running,proto3,oneof"`
+}
+
+type GetProcessStatusResponse_Completed_ struct {
+	Completed *GetProcessStatusResponse_Completed `protobuf:"bytes,2,opt,name=completed,proto3,oneof"`
+}
+
+func (*GetProcessStatusResponse_Running_) isGetProcessStatusResponse_Status() {}
+
+func (*GetProcessStatusResponse_Completed_) isGetProcessStatusResponse_Status() {}
+
+// Copied from: local:anyrun.v1.GitCheckoutFailure (var: hYt)
+type GitCheckoutFailure struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int64                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GitCheckoutFailure) Reset() {
+	*x = GitCheckoutFailure{}
+	mi := &file_anyrun_v1_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GitCheckoutFailure) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GitCheckoutFailure) ProtoMessage() {}
+
+func (x *GitCheckoutFailure) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GitCheckoutFailure.ProtoReflect.Descriptor instead.
+func (*GitCheckoutFailure) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *GitCheckoutFailure) GetExitCode() int64 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.GitCloneFailure (var: pYt)
+type GitCloneFailure struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	ExitCode      int64                   `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	Category      GitCloneFailureCategory `protobuf:"varint,2,opt,name=category,proto3,enum=anyrun.v1.GitCloneFailureCategory" json:"category,omitempty"`
+	Retryable     bool                    `protobuf:"varint,3,opt,name=retryable,proto3" json:"retryable,omitempty"`
+	RemoteHost    *string                 `protobuf:"bytes,4,opt,name=remote_host,json=remoteHost,proto3,oneof" json:"remote_host,omitempty"`
+	HttpStatus    *int32                  `protobuf:"varint,5,opt,name=http_status,json=httpStatus,proto3,oneof" json:"http_status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GitCloneFailure) Reset() {
+	*x = GitCloneFailure{}
+	mi := &file_anyrun_v1_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GitCloneFailure) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GitCloneFailure) ProtoMessage() {}
+
+func (x *GitCloneFailure) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GitCloneFailure.ProtoReflect.Descriptor instead.
+func (*GitCloneFailure) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *GitCloneFailure) GetExitCode() int64 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+func (x *GitCloneFailure) GetCategory() GitCloneFailureCategory {
+	if x != nil {
+		return x.Category
+	}
+	return GitCloneFailureCategory_GIT_CLONE_FAILURE_CATEGORY_UNSPECIFIED
+}
+
+func (x *GitCloneFailure) GetRetryable() bool {
+	if x != nil {
+		return x.Retryable
+	}
+	return false
+}
+
+func (x *GitCloneFailure) GetRemoteHost() string {
+	if x != nil && x.RemoteHost != nil {
+		return *x.RemoteHost
+	}
+	return ""
+}
+
+func (x *GitCloneFailure) GetHttpStatus() int32 {
+	if x != nil && x.HttpStatus != nil {
+		return *x.HttpStatus
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.GitRepoSourceReference (var: ojt)
 type GitRepoSourceReference struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CacheUri      string                 `protobuf:"bytes,1,opt,name=cache_uri,json=cacheUri,proto3" json:"cache_uri,omitempty"`
 	CheckoutUri   string                 `protobuf:"bytes,2,opt,name=checkout_uri,json=checkoutUri,proto3" json:"checkout_uri,omitempty"`
 	CommitHash    []byte                 `protobuf:"bytes,3,opt,name=commit_hash,json=commitHash,proto3" json:"commit_hash,omitempty"`
 	HttpProxy     string                 `protobuf:"bytes,5,opt,name=http_proxy,json=httpProxy,proto3" json:"http_proxy,omitempty"`
+	MtlsCertPem   *string                `protobuf:"bytes,6,opt,name=mtls_cert_pem,json=mtlsCertPem,proto3,oneof" json:"mtls_cert_pem,omitempty"`
+	MtlsKeyPem    *string                `protobuf:"bytes,7,opt,name=mtls_key_pem,json=mtlsKeyPem,proto3,oneof" json:"mtls_key_pem,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GitRepoSourceReference) Reset() {
 	*x = GitRepoSourceReference{}
-	mi := &file_anyrun_v1_proto_msgTypes[15]
+	mi := &file_anyrun_v1_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1695,7 +4273,7 @@ func (x *GitRepoSourceReference) String() string {
 func (*GitRepoSourceReference) ProtoMessage() {}
 
 func (x *GitRepoSourceReference) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[15]
+	mi := &file_anyrun_v1_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1708,7 +4286,7 @@ func (x *GitRepoSourceReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GitRepoSourceReference.ProtoReflect.Descriptor instead.
 func (*GitRepoSourceReference) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{15}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *GitRepoSourceReference) GetCacheUri() string {
@@ -1739,7 +4317,122 @@ func (x *GitRepoSourceReference) GetHttpProxy() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.HydrationProgress (var: Nes, class: ule)
+func (x *GitRepoSourceReference) GetMtlsCertPem() string {
+	if x != nil && x.MtlsCertPem != nil {
+		return *x.MtlsCertPem
+	}
+	return ""
+}
+
+func (x *GitRepoSourceReference) GetMtlsKeyPem() string {
+	if x != nil && x.MtlsKeyPem != nil {
+		return *x.MtlsKeyPem
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.HttpHealthCheck (var: EKt)
+type HttpHealthCheck struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Url                string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	Method             string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
+	Headers            map[string]string      `protobuf:"bytes,3,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Body               []byte                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	IntervalMs         uint32                 `protobuf:"varint,5,opt,name=interval_ms,json=intervalMs,proto3" json:"interval_ms,omitempty"`
+	TimeoutMs          uint32                 `protobuf:"varint,6,opt,name=timeout_ms,json=timeoutMs,proto3" json:"timeout_ms,omitempty"`
+	StartPeriodMs      uint32                 `protobuf:"varint,7,opt,name=start_period_ms,json=startPeriodMs,proto3" json:"start_period_ms,omitempty"`
+	UnhealthyThreshold uint32                 `protobuf:"varint,8,opt,name=unhealthy_threshold,json=unhealthyThreshold,proto3" json:"unhealthy_threshold,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *HttpHealthCheck) Reset() {
+	*x = HttpHealthCheck{}
+	mi := &file_anyrun_v1_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HttpHealthCheck) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HttpHealthCheck) ProtoMessage() {}
+
+func (x *HttpHealthCheck) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HttpHealthCheck.ProtoReflect.Descriptor instead.
+func (*HttpHealthCheck) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *HttpHealthCheck) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *HttpHealthCheck) GetMethod() string {
+	if x != nil {
+		return x.Method
+	}
+	return ""
+}
+
+func (x *HttpHealthCheck) GetHeaders() map[string]string {
+	if x != nil {
+		return x.Headers
+	}
+	return nil
+}
+
+func (x *HttpHealthCheck) GetBody() []byte {
+	if x != nil {
+		return x.Body
+	}
+	return nil
+}
+
+func (x *HttpHealthCheck) GetIntervalMs() uint32 {
+	if x != nil {
+		return x.IntervalMs
+	}
+	return 0
+}
+
+func (x *HttpHealthCheck) GetTimeoutMs() uint32 {
+	if x != nil {
+		return x.TimeoutMs
+	}
+	return 0
+}
+
+func (x *HttpHealthCheck) GetStartPeriodMs() uint32 {
+	if x != nil {
+		return x.StartPeriodMs
+	}
+	return 0
+}
+
+func (x *HttpHealthCheck) GetUnhealthyThreshold() uint32 {
+	if x != nil {
+		return x.UnhealthyThreshold
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.HydrationProgress (var: OKt)
 type HydrationProgress struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Transferred   uint64                 `protobuf:"varint,1,opt,name=transferred,proto3" json:"transferred,omitempty"`
@@ -1750,7 +4443,7 @@ type HydrationProgress struct {
 
 func (x *HydrationProgress) Reset() {
 	*x = HydrationProgress{}
-	mi := &file_anyrun_v1_proto_msgTypes[16]
+	mi := &file_anyrun_v1_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1762,7 +4455,7 @@ func (x *HydrationProgress) String() string {
 func (*HydrationProgress) ProtoMessage() {}
 
 func (x *HydrationProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[16]
+	mi := &file_anyrun_v1_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1775,7 +4468,7 @@ func (x *HydrationProgress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HydrationProgress.ProtoReflect.Descriptor instead.
 func (*HydrationProgress) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{16}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *HydrationProgress) GetTransferred() uint64 {
@@ -1792,7 +4485,7 @@ func (x *HydrationProgress) GetTotal() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.ImageMetadata (var: Lje, class: _ce)
+// Copied from: local:anyrun.v1.ImageMetadata (var: tjt)
 type ImageMetadata struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *string                `protobuf:"bytes,1,opt,name=user,proto3,oneof" json:"user,omitempty"`
@@ -1805,7 +4498,7 @@ type ImageMetadata struct {
 
 func (x *ImageMetadata) Reset() {
 	*x = ImageMetadata{}
-	mi := &file_anyrun_v1_proto_msgTypes[17]
+	mi := &file_anyrun_v1_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1817,7 +4510,7 @@ func (x *ImageMetadata) String() string {
 func (*ImageMetadata) ProtoMessage() {}
 
 func (x *ImageMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[17]
+	mi := &file_anyrun_v1_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1830,7 +4523,7 @@ func (x *ImageMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImageMetadata.ProtoReflect.Descriptor instead.
 func (*ImageMetadata) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{17}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *ImageMetadata) GetUser() string {
@@ -1861,7 +4554,7 @@ func (x *ImageMetadata) GetArch() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.ImagePullCompleted (var: Ues, class: Tle)
+// Copied from: local:anyrun.v1.ImagePullCompleted (var: QKt)
 type ImagePullCompleted struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageName     string                 `protobuf:"bytes,1,opt,name=image_name,json=imageName,proto3" json:"image_name,omitempty"`
@@ -1872,7 +4565,7 @@ type ImagePullCompleted struct {
 
 func (x *ImagePullCompleted) Reset() {
 	*x = ImagePullCompleted{}
-	mi := &file_anyrun_v1_proto_msgTypes[18]
+	mi := &file_anyrun_v1_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1884,7 +4577,7 @@ func (x *ImagePullCompleted) String() string {
 func (*ImagePullCompleted) ProtoMessage() {}
 
 func (x *ImagePullCompleted) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[18]
+	mi := &file_anyrun_v1_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1897,7 +4590,7 @@ func (x *ImagePullCompleted) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImagePullCompleted.ProtoReflect.Descriptor instead.
 func (*ImagePullCompleted) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{18}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ImagePullCompleted) GetImageName() string {
@@ -1914,7 +4607,7 @@ func (x *ImagePullCompleted) GetPullId() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.ImagePullLayerUpdate (var: Aes, class: wle)
+// Copied from: local:anyrun.v1.ImagePullLayerUpdate (var: KKt)
 type ImagePullLayerUpdate struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	ImageName string                 `protobuf:"bytes,1,opt,name=image_name,json=imageName,proto3" json:"image_name,omitempty"`
@@ -1937,7 +4630,7 @@ type ImagePullLayerUpdate struct {
 
 func (x *ImagePullLayerUpdate) Reset() {
 	*x = ImagePullLayerUpdate{}
-	mi := &file_anyrun_v1_proto_msgTypes[19]
+	mi := &file_anyrun_v1_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1949,7 +4642,7 @@ func (x *ImagePullLayerUpdate) String() string {
 func (*ImagePullLayerUpdate) ProtoMessage() {}
 
 func (x *ImagePullLayerUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[19]
+	mi := &file_anyrun_v1_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1962,7 +4655,7 @@ func (x *ImagePullLayerUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImagePullLayerUpdate.ProtoReflect.Descriptor instead.
 func (*ImagePullLayerUpdate) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{19}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ImagePullLayerUpdate) GetImageName() string {
@@ -2117,7 +4810,7 @@ func (*ImagePullLayerUpdate_Extracting) isImagePullLayerUpdate_Status() {}
 
 func (*ImagePullLayerUpdate_Other) isImagePullLayerUpdate_Status() {}
 
-// Copied from: local:anyrun.v1.ImagePullStarted (var: Fes, class: vle)
+// Copied from: local:anyrun.v1.ImagePullStarted (var: zKt)
 type ImagePullStarted struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageName     string                 `protobuf:"bytes,1,opt,name=image_name,json=imageName,proto3" json:"image_name,omitempty"`
@@ -2128,7 +4821,7 @@ type ImagePullStarted struct {
 
 func (x *ImagePullStarted) Reset() {
 	*x = ImagePullStarted{}
-	mi := &file_anyrun_v1_proto_msgTypes[20]
+	mi := &file_anyrun_v1_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2140,7 +4833,7 @@ func (x *ImagePullStarted) String() string {
 func (*ImagePullStarted) ProtoMessage() {}
 
 func (x *ImagePullStarted) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[20]
+	mi := &file_anyrun_v1_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2153,7 +4846,7 @@ func (x *ImagePullStarted) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImagePullStarted.ProtoReflect.Descriptor instead.
 func (*ImagePullStarted) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{20}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ImagePullStarted) GetImageName() string {
@@ -2170,7 +4863,7 @@ func (x *ImagePullStarted) GetPullId() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.ImagePullStatusUpdate (var: Oes, class: Sle)
+// Copied from: local:anyrun.v1.ImagePullStatusUpdate (var: YKt)
 type ImagePullStatusUpdate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageName     string                 `protobuf:"bytes,1,opt,name=image_name,json=imageName,proto3" json:"image_name,omitempty"`
@@ -2182,7 +4875,7 @@ type ImagePullStatusUpdate struct {
 
 func (x *ImagePullStatusUpdate) Reset() {
 	*x = ImagePullStatusUpdate{}
-	mi := &file_anyrun_v1_proto_msgTypes[21]
+	mi := &file_anyrun_v1_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2194,7 +4887,7 @@ func (x *ImagePullStatusUpdate) String() string {
 func (*ImagePullStatusUpdate) ProtoMessage() {}
 
 func (x *ImagePullStatusUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[21]
+	mi := &file_anyrun_v1_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2207,7 +4900,7 @@ func (x *ImagePullStatusUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImagePullStatusUpdate.ProtoReflect.Descriptor instead.
 func (*ImagePullStatusUpdate) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{21}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *ImagePullStatusUpdate) GetImageName() string {
@@ -2231,20 +4924,74 @@ func (x *ImagePullStatusUpdate) GetStatus() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.InstallCommand (var: Mes, class: kle)
+// Copied from: local:anyrun.v1.InlineBuild (var: Rjt)
+type InlineBuild struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	DockerfileContents string                 `protobuf:"bytes,1,opt,name=dockerfile_contents,json=dockerfileContents,proto3" json:"dockerfile_contents,omitempty"`
+	Context            string                 `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *InlineBuild) Reset() {
+	*x = InlineBuild{}
+	mi := &file_anyrun_v1_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InlineBuild) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InlineBuild) ProtoMessage() {}
+
+func (x *InlineBuild) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InlineBuild.ProtoReflect.Descriptor instead.
+func (*InlineBuild) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *InlineBuild) GetDockerfileContents() string {
+	if x != nil {
+		return x.DockerfileContents
+	}
+	return ""
+}
+
+func (x *InlineBuild) GetContext() string {
+	if x != nil {
+		return x.Context
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.InstallCommand (var: XKt)
 type InstallCommand struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Command       string                 `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"`
-	User          *string                `protobuf:"bytes,3,opt,name=user,proto3,oneof" json:"user,omitempty"`
-	IsSystem      bool                   `protobuf:"varint,4,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Name            string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Command         string                 `protobuf:"bytes,2,opt,name=command,proto3" json:"command,omitempty"`
+	User            *string                `protobuf:"bytes,3,opt,name=user,proto3,oneof" json:"user,omitempty"`
+	IsSystem        bool                   `protobuf:"varint,4,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
+	FailureTolerant bool                   `protobuf:"varint,5,opt,name=failure_tolerant,json=failureTolerant,proto3" json:"failure_tolerant,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *InstallCommand) Reset() {
 	*x = InstallCommand{}
-	mi := &file_anyrun_v1_proto_msgTypes[22]
+	mi := &file_anyrun_v1_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2256,7 +5003,7 @@ func (x *InstallCommand) String() string {
 func (*InstallCommand) ProtoMessage() {}
 
 func (x *InstallCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[22]
+	mi := &file_anyrun_v1_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2269,7 +5016,7 @@ func (x *InstallCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InstallCommand.ProtoReflect.Descriptor instead.
 func (*InstallCommand) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{22}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *InstallCommand) GetName() string {
@@ -2300,7 +5047,59 @@ func (x *InstallCommand) GetIsSystem() bool {
 	return false
 }
 
-// Copied from: local:anyrun.v1.InternalBuildMessage (var: Des, class: gle)
+func (x *InstallCommand) GetFailureTolerant() bool {
+	if x != nil {
+		return x.FailureTolerant
+	}
+	return false
+}
+
+// Copied from: local:anyrun.v1.InstallCommandFailure (var: dYt)
+type InstallCommandFailure struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsSystem      bool                   `protobuf:"varint,1,opt,name=is_system,json=isSystem,proto3" json:"is_system,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InstallCommandFailure) Reset() {
+	*x = InstallCommandFailure{}
+	mi := &file_anyrun_v1_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InstallCommandFailure) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InstallCommandFailure) ProtoMessage() {}
+
+func (x *InstallCommandFailure) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InstallCommandFailure.ProtoReflect.Descriptor instead.
+func (*InstallCommandFailure) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *InstallCommandFailure) GetIsSystem() bool {
+	if x != nil {
+		return x.IsSystem
+	}
+	return false
+}
+
+// Copied from: local:anyrun.v1.InternalBuildMessage (var: VKt)
 type InternalBuildMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StreamId      uint32                 `protobuf:"varint,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"`
@@ -2311,7 +5110,7 @@ type InternalBuildMessage struct {
 
 func (x *InternalBuildMessage) Reset() {
 	*x = InternalBuildMessage{}
-	mi := &file_anyrun_v1_proto_msgTypes[23]
+	mi := &file_anyrun_v1_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2323,7 +5122,7 @@ func (x *InternalBuildMessage) String() string {
 func (*InternalBuildMessage) ProtoMessage() {}
 
 func (x *InternalBuildMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[23]
+	mi := &file_anyrun_v1_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2336,7 +5135,7 @@ func (x *InternalBuildMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InternalBuildMessage.ProtoReflect.Descriptor instead.
 func (*InternalBuildMessage) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{23}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *InternalBuildMessage) GetStreamId() uint32 {
@@ -2353,7 +5152,646 @@ func (x *InternalBuildMessage) GetContent() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.LocalDirectoryReference (var: les, class: Nce)
+// Copied from: local:anyrun.v1.IsoDevContainerMetadata (var: Hjt)
+type IsoDevContainerMetadata struct {
+	state           protoimpl.MessageState             `protogen:"open.v1"`
+	Name            string                             `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	PersistentState *DockerDevContainerPersistentState `protobuf:"bytes,2,opt,name=persistent_state,json=persistentState,proto3" json:"persistent_state,omitempty"`
+	EnvConfig       *IsoEnvConfig                      `protobuf:"bytes,3,opt,name=env_config,json=envConfig,proto3" json:"env_config,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *IsoDevContainerMetadata) Reset() {
+	*x = IsoDevContainerMetadata{}
+	mi := &file_anyrun_v1_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsoDevContainerMetadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsoDevContainerMetadata) ProtoMessage() {}
+
+func (x *IsoDevContainerMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsoDevContainerMetadata.ProtoReflect.Descriptor instead.
+func (*IsoDevContainerMetadata) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *IsoDevContainerMetadata) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *IsoDevContainerMetadata) GetPersistentState() *DockerDevContainerPersistentState {
+	if x != nil {
+		return x.PersistentState
+	}
+	return nil
+}
+
+func (x *IsoDevContainerMetadata) GetEnvConfig() *IsoEnvConfig {
+	if x != nil {
+		return x.EnvConfig
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.IsoEnvBalloonConfig (var: $jt)
+type IsoEnvBalloonConfig struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	AmountMib             uint32                 `protobuf:"varint,1,opt,name=amount_mib,json=amountMib,proto3" json:"amount_mib,omitempty"`
+	DeflateOnOom          bool                   `protobuf:"varint,2,opt,name=deflate_on_oom,json=deflateOnOom,proto3" json:"deflate_on_oom,omitempty"`
+	StatsPollingIntervalS *uint32                `protobuf:"varint,3,opt,name=stats_polling_interval_s,json=statsPollingIntervalS,proto3,oneof" json:"stats_polling_interval_s,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *IsoEnvBalloonConfig) Reset() {
+	*x = IsoEnvBalloonConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsoEnvBalloonConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsoEnvBalloonConfig) ProtoMessage() {}
+
+func (x *IsoEnvBalloonConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsoEnvBalloonConfig.ProtoReflect.Descriptor instead.
+func (*IsoEnvBalloonConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *IsoEnvBalloonConfig) GetAmountMib() uint32 {
+	if x != nil {
+		return x.AmountMib
+	}
+	return 0
+}
+
+func (x *IsoEnvBalloonConfig) GetDeflateOnOom() bool {
+	if x != nil {
+		return x.DeflateOnOom
+	}
+	return false
+}
+
+func (x *IsoEnvBalloonConfig) GetStatsPollingIntervalS() uint32 {
+	if x != nil && x.StatsPollingIntervalS != nil {
+		return *x.StatsPollingIntervalS
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.IsoEnvConfig (var: Vjt)
+type IsoEnvConfig struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	VcpuCount     uint32                    `protobuf:"varint,1,opt,name=vcpu_count,json=vcpuCount,proto3" json:"vcpu_count,omitempty"`
+	MemSizeMib    uint32                    `protobuf:"varint,2,opt,name=mem_size_mib,json=memSizeMib,proto3" json:"mem_size_mib,omitempty"`
+	SwapSizeMib   *uint32                   `protobuf:"varint,3,opt,name=swap_size_mib,json=swapSizeMib,proto3,oneof" json:"swap_size_mib,omitempty"`
+	RootfsSizeMib *uint32                   `protobuf:"varint,4,opt,name=rootfs_size_mib,json=rootfsSizeMib,proto3,oneof" json:"rootfs_size_mib,omitempty"`
+	ExtraDrives   []*IsoEnvExtraDriveConfig `protobuf:"bytes,5,rep,name=extra_drives,json=extraDrives,proto3" json:"extra_drives,omitempty"`
+	Balloon       *IsoEnvBalloonConfig      `protobuf:"bytes,6,opt,name=balloon,proto3,oneof" json:"balloon,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IsoEnvConfig) Reset() {
+	*x = IsoEnvConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsoEnvConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsoEnvConfig) ProtoMessage() {}
+
+func (x *IsoEnvConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsoEnvConfig.ProtoReflect.Descriptor instead.
+func (*IsoEnvConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *IsoEnvConfig) GetVcpuCount() uint32 {
+	if x != nil {
+		return x.VcpuCount
+	}
+	return 0
+}
+
+func (x *IsoEnvConfig) GetMemSizeMib() uint32 {
+	if x != nil {
+		return x.MemSizeMib
+	}
+	return 0
+}
+
+func (x *IsoEnvConfig) GetSwapSizeMib() uint32 {
+	if x != nil && x.SwapSizeMib != nil {
+		return *x.SwapSizeMib
+	}
+	return 0
+}
+
+func (x *IsoEnvConfig) GetRootfsSizeMib() uint32 {
+	if x != nil && x.RootfsSizeMib != nil {
+		return *x.RootfsSizeMib
+	}
+	return 0
+}
+
+func (x *IsoEnvConfig) GetExtraDrives() []*IsoEnvExtraDriveConfig {
+	if x != nil {
+		return x.ExtraDrives
+	}
+	return nil
+}
+
+func (x *IsoEnvConfig) GetBalloon() *IsoEnvBalloonConfig {
+	if x != nil {
+		return x.Balloon
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.IsoEnvExtraDriveConfig (var: Wjt)
+type IsoEnvExtraDriveConfig struct {
+	state          protoimpl.MessageState  `protogen:"open.v1"`
+	Purpose        IsoEnvExtraDrivePurpose `protobuf:"varint,1,opt,name=purpose,proto3,enum=anyrun.v1.IsoEnvExtraDrivePurpose" json:"purpose,omitempty"`
+	SizeMib        uint32                  `protobuf:"varint,3,opt,name=size_mib,json=sizeMib,proto3" json:"size_mib,omitempty"`
+	DriveId        string                  `protobuf:"bytes,4,opt,name=drive_id,json=driveId,proto3" json:"drive_id,omitempty"`
+	GuestDevice    string                  `protobuf:"bytes,5,opt,name=guest_device,json=guestDevice,proto3" json:"guest_device,omitempty"`
+	GuestMountPath string                  `protobuf:"bytes,6,opt,name=guest_mount_path,json=guestMountPath,proto3" json:"guest_mount_path,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *IsoEnvExtraDriveConfig) Reset() {
+	*x = IsoEnvExtraDriveConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsoEnvExtraDriveConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsoEnvExtraDriveConfig) ProtoMessage() {}
+
+func (x *IsoEnvExtraDriveConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsoEnvExtraDriveConfig.ProtoReflect.Descriptor instead.
+func (*IsoEnvExtraDriveConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *IsoEnvExtraDriveConfig) GetPurpose() IsoEnvExtraDrivePurpose {
+	if x != nil {
+		return x.Purpose
+	}
+	return IsoEnvExtraDrivePurpose_ISO_ENV_EXTRA_DRIVE_PURPOSE_UNSPECIFIED
+}
+
+func (x *IsoEnvExtraDriveConfig) GetSizeMib() uint32 {
+	if x != nil {
+		return x.SizeMib
+	}
+	return 0
+}
+
+func (x *IsoEnvExtraDriveConfig) GetDriveId() string {
+	if x != nil {
+		return x.DriveId
+	}
+	return ""
+}
+
+func (x *IsoEnvExtraDriveConfig) GetGuestDevice() string {
+	if x != nil {
+		return x.GuestDevice
+	}
+	return ""
+}
+
+func (x *IsoEnvExtraDriveConfig) GetGuestMountPath() string {
+	if x != nil {
+		return x.GuestMountPath
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.LifecycleProcessExited (var: LKt)
+type LifecycleProcessExited struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int32                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	CommandName   string                 `protobuf:"bytes,2,opt,name=command_name,json=commandName,proto3" json:"command_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LifecycleProcessExited) Reset() {
+	*x = LifecycleProcessExited{}
+	mi := &file_anyrun_v1_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LifecycleProcessExited) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleProcessExited) ProtoMessage() {}
+
+func (x *LifecycleProcessExited) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleProcessExited.ProtoReflect.Descriptor instead.
+func (*LifecycleProcessExited) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *LifecycleProcessExited) GetExitCode() int32 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+func (x *LifecycleProcessExited) GetCommandName() string {
+	if x != nil {
+		return x.CommandName
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.LifecycleProcessRestarted (var: BKt)
+type LifecycleProcessRestarted struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Attempt          uint32                 `protobuf:"varint,1,opt,name=attempt,proto3" json:"attempt,omitempty"`
+	PreviousExitCode int32                  `protobuf:"varint,2,opt,name=previous_exit_code,json=previousExitCode,proto3" json:"previous_exit_code,omitempty"`
+	Reason           RestartReason          `protobuf:"varint,3,opt,name=reason,proto3,enum=anyrun.v1.RestartReason" json:"reason,omitempty"`
+	CommandName      string                 `protobuf:"bytes,4,opt,name=command_name,json=commandName,proto3" json:"command_name,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *LifecycleProcessRestarted) Reset() {
+	*x = LifecycleProcessRestarted{}
+	mi := &file_anyrun_v1_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LifecycleProcessRestarted) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LifecycleProcessRestarted) ProtoMessage() {}
+
+func (x *LifecycleProcessRestarted) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LifecycleProcessRestarted.ProtoReflect.Descriptor instead.
+func (*LifecycleProcessRestarted) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *LifecycleProcessRestarted) GetAttempt() uint32 {
+	if x != nil {
+		return x.Attempt
+	}
+	return 0
+}
+
+func (x *LifecycleProcessRestarted) GetPreviousExitCode() int32 {
+	if x != nil {
+		return x.PreviousExitCode
+	}
+	return 0
+}
+
+func (x *LifecycleProcessRestarted) GetReason() RestartReason {
+	if x != nil {
+		return x.Reason
+	}
+	return RestartReason_RESTART_REASON_UNSPECIFIED
+}
+
+func (x *LifecycleProcessRestarted) GetCommandName() string {
+	if x != nil {
+		return x.CommandName
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.ListDirectoryRequest (var: LPr)
+type ListDirectoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	IncludeHidden bool                   `protobuf:"varint,2,opt,name=include_hidden,json=includeHidden,proto3" json:"include_hidden,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDirectoryRequest) Reset() {
+	*x = ListDirectoryRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDirectoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDirectoryRequest) ProtoMessage() {}
+
+func (x *ListDirectoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDirectoryRequest.ProtoReflect.Descriptor instead.
+func (*ListDirectoryRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *ListDirectoryRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *ListDirectoryRequest) GetIncludeHidden() bool {
+	if x != nil {
+		return x.IncludeHidden
+	}
+	return false
+}
+
+// Copied from: local:anyrun.v1.ListDirectoryResponse (var: APr)
+type ListDirectoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Entries       []*DirectoryEntry      `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListDirectoryResponse) Reset() {
+	*x = ListDirectoryResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListDirectoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListDirectoryResponse) ProtoMessage() {}
+
+func (x *ListDirectoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListDirectoryResponse.ProtoReflect.Descriptor instead.
+func (*ListDirectoryResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *ListDirectoryResponse) GetEntries() []*DirectoryEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ListProcessesRequest (var: xPr)
+type ListProcessesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProcessesRequest) Reset() {
+	*x = ListProcessesRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProcessesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProcessesRequest) ProtoMessage() {}
+
+func (x *ListProcessesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProcessesRequest.ProtoReflect.Descriptor instead.
+func (*ListProcessesRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{61}
+}
+
+// Copied from: local:anyrun.v1.ListProcessesResponse (var: NPr)
+type ListProcessesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Processes     []*ListedProcess       `protobuf:"bytes,1,rep,name=processes,proto3" json:"processes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProcessesResponse) Reset() {
+	*x = ListProcessesResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProcessesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProcessesResponse) ProtoMessage() {}
+
+func (x *ListProcessesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProcessesResponse.ProtoReflect.Descriptor instead.
+func (*ListProcessesResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ListProcessesResponse) GetProcesses() []*ListedProcess {
+	if x != nil {
+		return x.Processes
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ListedProcess (var: _Kt)
+type ListedProcess struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Pid           int64                     `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	Status        *GetProcessStatusResponse `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListedProcess) Reset() {
+	*x = ListedProcess{}
+	mi := &file_anyrun_v1_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListedProcess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListedProcess) ProtoMessage() {}
+
+func (x *ListedProcess) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListedProcess.ProtoReflect.Descriptor instead.
+func (*ListedProcess) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *ListedProcess) GetPid() int64 {
+	if x != nil {
+		return x.Pid
+	}
+	return 0
+}
+
+func (x *ListedProcess) GetStatus() *GetProcessStatusResponse {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.LocalDirectoryReference (var: ljt)
 type LocalDirectoryReference struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
@@ -2363,7 +5801,7 @@ type LocalDirectoryReference struct {
 
 func (x *LocalDirectoryReference) Reset() {
 	*x = LocalDirectoryReference{}
-	mi := &file_anyrun_v1_proto_msgTypes[24]
+	mi := &file_anyrun_v1_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2375,7 +5813,7 @@ func (x *LocalDirectoryReference) String() string {
 func (*LocalDirectoryReference) ProtoMessage() {}
 
 func (x *LocalDirectoryReference) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[24]
+	mi := &file_anyrun_v1_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2388,7 +5826,7 @@ func (x *LocalDirectoryReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalDirectoryReference.ProtoReflect.Descriptor instead.
 func (*LocalDirectoryReference) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{24}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *LocalDirectoryReference) GetPath() string {
@@ -2398,7 +5836,236 @@ func (x *LocalDirectoryReference) GetPath() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.NoopSourceReference (var: mes, class: Bce)
+// Copied from: local:anyrun.v1.MultiSourceEntry (var: djt)
+type MultiSourceEntry struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	RelativePath string                 `protobuf:"bytes,1,opt,name=relative_path,json=relativePath,proto3" json:"relative_path,omitempty"`
+	// Types that are valid to be assigned to Source:
+	//
+	//	*MultiSourceEntry_Git
+	//	*MultiSourceEntry_Tar
+	//	*MultiSourceEntry_Local
+	//	*MultiSourceEntry_TarGzipUrl
+	//	*MultiSourceEntry_Noop
+	Source        isMultiSourceEntry_Source `protobuf_oneof:"source"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MultiSourceEntry) Reset() {
+	*x = MultiSourceEntry{}
+	mi := &file_anyrun_v1_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MultiSourceEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MultiSourceEntry) ProtoMessage() {}
+
+func (x *MultiSourceEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MultiSourceEntry.ProtoReflect.Descriptor instead.
+func (*MultiSourceEntry) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *MultiSourceEntry) GetRelativePath() string {
+	if x != nil {
+		return x.RelativePath
+	}
+	return ""
+}
+
+func (x *MultiSourceEntry) GetSource() isMultiSourceEntry_Source {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *MultiSourceEntry) GetGit() *GitRepoSourceReference {
+	if x != nil {
+		if x, ok := x.Source.(*MultiSourceEntry_Git); ok {
+			return x.Git
+		}
+	}
+	return nil
+}
+
+func (x *MultiSourceEntry) GetTar() *TarRepoSourceReference {
+	if x != nil {
+		if x, ok := x.Source.(*MultiSourceEntry_Tar); ok {
+			return x.Tar
+		}
+	}
+	return nil
+}
+
+func (x *MultiSourceEntry) GetLocal() *LocalDirectoryReference {
+	if x != nil {
+		if x, ok := x.Source.(*MultiSourceEntry_Local); ok {
+			return x.Local
+		}
+	}
+	return nil
+}
+
+func (x *MultiSourceEntry) GetTarGzipUrl() *TarGzipUrlSourceReference {
+	if x != nil {
+		if x, ok := x.Source.(*MultiSourceEntry_TarGzipUrl); ok {
+			return x.TarGzipUrl
+		}
+	}
+	return nil
+}
+
+func (x *MultiSourceEntry) GetNoop() *NoopSourceReference {
+	if x != nil {
+		if x, ok := x.Source.(*MultiSourceEntry_Noop); ok {
+			return x.Noop
+		}
+	}
+	return nil
+}
+
+type isMultiSourceEntry_Source interface {
+	isMultiSourceEntry_Source()
+}
+
+type MultiSourceEntry_Git struct {
+	Git *GitRepoSourceReference `protobuf:"bytes,2,opt,name=git,proto3,oneof"`
+}
+
+type MultiSourceEntry_Tar struct {
+	Tar *TarRepoSourceReference `protobuf:"bytes,3,opt,name=tar,proto3,oneof"`
+}
+
+type MultiSourceEntry_Local struct {
+	Local *LocalDirectoryReference `protobuf:"bytes,4,opt,name=local,proto3,oneof"`
+}
+
+type MultiSourceEntry_TarGzipUrl struct {
+	TarGzipUrl *TarGzipUrlSourceReference `protobuf:"bytes,5,opt,name=tar_gzip_url,json=tarGzipUrl,proto3,oneof"`
+}
+
+type MultiSourceEntry_Noop struct {
+	Noop *NoopSourceReference `protobuf:"bytes,6,opt,name=noop,proto3,oneof"`
+}
+
+func (*MultiSourceEntry_Git) isMultiSourceEntry_Source() {}
+
+func (*MultiSourceEntry_Tar) isMultiSourceEntry_Source() {}
+
+func (*MultiSourceEntry_Local) isMultiSourceEntry_Source() {}
+
+func (*MultiSourceEntry_TarGzipUrl) isMultiSourceEntry_Source() {}
+
+func (*MultiSourceEntry_Noop) isMultiSourceEntry_Source() {}
+
+// Copied from: local:anyrun.v1.MultiSourceReference (var: fjt)
+type MultiSourceReference struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sources       []*MultiSourceEntry    `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MultiSourceReference) Reset() {
+	*x = MultiSourceReference{}
+	mi := &file_anyrun_v1_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MultiSourceReference) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MultiSourceReference) ProtoMessage() {}
+
+func (x *MultiSourceReference) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MultiSourceReference.ProtoReflect.Descriptor instead.
+func (*MultiSourceReference) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *MultiSourceReference) GetSources() []*MultiSourceEntry {
+	if x != nil {
+		return x.Sources
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.NetworkInfo (var: Qjt)
+type NetworkInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IpAddress     string                 `protobuf:"bytes,1,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NetworkInfo) Reset() {
+	*x = NetworkInfo{}
+	mi := &file_anyrun_v1_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NetworkInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NetworkInfo) ProtoMessage() {}
+
+func (x *NetworkInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NetworkInfo.ProtoReflect.Descriptor instead.
+func (*NetworkInfo) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *NetworkInfo) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.NoopSourceReference (var: mjt)
 type NoopSourceReference struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -2407,7 +6074,7 @@ type NoopSourceReference struct {
 
 func (x *NoopSourceReference) Reset() {
 	*x = NoopSourceReference{}
-	mi := &file_anyrun_v1_proto_msgTypes[25]
+	mi := &file_anyrun_v1_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2419,7 +6086,7 @@ func (x *NoopSourceReference) String() string {
 func (*NoopSourceReference) ProtoMessage() {}
 
 func (x *NoopSourceReference) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[25]
+	mi := &file_anyrun_v1_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2432,27 +6099,31 @@ func (x *NoopSourceReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoopSourceReference.ProtoReflect.Descriptor instead.
 func (*NoopSourceReference) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{25}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{68}
 }
 
-// Copied from: local:anyrun.v1.PersistedDevContainerConfig (var: Dje, class: zce)
+// Copied from: local:anyrun.v1.PersistedDevContainerConfig (var: Gjt)
 type PersistedDevContainerConfig struct {
-	state           protoimpl.MessageState     `protogen:"open.v1"`
-	PrepareCommands []*DevContainerExecCommand `protobuf:"bytes,10,rep,name=prepare_commands,json=prepareCommands,proto3" json:"prepare_commands,omitempty"`
-	InstallCommands []*DevContainerExecCommand `protobuf:"bytes,11,rep,name=install_commands,json=installCommands,proto3" json:"install_commands,omitempty"`
-	VerifyCommands  []*DevContainerExecCommand `protobuf:"bytes,19,rep,name=verify_commands,json=verifyCommands,proto3" json:"verify_commands,omitempty"`
-	StartCommands   []*DevContainerExecCommand `protobuf:"bytes,12,rep,name=start_commands,json=startCommands,proto3" json:"start_commands,omitempty"`
-	Env             []*PersistedEnvVar         `protobuf:"bytes,13,rep,name=env,proto3" json:"env,omitempty"`
-	Ports           []*PortDefinition          `protobuf:"bytes,14,rep,name=ports,proto3" json:"ports,omitempty"`
-	Shell           string                     `protobuf:"bytes,15,opt,name=shell,proto3" json:"shell,omitempty"`
-	User            *string                    `protobuf:"bytes,16,opt,name=user,proto3,oneof" json:"user,omitempty"`
-	Privileged      *bool                      `protobuf:"varint,17,opt,name=privileged,proto3,oneof" json:"privileged,omitempty"`
+	state                        protoimpl.MessageState     `protogen:"open.v1"`
+	PrepareCommands              []*DevContainerExecCommand `protobuf:"bytes,10,rep,name=prepare_commands,json=prepareCommands,proto3" json:"prepare_commands,omitempty"`
+	InstallCommands              []*DevContainerExecCommand `protobuf:"bytes,11,rep,name=install_commands,json=installCommands,proto3" json:"install_commands,omitempty"`
+	VerifyCommands               []*DevContainerExecCommand `protobuf:"bytes,19,rep,name=verify_commands,json=verifyCommands,proto3" json:"verify_commands,omitempty"`
+	StartCommands                []*DevContainerExecCommand `protobuf:"bytes,12,rep,name=start_commands,json=startCommands,proto3" json:"start_commands,omitempty"`
+	Env                          []*PersistedEnvVar         `protobuf:"bytes,13,rep,name=env,proto3" json:"env,omitempty"`
+	Ports                        []*PortDefinition          `protobuf:"bytes,14,rep,name=ports,proto3" json:"ports,omitempty"`
+	Shell                        string                     `protobuf:"bytes,15,opt,name=shell,proto3" json:"shell,omitempty"`
+	User                         *string                    `protobuf:"bytes,16,opt,name=user,proto3,oneof" json:"user,omitempty"`
+	Privileged                   *bool                      `protobuf:"varint,17,opt,name=privileged,proto3,oneof" json:"privileged,omitempty"`
+	BuildContainer               *bool                      `protobuf:"varint,22,opt,name=build_container,json=buildContainer,proto3,oneof" json:"build_container,omitempty"`
+	EnableCheckpointScratchDrive *bool                      `protobuf:"varint,25,opt,name=enable_checkpoint_scratch_drive,json=enableCheckpointScratchDrive,proto3,oneof" json:"enable_checkpoint_scratch_drive,omitempty"`
 	// Types that are valid to be assigned to Image:
 	//
 	//	*PersistedDevContainerConfig_RegistryReference
 	//	*PersistedDevContainerConfig_Build
 	//	*PersistedDevContainerConfig_SnapshotId
 	//	*PersistedDevContainerConfig_ExternalSnapshot
+	//	*PersistedDevContainerConfig_CheckpointGroupId
+	//	*PersistedDevContainerConfig_RegistryReferenceAlias
 	Image isPersistedDevContainerConfig_Image `protobuf_oneof:"image"`
 	// Types that are valid to be assigned to Source:
 	//
@@ -2461,6 +6132,7 @@ type PersistedDevContainerConfig struct {
 	//	*PersistedDevContainerConfig_Local
 	//	*PersistedDevContainerConfig_TarGzipUrl
 	//	*PersistedDevContainerConfig_Noop
+	//	*PersistedDevContainerConfig_Multi
 	Source isPersistedDevContainerConfig_Source `protobuf_oneof:"source"`
 	// Types that are valid to be assigned to Workspace:
 	//
@@ -2473,7 +6145,7 @@ type PersistedDevContainerConfig struct {
 
 func (x *PersistedDevContainerConfig) Reset() {
 	*x = PersistedDevContainerConfig{}
-	mi := &file_anyrun_v1_proto_msgTypes[26]
+	mi := &file_anyrun_v1_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2485,7 +6157,7 @@ func (x *PersistedDevContainerConfig) String() string {
 func (*PersistedDevContainerConfig) ProtoMessage() {}
 
 func (x *PersistedDevContainerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[26]
+	mi := &file_anyrun_v1_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2498,7 +6170,7 @@ func (x *PersistedDevContainerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedDevContainerConfig.ProtoReflect.Descriptor instead.
 func (*PersistedDevContainerConfig) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{26}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *PersistedDevContainerConfig) GetPrepareCommands() []*DevContainerExecCommand {
@@ -2564,6 +6236,20 @@ func (x *PersistedDevContainerConfig) GetPrivileged() bool {
 	return false
 }
 
+func (x *PersistedDevContainerConfig) GetBuildContainer() bool {
+	if x != nil && x.BuildContainer != nil {
+		return *x.BuildContainer
+	}
+	return false
+}
+
+func (x *PersistedDevContainerConfig) GetEnableCheckpointScratchDrive() bool {
+	if x != nil && x.EnableCheckpointScratchDrive != nil {
+		return *x.EnableCheckpointScratchDrive
+	}
+	return false
+}
+
 func (x *PersistedDevContainerConfig) GetImage() isPersistedDevContainerConfig_Image {
 	if x != nil {
 		return x.Image
@@ -2605,6 +6291,24 @@ func (x *PersistedDevContainerConfig) GetExternalSnapshot() *PersistedExternalSn
 		}
 	}
 	return nil
+}
+
+func (x *PersistedDevContainerConfig) GetCheckpointGroupId() string {
+	if x != nil {
+		if x, ok := x.Image.(*PersistedDevContainerConfig_CheckpointGroupId); ok {
+			return x.CheckpointGroupId
+		}
+	}
+	return ""
+}
+
+func (x *PersistedDevContainerConfig) GetRegistryReferenceAlias() DevContainerConfig_RegistryReferenceAlias {
+	if x != nil {
+		if x, ok := x.Image.(*PersistedDevContainerConfig_RegistryReferenceAlias); ok {
+			return x.RegistryReferenceAlias
+		}
+	}
+	return DevContainerConfig_REGISTRY_REFERENCE_ALIAS_UNSPECIFIED
 }
 
 func (x *PersistedDevContainerConfig) GetSource() isPersistedDevContainerConfig_Source {
@@ -2659,6 +6363,15 @@ func (x *PersistedDevContainerConfig) GetNoop() *PersistedNoopSource {
 	return nil
 }
 
+func (x *PersistedDevContainerConfig) GetMulti() *PersistedMultiSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedDevContainerConfig_Multi); ok {
+			return x.Multi
+		}
+	}
+	return nil
+}
+
 func (x *PersistedDevContainerConfig) GetWorkspace() isPersistedDevContainerConfig_Workspace {
 	if x != nil {
 		return x.Workspace
@@ -2704,6 +6417,14 @@ type PersistedDevContainerConfig_ExternalSnapshot struct {
 	ExternalSnapshot *PersistedExternalSnapshot `protobuf:"bytes,20,opt,name=external_snapshot,json=externalSnapshot,proto3,oneof"`
 }
 
+type PersistedDevContainerConfig_CheckpointGroupId struct {
+	CheckpointGroupId string `protobuf:"bytes,21,opt,name=checkpoint_group_id,json=checkpointGroupId,proto3,oneof"`
+}
+
+type PersistedDevContainerConfig_RegistryReferenceAlias struct {
+	RegistryReferenceAlias DevContainerConfig_RegistryReferenceAlias `protobuf:"varint,24,opt,name=registry_reference_alias,json=registryReferenceAlias,proto3,enum=anyrun.v1.DevContainerConfig_RegistryReferenceAlias,oneof"`
+}
+
 func (*PersistedDevContainerConfig_RegistryReference) isPersistedDevContainerConfig_Image() {}
 
 func (*PersistedDevContainerConfig_Build) isPersistedDevContainerConfig_Image() {}
@@ -2711,6 +6432,10 @@ func (*PersistedDevContainerConfig_Build) isPersistedDevContainerConfig_Image() 
 func (*PersistedDevContainerConfig_SnapshotId) isPersistedDevContainerConfig_Image() {}
 
 func (*PersistedDevContainerConfig_ExternalSnapshot) isPersistedDevContainerConfig_Image() {}
+
+func (*PersistedDevContainerConfig_CheckpointGroupId) isPersistedDevContainerConfig_Image() {}
+
+func (*PersistedDevContainerConfig_RegistryReferenceAlias) isPersistedDevContainerConfig_Image() {}
 
 type isPersistedDevContainerConfig_Source interface {
 	isPersistedDevContainerConfig_Source()
@@ -2736,6 +6461,10 @@ type PersistedDevContainerConfig_Noop struct {
 	Noop *PersistedNoopSource `protobuf:"bytes,18,opt,name=noop,proto3,oneof"`
 }
 
+type PersistedDevContainerConfig_Multi struct {
+	Multi *PersistedMultiSource `protobuf:"bytes,23,opt,name=multi,proto3,oneof"`
+}
+
 func (*PersistedDevContainerConfig_Git) isPersistedDevContainerConfig_Source() {}
 
 func (*PersistedDevContainerConfig_Tar) isPersistedDevContainerConfig_Source() {}
@@ -2745,6 +6474,8 @@ func (*PersistedDevContainerConfig_Local) isPersistedDevContainerConfig_Source()
 func (*PersistedDevContainerConfig_TarGzipUrl) isPersistedDevContainerConfig_Source() {}
 
 func (*PersistedDevContainerConfig_Noop) isPersistedDevContainerConfig_Source() {}
+
+func (*PersistedDevContainerConfig_Multi) isPersistedDevContainerConfig_Source() {}
 
 type isPersistedDevContainerConfig_Workspace interface {
 	isPersistedDevContainerConfig_Workspace()
@@ -2762,7 +6493,7 @@ func (*PersistedDevContainerConfig_WorkspacePath) isPersistedDevContainerConfig_
 
 func (*PersistedDevContainerConfig_WorkdirRelativePath) isPersistedDevContainerConfig_Workspace() {}
 
-// Copied from: local:anyrun.v1.PersistedEnvVar (var: Tes, class: Vce)
+// Copied from: local:anyrun.v1.PersistedEnvVar (var: Mjt)
 type PersistedEnvVar struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -2773,7 +6504,7 @@ type PersistedEnvVar struct {
 
 func (x *PersistedEnvVar) Reset() {
 	*x = PersistedEnvVar{}
-	mi := &file_anyrun_v1_proto_msgTypes[27]
+	mi := &file_anyrun_v1_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2785,7 +6516,7 @@ func (x *PersistedEnvVar) String() string {
 func (*PersistedEnvVar) ProtoMessage() {}
 
 func (x *PersistedEnvVar) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[27]
+	mi := &file_anyrun_v1_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2798,7 +6529,7 @@ func (x *PersistedEnvVar) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedEnvVar.ProtoReflect.Descriptor instead.
 func (*PersistedEnvVar) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{27}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *PersistedEnvVar) GetName() string {
@@ -2815,7 +6546,7 @@ func (x *PersistedEnvVar) GetValue() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PersistedExternalSnapshot (var: Ses, class: Wce)
+// Copied from: local:anyrun.v1.PersistedExternalSnapshot (var: Ujt)
 type PersistedExternalSnapshot struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SnapshotId    string                 `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
@@ -2825,7 +6556,7 @@ type PersistedExternalSnapshot struct {
 
 func (x *PersistedExternalSnapshot) Reset() {
 	*x = PersistedExternalSnapshot{}
-	mi := &file_anyrun_v1_proto_msgTypes[28]
+	mi := &file_anyrun_v1_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2837,7 +6568,7 @@ func (x *PersistedExternalSnapshot) String() string {
 func (*PersistedExternalSnapshot) ProtoMessage() {}
 
 func (x *PersistedExternalSnapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[28]
+	mi := &file_anyrun_v1_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2850,7 +6581,7 @@ func (x *PersistedExternalSnapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedExternalSnapshot.ProtoReflect.Descriptor instead.
 func (*PersistedExternalSnapshot) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{28}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *PersistedExternalSnapshot) GetSnapshotId() string {
@@ -2860,7 +6591,7 @@ func (x *PersistedExternalSnapshot) GetSnapshotId() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PersistedGitRepoSource (var: pes, class: Uce)
+// Copied from: local:anyrun.v1.PersistedGitRepoSource (var: Njt)
 type PersistedGitRepoSource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CacheUri      string                 `protobuf:"bytes,1,opt,name=cache_uri,json=cacheUri,proto3" json:"cache_uri,omitempty"`
@@ -2871,7 +6602,7 @@ type PersistedGitRepoSource struct {
 
 func (x *PersistedGitRepoSource) Reset() {
 	*x = PersistedGitRepoSource{}
-	mi := &file_anyrun_v1_proto_msgTypes[29]
+	mi := &file_anyrun_v1_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2883,7 +6614,7 @@ func (x *PersistedGitRepoSource) String() string {
 func (*PersistedGitRepoSource) ProtoMessage() {}
 
 func (x *PersistedGitRepoSource) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[29]
+	mi := &file_anyrun_v1_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2896,7 +6627,7 @@ func (x *PersistedGitRepoSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedGitRepoSource.ProtoReflect.Descriptor instead.
 func (*PersistedGitRepoSource) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{29}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *PersistedGitRepoSource) GetCacheUri() string {
@@ -2913,7 +6644,7 @@ func (x *PersistedGitRepoSource) GetCommitHash() []byte {
 	return nil
 }
 
-// Copied from: local:anyrun.v1.PersistedLocalRepoSource (var: ves, class: Gce)
+// Copied from: local:anyrun.v1.PersistedLocalRepoSource (var: Ljt)
 type PersistedLocalRepoSource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
@@ -2923,7 +6654,7 @@ type PersistedLocalRepoSource struct {
 
 func (x *PersistedLocalRepoSource) Reset() {
 	*x = PersistedLocalRepoSource{}
-	mi := &file_anyrun_v1_proto_msgTypes[30]
+	mi := &file_anyrun_v1_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2935,7 +6666,7 @@ func (x *PersistedLocalRepoSource) String() string {
 func (*PersistedLocalRepoSource) ProtoMessage() {}
 
 func (x *PersistedLocalRepoSource) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[30]
+	mi := &file_anyrun_v1_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2948,7 +6679,7 @@ func (x *PersistedLocalRepoSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedLocalRepoSource.ProtoReflect.Descriptor instead.
 func (*PersistedLocalRepoSource) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{30}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *PersistedLocalRepoSource) GetPath() string {
@@ -2958,7 +6689,191 @@ func (x *PersistedLocalRepoSource) GetPath() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PersistedNoopSource (var: yes, class: $ce)
+// Copied from: local:anyrun.v1.PersistedMultiSource (var: Ojt)
+type PersistedMultiSource struct {
+	state         protoimpl.MessageState       `protogen:"open.v1"`
+	Sources       []*PersistedMultiSourceEntry `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PersistedMultiSource) Reset() {
+	*x = PersistedMultiSource{}
+	mi := &file_anyrun_v1_proto_msgTypes[74]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PersistedMultiSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PersistedMultiSource) ProtoMessage() {}
+
+func (x *PersistedMultiSource) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[74]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PersistedMultiSource.ProtoReflect.Descriptor instead.
+func (*PersistedMultiSource) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{74}
+}
+
+func (x *PersistedMultiSource) GetSources() []*PersistedMultiSourceEntry {
+	if x != nil {
+		return x.Sources
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.PersistedMultiSourceEntry (var: Fjt)
+type PersistedMultiSourceEntry struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	RelativePath string                 `protobuf:"bytes,1,opt,name=relative_path,json=relativePath,proto3" json:"relative_path,omitempty"`
+	// Types that are valid to be assigned to Source:
+	//
+	//	*PersistedMultiSourceEntry_Git
+	//	*PersistedMultiSourceEntry_Tar
+	//	*PersistedMultiSourceEntry_Local
+	//	*PersistedMultiSourceEntry_TarGzipUrl
+	//	*PersistedMultiSourceEntry_Noop
+	Source        isPersistedMultiSourceEntry_Source `protobuf_oneof:"source"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PersistedMultiSourceEntry) Reset() {
+	*x = PersistedMultiSourceEntry{}
+	mi := &file_anyrun_v1_proto_msgTypes[75]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PersistedMultiSourceEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PersistedMultiSourceEntry) ProtoMessage() {}
+
+func (x *PersistedMultiSourceEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[75]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PersistedMultiSourceEntry.ProtoReflect.Descriptor instead.
+func (*PersistedMultiSourceEntry) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *PersistedMultiSourceEntry) GetRelativePath() string {
+	if x != nil {
+		return x.RelativePath
+	}
+	return ""
+}
+
+func (x *PersistedMultiSourceEntry) GetSource() isPersistedMultiSourceEntry_Source {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *PersistedMultiSourceEntry) GetGit() *PersistedGitRepoSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedMultiSourceEntry_Git); ok {
+			return x.Git
+		}
+	}
+	return nil
+}
+
+func (x *PersistedMultiSourceEntry) GetTar() *PersistedTarRepoSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedMultiSourceEntry_Tar); ok {
+			return x.Tar
+		}
+	}
+	return nil
+}
+
+func (x *PersistedMultiSourceEntry) GetLocal() *PersistedLocalRepoSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedMultiSourceEntry_Local); ok {
+			return x.Local
+		}
+	}
+	return nil
+}
+
+func (x *PersistedMultiSourceEntry) GetTarGzipUrl() *PersistedTarGzipUrlSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedMultiSourceEntry_TarGzipUrl); ok {
+			return x.TarGzipUrl
+		}
+	}
+	return nil
+}
+
+func (x *PersistedMultiSourceEntry) GetNoop() *PersistedNoopSource {
+	if x != nil {
+		if x, ok := x.Source.(*PersistedMultiSourceEntry_Noop); ok {
+			return x.Noop
+		}
+	}
+	return nil
+}
+
+type isPersistedMultiSourceEntry_Source interface {
+	isPersistedMultiSourceEntry_Source()
+}
+
+type PersistedMultiSourceEntry_Git struct {
+	Git *PersistedGitRepoSource `protobuf:"bytes,2,opt,name=git,proto3,oneof"`
+}
+
+type PersistedMultiSourceEntry_Tar struct {
+	Tar *PersistedTarRepoSource `protobuf:"bytes,3,opt,name=tar,proto3,oneof"`
+}
+
+type PersistedMultiSourceEntry_Local struct {
+	Local *PersistedLocalRepoSource `protobuf:"bytes,4,opt,name=local,proto3,oneof"`
+}
+
+type PersistedMultiSourceEntry_TarGzipUrl struct {
+	TarGzipUrl *PersistedTarGzipUrlSource `protobuf:"bytes,5,opt,name=tar_gzip_url,json=tarGzipUrl,proto3,oneof"`
+}
+
+type PersistedMultiSourceEntry_Noop struct {
+	Noop *PersistedNoopSource `protobuf:"bytes,6,opt,name=noop,proto3,oneof"`
+}
+
+func (*PersistedMultiSourceEntry_Git) isPersistedMultiSourceEntry_Source() {}
+
+func (*PersistedMultiSourceEntry_Tar) isPersistedMultiSourceEntry_Source() {}
+
+func (*PersistedMultiSourceEntry_Local) isPersistedMultiSourceEntry_Source() {}
+
+func (*PersistedMultiSourceEntry_TarGzipUrl) isPersistedMultiSourceEntry_Source() {}
+
+func (*PersistedMultiSourceEntry_Noop) isPersistedMultiSourceEntry_Source() {}
+
+// Copied from: local:anyrun.v1.PersistedNoopSource (var: Djt)
 type PersistedNoopSource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -2967,7 +6882,7 @@ type PersistedNoopSource struct {
 
 func (x *PersistedNoopSource) Reset() {
 	*x = PersistedNoopSource{}
-	mi := &file_anyrun_v1_proto_msgTypes[31]
+	mi := &file_anyrun_v1_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2979,7 +6894,7 @@ func (x *PersistedNoopSource) String() string {
 func (*PersistedNoopSource) ProtoMessage() {}
 
 func (x *PersistedNoopSource) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[31]
+	mi := &file_anyrun_v1_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2992,10 +6907,10 @@ func (x *PersistedNoopSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedNoopSource.ProtoReflect.Descriptor instead.
 func (*PersistedNoopSource) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{31}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{76}
 }
 
-// Copied from: local:anyrun.v1.PersistedTarGzipUrlSource (var: wes, class: Hce)
+// Copied from: local:anyrun.v1.PersistedTarGzipUrlSource (var: Ajt)
 type PersistedTarGzipUrlSource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -3005,7 +6920,7 @@ type PersistedTarGzipUrlSource struct {
 
 func (x *PersistedTarGzipUrlSource) Reset() {
 	*x = PersistedTarGzipUrlSource{}
-	mi := &file_anyrun_v1_proto_msgTypes[32]
+	mi := &file_anyrun_v1_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3017,7 +6932,7 @@ func (x *PersistedTarGzipUrlSource) String() string {
 func (*PersistedTarGzipUrlSource) ProtoMessage() {}
 
 func (x *PersistedTarGzipUrlSource) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[32]
+	mi := &file_anyrun_v1_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3030,7 +6945,7 @@ func (x *PersistedTarGzipUrlSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedTarGzipUrlSource.ProtoReflect.Descriptor instead.
 func (*PersistedTarGzipUrlSource) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{32}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *PersistedTarGzipUrlSource) GetName() string {
@@ -3040,7 +6955,7 @@ func (x *PersistedTarGzipUrlSource) GetName() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PersistedTarRepoSource (var: ges, class: Mce)
+// Copied from: local:anyrun.v1.PersistedTarRepoSource (var: Bjt)
 type PersistedTarRepoSource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -3050,7 +6965,7 @@ type PersistedTarRepoSource struct {
 
 func (x *PersistedTarRepoSource) Reset() {
 	*x = PersistedTarRepoSource{}
-	mi := &file_anyrun_v1_proto_msgTypes[33]
+	mi := &file_anyrun_v1_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3062,7 +6977,7 @@ func (x *PersistedTarRepoSource) String() string {
 func (*PersistedTarRepoSource) ProtoMessage() {}
 
 func (x *PersistedTarRepoSource) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[33]
+	mi := &file_anyrun_v1_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3075,7 +6990,7 @@ func (x *PersistedTarRepoSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PersistedTarRepoSource.ProtoReflect.Descriptor instead.
 func (*PersistedTarRepoSource) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{33}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *PersistedTarRepoSource) GetName() string {
@@ -3085,38 +7000,44 @@ func (x *PersistedTarRepoSource) GetName() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.Pod (var: HPe, class: Qce)
+// Copied from: local:anyrun.v1.Pod (var: nYt)
 type Pod struct {
-	state                      protoimpl.MessageState       `protogen:"open.v1"`
-	TenantId                   string                       `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
-	PodId                      string                       `protobuf:"bytes,2,opt,name=pod_id,json=podId,proto3" json:"pod_id,omitempty"`
-	ResourceVersion            uint32                       `protobuf:"varint,9,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
-	Name                       string                       `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
-	Labels                     map[string]string            `protobuf:"bytes,11,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	CreationTimestamp          uint64                       `protobuf:"varint,12,opt,name=creation_timestamp,json=creationTimestamp,proto3" json:"creation_timestamp,omitempty"`
-	DeletionTimestamp          *uint64                      `protobuf:"varint,13,opt,name=deletion_timestamp,json=deletionTimestamp,proto3,oneof" json:"deletion_timestamp,omitempty"`
-	HibernationTimestamp       *uint64                      `protobuf:"varint,14,opt,name=hibernation_timestamp,json=hibernationTimestamp,proto3,oneof" json:"hibernation_timestamp,omitempty"`
-	ResourceRequests           *ResourceRequests            `protobuf:"bytes,4,opt,name=resource_requests,json=resourceRequests,proto3" json:"resource_requests,omitempty"`
-	HibernatedResourceRequests *ResourceRequests            `protobuf:"bytes,20,opt,name=hibernated_resource_requests,json=hibernatedResourceRequests,proto3" json:"hibernated_resource_requests,omitempty"`
-	ResourceLimits             *ResourceLimits              `protobuf:"bytes,17,opt,name=resource_limits,json=resourceLimits,proto3,oneof" json:"resource_limits,omitempty"`
-	Cache                      *bool                        `protobuf:"varint,18,opt,name=cache,proto3,oneof" json:"cache,omitempty"`
-	CacheTag                   *string                      `protobuf:"bytes,19,opt,name=cache_tag,json=cacheTag,proto3,oneof" json:"cache_tag,omitempty"`
-	Workload                   string                       `protobuf:"bytes,21,opt,name=workload,proto3" json:"workload,omitempty"`
-	NodeId                     string                       `protobuf:"bytes,5,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
-	Hibernated                 *bool                        `protobuf:"varint,15,opt,name=hibernated,proto3,oneof" json:"hibernated,omitempty"`
-	NetworkToken               string                       `protobuf:"bytes,7,opt,name=network_token,json=networkToken,proto3" json:"network_token,omitempty"`
-	Status                     *PodStatus                   `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
-	Ports                      *PodPorts                    `protobuf:"bytes,6,opt,name=ports,proto3" json:"ports,omitempty"`
-	InternalProxyPort          *uint32                      `protobuf:"varint,22,opt,name=internal_proxy_port,json=internalProxyPort,proto3,oneof" json:"internal_proxy_port,omitempty"`
-	Config                     *PersistedDevContainerConfig `protobuf:"bytes,16,opt,name=config,proto3,oneof" json:"config,omitempty"`
-	ModifiedTimestamp          *uint64                      `protobuf:"varint,23,opt,name=modified_timestamp,json=modifiedTimestamp,proto3,oneof" json:"modified_timestamp,omitempty"`
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
+	state                                  protoimpl.MessageState       `protogen:"open.v1"`
+	TenantId                               string                       `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	PodId                                  string                       `protobuf:"bytes,2,opt,name=pod_id,json=podId,proto3" json:"pod_id,omitempty"`
+	ResourceVersion                        uint32                       `protobuf:"varint,9,opt,name=resource_version,json=resourceVersion,proto3" json:"resource_version,omitempty"`
+	Name                                   string                       `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
+	Labels                                 map[string]string            `protobuf:"bytes,11,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	CreationTimestamp                      uint64                       `protobuf:"varint,12,opt,name=creation_timestamp,json=creationTimestamp,proto3" json:"creation_timestamp,omitempty"`
+	DeletionTimestamp                      *uint64                      `protobuf:"varint,13,opt,name=deletion_timestamp,json=deletionTimestamp,proto3,oneof" json:"deletion_timestamp,omitempty"`
+	HibernationTimestamp                   *uint64                      `protobuf:"varint,14,opt,name=hibernation_timestamp,json=hibernationTimestamp,proto3,oneof" json:"hibernation_timestamp,omitempty"`
+	ResourceRequests                       *ResourceRequests            `protobuf:"bytes,4,opt,name=resource_requests,json=resourceRequests,proto3" json:"resource_requests,omitempty"`
+	HibernatedResourceRequests             *ResourceRequests            `protobuf:"bytes,20,opt,name=hibernated_resource_requests,json=hibernatedResourceRequests,proto3" json:"hibernated_resource_requests,omitempty"`
+	ResourceLimits                         *ResourceLimits              `protobuf:"bytes,17,opt,name=resource_limits,json=resourceLimits,proto3,oneof" json:"resource_limits,omitempty"`
+	Cache                                  *bool                        `protobuf:"varint,18,opt,name=cache,proto3,oneof" json:"cache,omitempty"`
+	CacheTag                               *string                      `protobuf:"bytes,19,opt,name=cache_tag,json=cacheTag,proto3,oneof" json:"cache_tag,omitempty"`
+	Workload                               string                       `protobuf:"bytes,21,opt,name=workload,proto3" json:"workload,omitempty"`
+	NodeId                                 string                       `protobuf:"bytes,5,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	Hibernated                             *bool                        `protobuf:"varint,15,opt,name=hibernated,proto3,oneof" json:"hibernated,omitempty"`
+	NetworkToken                           string                       `protobuf:"bytes,7,opt,name=network_token,json=networkToken,proto3" json:"network_token,omitempty"`
+	Status                                 *PodStatus                   `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
+	Ports                                  *PodPorts                    `protobuf:"bytes,6,opt,name=ports,proto3" json:"ports,omitempty"`
+	InternalProxyPort                      *uint32                      `protobuf:"varint,22,opt,name=internal_proxy_port,json=internalProxyPort,proto3,oneof" json:"internal_proxy_port,omitempty"`
+	Config                                 *PersistedDevContainerConfig `protobuf:"bytes,16,opt,name=config,proto3,oneof" json:"config,omitempty"`
+	ModifiedTimestamp                      *uint64                      `protobuf:"varint,23,opt,name=modified_timestamp,json=modifiedTimestamp,proto3,oneof" json:"modified_timestamp,omitempty"`
+	PodAwakeSince                          *uint64                      `protobuf:"varint,24,opt,name=pod_awake_since,json=podAwakeSince,proto3,oneof" json:"pod_awake_since,omitempty"`
+	LowCardinalityLabels                   []string                     `protobuf:"bytes,25,rep,name=low_cardinality_labels,json=lowCardinalityLabels,proto3" json:"low_cardinality_labels,omitempty"`
+	CheckpointGroupIds                     []string                     `protobuf:"bytes,26,rep,name=checkpoint_group_ids,json=checkpointGroupIds,proto3" json:"checkpoint_group_ids,omitempty"`
+	StartedFromCheckpointGroupId           *string                      `protobuf:"bytes,27,opt,name=started_from_checkpoint_group_id,json=startedFromCheckpointGroupId,proto3,oneof" json:"started_from_checkpoint_group_id,omitempty"`
+	StartedFromCacheSource                 *PodStartCacheSource         `protobuf:"varint,28,opt,name=started_from_cache_source,json=startedFromCacheSource,proto3,enum=anyrun.v1.PodStartCacheSource,oneof" json:"started_from_cache_source,omitempty"`
+	StartedFromCheckpointCreationTimestamp *uint64                      `protobuf:"varint,29,opt,name=started_from_checkpoint_creation_timestamp,json=startedFromCheckpointCreationTimestamp,proto3,oneof" json:"started_from_checkpoint_creation_timestamp,omitempty"`
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *Pod) Reset() {
 	*x = Pod{}
-	mi := &file_anyrun_v1_proto_msgTypes[34]
+	mi := &file_anyrun_v1_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3128,7 +7049,7 @@ func (x *Pod) String() string {
 func (*Pod) ProtoMessage() {}
 
 func (x *Pod) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[34]
+	mi := &file_anyrun_v1_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3141,7 +7062,7 @@ func (x *Pod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pod.ProtoReflect.Descriptor instead.
 func (*Pod) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{34}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *Pod) GetTenantId() string {
@@ -3298,7 +7219,142 @@ func (x *Pod) GetModifiedTimestamp() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.PodCollection (var: Res, class: Zce)
+func (x *Pod) GetPodAwakeSince() uint64 {
+	if x != nil && x.PodAwakeSince != nil {
+		return *x.PodAwakeSince
+	}
+	return 0
+}
+
+func (x *Pod) GetLowCardinalityLabels() []string {
+	if x != nil {
+		return x.LowCardinalityLabels
+	}
+	return nil
+}
+
+func (x *Pod) GetCheckpointGroupIds() []string {
+	if x != nil {
+		return x.CheckpointGroupIds
+	}
+	return nil
+}
+
+func (x *Pod) GetStartedFromCheckpointGroupId() string {
+	if x != nil && x.StartedFromCheckpointGroupId != nil {
+		return *x.StartedFromCheckpointGroupId
+	}
+	return ""
+}
+
+func (x *Pod) GetStartedFromCacheSource() PodStartCacheSource {
+	if x != nil && x.StartedFromCacheSource != nil {
+		return *x.StartedFromCacheSource
+	}
+	return PodStartCacheSource_POD_START_CACHE_SOURCE_UNSPECIFIED
+}
+
+func (x *Pod) GetStartedFromCheckpointCreationTimestamp() uint64 {
+	if x != nil && x.StartedFromCheckpointCreationTimestamp != nil {
+		return *x.StartedFromCheckpointCreationTimestamp
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.PodAgentStoreGrant (var: Tjt)
+type PodAgentStoreGrant struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PodId         string                 `protobuf:"bytes,1,opt,name=pod_id,json=podId,proto3" json:"pod_id,omitempty"`
+	SelfStoreId   string                 `protobuf:"bytes,2,opt,name=self_store_id,json=selfStoreId,proto3" json:"self_store_id,omitempty"`
+	TeamId        int64                  `protobuf:"varint,3,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+	IssuedAtMs    int64                  `protobuf:"varint,4,opt,name=issued_at_ms,json=issuedAtMs,proto3" json:"issued_at_ms,omitempty"`
+	ExpiresAtMs   int64                  `protobuf:"varint,5,opt,name=expires_at_ms,json=expiresAtMs,proto3" json:"expires_at_ms,omitempty"`
+	GrantId       string                 `protobuf:"bytes,6,opt,name=grant_id,json=grantId,proto3" json:"grant_id,omitempty"`
+	Token         string                 `protobuf:"bytes,7,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PodAgentStoreGrant) Reset() {
+	*x = PodAgentStoreGrant{}
+	mi := &file_anyrun_v1_proto_msgTypes[80]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PodAgentStoreGrant) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PodAgentStoreGrant) ProtoMessage() {}
+
+func (x *PodAgentStoreGrant) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[80]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PodAgentStoreGrant.ProtoReflect.Descriptor instead.
+func (*PodAgentStoreGrant) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{80}
+}
+
+func (x *PodAgentStoreGrant) GetPodId() string {
+	if x != nil {
+		return x.PodId
+	}
+	return ""
+}
+
+func (x *PodAgentStoreGrant) GetSelfStoreId() string {
+	if x != nil {
+		return x.SelfStoreId
+	}
+	return ""
+}
+
+func (x *PodAgentStoreGrant) GetTeamId() int64 {
+	if x != nil {
+		return x.TeamId
+	}
+	return 0
+}
+
+func (x *PodAgentStoreGrant) GetIssuedAtMs() int64 {
+	if x != nil {
+		return x.IssuedAtMs
+	}
+	return 0
+}
+
+func (x *PodAgentStoreGrant) GetExpiresAtMs() int64 {
+	if x != nil {
+		return x.ExpiresAtMs
+	}
+	return 0
+}
+
+func (x *PodAgentStoreGrant) GetGrantId() string {
+	if x != nil {
+		return x.GrantId
+	}
+	return ""
+}
+
+func (x *PodAgentStoreGrant) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.PodCollection (var: iYt)
 type PodCollection struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Pod                 `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -3309,7 +7365,7 @@ type PodCollection struct {
 
 func (x *PodCollection) Reset() {
 	*x = PodCollection{}
-	mi := &file_anyrun_v1_proto_msgTypes[35]
+	mi := &file_anyrun_v1_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3321,7 +7377,7 @@ func (x *PodCollection) String() string {
 func (*PodCollection) ProtoMessage() {}
 
 func (x *PodCollection) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[35]
+	mi := &file_anyrun_v1_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3334,7 +7390,7 @@ func (x *PodCollection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodCollection.ProtoReflect.Descriptor instead.
 func (*PodCollection) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{35}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *PodCollection) GetItems() []*Pod {
@@ -3351,7 +7407,7 @@ func (x *PodCollection) GetNextCursor() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PodCreatingStatus (var: Pes, class: sle)
+// Copied from: local:anyrun.v1.PodCreatingStatus (var: aYt)
 type PodCreatingStatus struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Phase         PodCreatingPhase       `protobuf:"varint,1,opt,name=phase,proto3,enum=anyrun.v1.PodCreatingPhase" json:"phase,omitempty"`
@@ -3361,7 +7417,7 @@ type PodCreatingStatus struct {
 
 func (x *PodCreatingStatus) Reset() {
 	*x = PodCreatingStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[36]
+	mi := &file_anyrun_v1_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3373,7 +7429,7 @@ func (x *PodCreatingStatus) String() string {
 func (*PodCreatingStatus) ProtoMessage() {}
 
 func (x *PodCreatingStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[36]
+	mi := &file_anyrun_v1_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3386,7 +7442,7 @@ func (x *PodCreatingStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodCreatingStatus.ProtoReflect.Descriptor instead.
 func (*PodCreatingStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{36}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *PodCreatingStatus) GetPhase() PodCreatingPhase {
@@ -3396,7 +7452,7 @@ func (x *PodCreatingStatus) GetPhase() PodCreatingPhase {
 	return PodCreatingPhase_POD_CREATING_PHASE_UNSPECIFIED
 }
 
-// Copied from: local:anyrun.v1.PodErrorEvent (var: Les, class: mle)
+// Copied from: local:anyrun.v1.PodErrorEvent (var: UKt)
 type PodErrorEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ErrorMessage  string                 `protobuf:"bytes,1,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
@@ -3406,7 +7462,7 @@ type PodErrorEvent struct {
 
 func (x *PodErrorEvent) Reset() {
 	*x = PodErrorEvent{}
-	mi := &file_anyrun_v1_proto_msgTypes[37]
+	mi := &file_anyrun_v1_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3418,7 +7474,7 @@ func (x *PodErrorEvent) String() string {
 func (*PodErrorEvent) ProtoMessage() {}
 
 func (x *PodErrorEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[37]
+	mi := &file_anyrun_v1_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3431,7 +7487,7 @@ func (x *PodErrorEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodErrorEvent.ProtoReflect.Descriptor instead.
 func (*PodErrorEvent) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{37}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *PodErrorEvent) GetErrorMessage() string {
@@ -3441,7 +7497,7 @@ func (x *PodErrorEvent) GetErrorMessage() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PodEvent (var: Fje, class: cle)
+// Copied from: local:anyrun.v1.PodEvent (var: NKt)
 type PodEvent struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	CreationTimestamp uint64                 `protobuf:"varint,49,opt,name=creation_timestamp,json=creationTimestamp,proto3" json:"creation_timestamp,omitempty"`
@@ -3498,6 +7554,10 @@ type PodEvent struct {
 	//	*PodEvent_AcquiredRepoState
 	//	*PodEvent_PrivateWorkerReady
 	//	*PodEvent_WaitingForWorker
+	//	*PodEvent_SpanStarted
+	//	*PodEvent_SpanEnded
+	//	*PodEvent_LifecycleProcessRestarted
+	//	*PodEvent_LifecycleProcessExited
 	Payload       isPodEvent_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -3505,7 +7565,7 @@ type PodEvent struct {
 
 func (x *PodEvent) Reset() {
 	*x = PodEvent{}
-	mi := &file_anyrun_v1_proto_msgTypes[38]
+	mi := &file_anyrun_v1_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3517,7 +7577,7 @@ func (x *PodEvent) String() string {
 func (*PodEvent) ProtoMessage() {}
 
 func (x *PodEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[38]
+	mi := &file_anyrun_v1_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3530,7 +7590,7 @@ func (x *PodEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodEvent.ProtoReflect.Descriptor instead.
 func (*PodEvent) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{38}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *PodEvent) GetCreationTimestamp() uint64 {
@@ -4006,6 +8066,42 @@ func (x *PodEvent) GetWaitingForWorker() *WaitingForWorkerStatus {
 	return nil
 }
 
+func (x *PodEvent) GetSpanStarted() *SpanStarted {
+	if x != nil {
+		if x, ok := x.Payload.(*PodEvent_SpanStarted); ok {
+			return x.SpanStarted
+		}
+	}
+	return nil
+}
+
+func (x *PodEvent) GetSpanEnded() *SpanEnded {
+	if x != nil {
+		if x, ok := x.Payload.(*PodEvent_SpanEnded); ok {
+			return x.SpanEnded
+		}
+	}
+	return nil
+}
+
+func (x *PodEvent) GetLifecycleProcessRestarted() *LifecycleProcessRestarted {
+	if x != nil {
+		if x, ok := x.Payload.(*PodEvent_LifecycleProcessRestarted); ok {
+			return x.LifecycleProcessRestarted
+		}
+	}
+	return nil
+}
+
+func (x *PodEvent) GetLifecycleProcessExited() *LifecycleProcessExited {
+	if x != nil {
+		if x, ok := x.Payload.(*PodEvent_LifecycleProcessExited); ok {
+			return x.LifecycleProcessExited
+		}
+	}
+	return nil
+}
+
 type isPodEvent_Payload interface {
 	isPodEvent_Payload()
 }
@@ -4214,6 +8310,22 @@ type PodEvent_WaitingForWorker struct {
 	WaitingForWorker *WaitingForWorkerStatus `protobuf:"bytes,54,opt,name=waiting_for_worker,json=waitingForWorker,proto3,oneof"`
 }
 
+type PodEvent_SpanStarted struct {
+	SpanStarted *SpanStarted `protobuf:"bytes,55,opt,name=span_started,json=spanStarted,proto3,oneof"`
+}
+
+type PodEvent_SpanEnded struct {
+	SpanEnded *SpanEnded `protobuf:"bytes,56,opt,name=span_ended,json=spanEnded,proto3,oneof"`
+}
+
+type PodEvent_LifecycleProcessRestarted struct {
+	LifecycleProcessRestarted *LifecycleProcessRestarted `protobuf:"bytes,57,opt,name=lifecycle_process_restarted,json=lifecycleProcessRestarted,proto3,oneof"`
+}
+
+type PodEvent_LifecycleProcessExited struct {
+	LifecycleProcessExited *LifecycleProcessExited `protobuf:"bytes,58,opt,name=lifecycle_process_exited,json=lifecycleProcessExited,proto3,oneof"`
+}
+
 func (*PodEvent_Error) isPodEvent_Payload() {}
 
 func (*PodEvent_DebugEvent) isPodEvent_Payload() {}
@@ -4316,17 +8428,26 @@ func (*PodEvent_PrivateWorkerReady) isPodEvent_Payload() {}
 
 func (*PodEvent_WaitingForWorker) isPodEvent_Payload() {}
 
-// Copied from: local:anyrun.v1.PodFailedStatus (var: Ies, class: ile)
+func (*PodEvent_SpanStarted) isPodEvent_Payload() {}
+
+func (*PodEvent_SpanEnded) isPodEvent_Payload() {}
+
+func (*PodEvent_LifecycleProcessRestarted) isPodEvent_Payload() {}
+
+func (*PodEvent_LifecycleProcessExited) isPodEvent_Payload() {}
+
+// Copied from: local:anyrun.v1.PodFailedStatus (var: uYt)
 type PodFailedStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Reason         string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
+	FailureDetails *PodFailureDetails     `protobuf:"bytes,2,opt,name=failure_details,json=failureDetails,proto3,oneof" json:"failure_details,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *PodFailedStatus) Reset() {
 	*x = PodFailedStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[39]
+	mi := &file_anyrun_v1_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4338,7 +8459,7 @@ func (x *PodFailedStatus) String() string {
 func (*PodFailedStatus) ProtoMessage() {}
 
 func (x *PodFailedStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[39]
+	mi := &file_anyrun_v1_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4351,7 +8472,7 @@ func (x *PodFailedStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodFailedStatus.ProtoReflect.Descriptor instead.
 func (*PodFailedStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{39}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *PodFailedStatus) GetReason() string {
@@ -4361,7 +8482,145 @@ func (x *PodFailedStatus) GetReason() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PodFilter (var: BPs, class: tle)
+func (x *PodFailedStatus) GetFailureDetails() *PodFailureDetails {
+	if x != nil {
+		return x.FailureDetails
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.PodFailureDetails (var: cYt)
+type PodFailureDetails struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Details:
+	//
+	//	*PodFailureDetails_InstallCommandFailure
+	//	*PodFailureDetails_DockerBuildFailure
+	//	*PodFailureDetails_GitCloneFailure
+	//	*PodFailureDetails_GitCheckoutFailure
+	//	*PodFailureDetails_ContainerWaitFailure
+	Details       isPodFailureDetails_Details `protobuf_oneof:"details"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PodFailureDetails) Reset() {
+	*x = PodFailureDetails{}
+	mi := &file_anyrun_v1_proto_msgTypes[86]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PodFailureDetails) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PodFailureDetails) ProtoMessage() {}
+
+func (x *PodFailureDetails) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[86]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PodFailureDetails.ProtoReflect.Descriptor instead.
+func (*PodFailureDetails) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{86}
+}
+
+func (x *PodFailureDetails) GetDetails() isPodFailureDetails_Details {
+	if x != nil {
+		return x.Details
+	}
+	return nil
+}
+
+func (x *PodFailureDetails) GetInstallCommandFailure() *InstallCommandFailure {
+	if x != nil {
+		if x, ok := x.Details.(*PodFailureDetails_InstallCommandFailure); ok {
+			return x.InstallCommandFailure
+		}
+	}
+	return nil
+}
+
+func (x *PodFailureDetails) GetDockerBuildFailure() *DockerBuildFailure {
+	if x != nil {
+		if x, ok := x.Details.(*PodFailureDetails_DockerBuildFailure); ok {
+			return x.DockerBuildFailure
+		}
+	}
+	return nil
+}
+
+func (x *PodFailureDetails) GetGitCloneFailure() *GitCloneFailure {
+	if x != nil {
+		if x, ok := x.Details.(*PodFailureDetails_GitCloneFailure); ok {
+			return x.GitCloneFailure
+		}
+	}
+	return nil
+}
+
+func (x *PodFailureDetails) GetGitCheckoutFailure() *GitCheckoutFailure {
+	if x != nil {
+		if x, ok := x.Details.(*PodFailureDetails_GitCheckoutFailure); ok {
+			return x.GitCheckoutFailure
+		}
+	}
+	return nil
+}
+
+func (x *PodFailureDetails) GetContainerWaitFailure() *ContainerWaitFailure {
+	if x != nil {
+		if x, ok := x.Details.(*PodFailureDetails_ContainerWaitFailure); ok {
+			return x.ContainerWaitFailure
+		}
+	}
+	return nil
+}
+
+type isPodFailureDetails_Details interface {
+	isPodFailureDetails_Details()
+}
+
+type PodFailureDetails_InstallCommandFailure struct {
+	InstallCommandFailure *InstallCommandFailure `protobuf:"bytes,1,opt,name=install_command_failure,json=installCommandFailure,proto3,oneof"`
+}
+
+type PodFailureDetails_DockerBuildFailure struct {
+	DockerBuildFailure *DockerBuildFailure `protobuf:"bytes,2,opt,name=docker_build_failure,json=dockerBuildFailure,proto3,oneof"`
+}
+
+type PodFailureDetails_GitCloneFailure struct {
+	GitCloneFailure *GitCloneFailure `protobuf:"bytes,3,opt,name=git_clone_failure,json=gitCloneFailure,proto3,oneof"`
+}
+
+type PodFailureDetails_GitCheckoutFailure struct {
+	GitCheckoutFailure *GitCheckoutFailure `protobuf:"bytes,4,opt,name=git_checkout_failure,json=gitCheckoutFailure,proto3,oneof"`
+}
+
+type PodFailureDetails_ContainerWaitFailure struct {
+	ContainerWaitFailure *ContainerWaitFailure `protobuf:"bytes,5,opt,name=container_wait_failure,json=containerWaitFailure,proto3,oneof"`
+}
+
+func (*PodFailureDetails_InstallCommandFailure) isPodFailureDetails_Details() {}
+
+func (*PodFailureDetails_DockerBuildFailure) isPodFailureDetails_Details() {}
+
+func (*PodFailureDetails_GitCloneFailure) isPodFailureDetails_Details() {}
+
+func (*PodFailureDetails_GitCheckoutFailure) isPodFailureDetails_Details() {}
+
+func (*PodFailureDetails_ContainerWaitFailure) isPodFailureDetails_Details() {}
+
+// Copied from: local:anyrun.v1.PodFilter (var: uJr)
 type PodFilter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PodId         *string                `protobuf:"bytes,1,opt,name=pod_id,json=podId,proto3,oneof" json:"pod_id,omitempty"`
@@ -4372,7 +8631,7 @@ type PodFilter struct {
 
 func (x *PodFilter) Reset() {
 	*x = PodFilter{}
-	mi := &file_anyrun_v1_proto_msgTypes[40]
+	mi := &file_anyrun_v1_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4384,7 +8643,7 @@ func (x *PodFilter) String() string {
 func (*PodFilter) ProtoMessage() {}
 
 func (x *PodFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[40]
+	mi := &file_anyrun_v1_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4397,7 +8656,7 @@ func (x *PodFilter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodFilter.ProtoReflect.Descriptor instead.
 func (*PodFilter) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{40}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *PodFilter) GetPodId() string {
@@ -4414,7 +8673,7 @@ func (x *PodFilter) GetLabels() map[string]string {
 	return nil
 }
 
-// Copied from: local:anyrun.v1.PodIdentity (var: bes, class: ole)
+// Copied from: local:anyrun.v1.PodIdentity (var: xKt)
 type PodIdentity struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
@@ -4425,7 +8684,7 @@ type PodIdentity struct {
 
 func (x *PodIdentity) Reset() {
 	*x = PodIdentity{}
-	mi := &file_anyrun_v1_proto_msgTypes[41]
+	mi := &file_anyrun_v1_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4437,7 +8696,7 @@ func (x *PodIdentity) String() string {
 func (*PodIdentity) ProtoMessage() {}
 
 func (x *PodIdentity) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[41]
+	mi := &file_anyrun_v1_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4450,7 +8709,7 @@ func (x *PodIdentity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodIdentity.ProtoReflect.Descriptor instead.
 func (*PodIdentity) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{41}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *PodIdentity) GetTenantId() string {
@@ -4467,29 +8726,32 @@ func (x *PodIdentity) GetPodId() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.PodPortState (var: Ees, class: Kce)
-type PodPortState struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ports         []*PortState           `protobuf:"bytes,1,rep,name=ports,proto3" json:"ports,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+// Copied from: local:anyrun.v1.PodMetricsSample (var: bPr)
+type PodMetricsSample struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	CpuUsageMcores   uint64                 `protobuf:"varint,1,opt,name=cpu_usage_mcores,json=cpuUsageMcores,proto3" json:"cpu_usage_mcores,omitempty"`
+	CpuLimitMcores   uint64                 `protobuf:"varint,2,opt,name=cpu_limit_mcores,json=cpuLimitMcores,proto3" json:"cpu_limit_mcores,omitempty"`
+	MemoryUsageBytes uint64                 `protobuf:"varint,3,opt,name=memory_usage_bytes,json=memoryUsageBytes,proto3" json:"memory_usage_bytes,omitempty"`
+	MemoryLimitBytes uint64                 `protobuf:"varint,4,opt,name=memory_limit_bytes,json=memoryLimitBytes,proto3" json:"memory_limit_bytes,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
-func (x *PodPortState) Reset() {
-	*x = PodPortState{}
-	mi := &file_anyrun_v1_proto_msgTypes[42]
+func (x *PodMetricsSample) Reset() {
+	*x = PodMetricsSample{}
+	mi := &file_anyrun_v1_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PodPortState) String() string {
+func (x *PodMetricsSample) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PodPortState) ProtoMessage() {}
+func (*PodMetricsSample) ProtoMessage() {}
 
-func (x *PodPortState) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[42]
+func (x *PodMetricsSample) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4500,19 +8762,40 @@ func (x *PodPortState) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PodPortState.ProtoReflect.Descriptor instead.
-func (*PodPortState) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{42}
+// Deprecated: Use PodMetricsSample.ProtoReflect.Descriptor instead.
+func (*PodMetricsSample) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{89}
 }
 
-func (x *PodPortState) GetPorts() []*PortState {
+func (x *PodMetricsSample) GetCpuUsageMcores() uint64 {
 	if x != nil {
-		return x.Ports
+		return x.CpuUsageMcores
 	}
-	return nil
+	return 0
 }
 
-// Copied from: local:anyrun.v1.PodPorts (var: kes, class: jce)
+func (x *PodMetricsSample) GetCpuLimitMcores() uint64 {
+	if x != nil {
+		return x.CpuLimitMcores
+	}
+	return 0
+}
+
+func (x *PodMetricsSample) GetMemoryUsageBytes() uint64 {
+	if x != nil {
+		return x.MemoryUsageBytes
+	}
+	return 0
+}
+
+func (x *PodMetricsSample) GetMemoryLimitBytes() uint64 {
+	if x != nil {
+		return x.MemoryLimitBytes
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.PodPorts (var: eYt)
 type PodPorts struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Ports             []*PortDefinition      `protobuf:"bytes,1,rep,name=ports,proto3" json:"ports,omitempty"`
@@ -4523,7 +8806,7 @@ type PodPorts struct {
 
 func (x *PodPorts) Reset() {
 	*x = PodPorts{}
-	mi := &file_anyrun_v1_proto_msgTypes[43]
+	mi := &file_anyrun_v1_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4535,7 +8818,7 @@ func (x *PodPorts) String() string {
 func (*PodPorts) ProtoMessage() {}
 
 func (x *PodPorts) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[43]
+	mi := &file_anyrun_v1_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4548,7 +8831,7 @@ func (x *PodPorts) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodPorts.ProtoReflect.Descriptor instead.
 func (*PodPorts) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{43}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *PodPorts) GetPorts() []*PortDefinition {
@@ -4565,7 +8848,7 @@ func (x *PodPorts) GetDefaultPortConfig() *DefaultPortConfig {
 	return nil
 }
 
-// Copied from: local:anyrun.v1.PodRunningStatus (var: Ces, class: nle)
+// Copied from: local:anyrun.v1.PodRunningStatus (var: oYt)
 type PodRunningStatus struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	MissedHeartbeatDeadline *uint64                `protobuf:"varint,1,opt,name=missed_heartbeat_deadline,json=missedHeartbeatDeadline,proto3,oneof" json:"missed_heartbeat_deadline,omitempty"`
@@ -4575,7 +8858,7 @@ type PodRunningStatus struct {
 
 func (x *PodRunningStatus) Reset() {
 	*x = PodRunningStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[44]
+	mi := &file_anyrun_v1_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4587,7 +8870,7 @@ func (x *PodRunningStatus) String() string {
 func (*PodRunningStatus) ProtoMessage() {}
 
 func (x *PodRunningStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[44]
+	mi := &file_anyrun_v1_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4600,7 +8883,7 @@ func (x *PodRunningStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodRunningStatus.ProtoReflect.Descriptor instead.
 func (*PodRunningStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{44}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *PodRunningStatus) GetMissedHeartbeatDeadline() uint64 {
@@ -4610,7 +8893,7 @@ func (x *PodRunningStatus) GetMissedHeartbeatDeadline() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.PodStatus (var: GPe, class: Xce)
+// Copied from: local:anyrun.v1.PodStatus (var: tYt)
 type PodStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Status:
@@ -4626,7 +8909,7 @@ type PodStatus struct {
 
 func (x *PodStatus) Reset() {
 	*x = PodStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[45]
+	mi := &file_anyrun_v1_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4638,7 +8921,7 @@ func (x *PodStatus) String() string {
 func (*PodStatus) ProtoMessage() {}
 
 func (x *PodStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[45]
+	mi := &file_anyrun_v1_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4651,7 +8934,7 @@ func (x *PodStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodStatus.ProtoReflect.Descriptor instead.
 func (*PodStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{45}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *PodStatus) GetStatus() isPodStatus_Status {
@@ -4725,7 +9008,7 @@ func (*PodStatus_Failed) isPodStatus_Status() {}
 
 func (*PodStatus_Terminated) isPodStatus_Status() {}
 
-// Copied from: local:anyrun.v1.PodTerminatedStatus (var: Jes, class: rle)
+// Copied from: local:anyrun.v1.PodTerminatedStatus (var: lYt)
 type PodTerminatedStatus struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Reason        string                 `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
@@ -4736,7 +9019,7 @@ type PodTerminatedStatus struct {
 
 func (x *PodTerminatedStatus) Reset() {
 	*x = PodTerminatedStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[46]
+	mi := &file_anyrun_v1_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4748,7 +9031,7 @@ func (x *PodTerminatedStatus) String() string {
 func (*PodTerminatedStatus) ProtoMessage() {}
 
 func (x *PodTerminatedStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[46]
+	mi := &file_anyrun_v1_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4761,7 +9044,7 @@ func (x *PodTerminatedStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodTerminatedStatus.ProtoReflect.Descriptor instead.
 func (*PodTerminatedStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{46}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *PodTerminatedStatus) GetReason() string {
@@ -4778,7 +9061,7 @@ func (x *PodTerminatedStatus) GetExitCode() uint32 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.PodUpdate (var: LPs, class: ele)
+// Copied from: local:anyrun.v1.PodUpdate (var: oJr)
 type PodUpdate struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	EventId *string                `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3,oneof" json:"event_id,omitempty"`
@@ -4795,7 +9078,7 @@ type PodUpdate struct {
 
 func (x *PodUpdate) Reset() {
 	*x = PodUpdate{}
-	mi := &file_anyrun_v1_proto_msgTypes[47]
+	mi := &file_anyrun_v1_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4807,7 +9090,7 @@ func (x *PodUpdate) String() string {
 func (*PodUpdate) ProtoMessage() {}
 
 func (x *PodUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[47]
+	mi := &file_anyrun_v1_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4820,7 +9103,7 @@ func (x *PodUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PodUpdate.ProtoReflect.Descriptor instead.
 func (*PodUpdate) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{47}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *PodUpdate) GetEventId() string {
@@ -4901,7 +9184,7 @@ func (*PodUpdate_Updated) isPodUpdate_Update() {}
 
 func (*PodUpdate_Removed) isPodUpdate_Update() {}
 
-// Copied from: local:anyrun.v1.PortDefinition (var: HBe, class: Ece)
+// Copied from: local:anyrun.v1.PortDefinition (var: rjt)
 type PortDefinition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -4922,7 +9205,7 @@ type PortDefinition struct {
 
 func (x *PortDefinition) Reset() {
 	*x = PortDefinition{}
-	mi := &file_anyrun_v1_proto_msgTypes[48]
+	mi := &file_anyrun_v1_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4934,7 +9217,7 @@ func (x *PortDefinition) String() string {
 func (*PortDefinition) ProtoMessage() {}
 
 func (x *PortDefinition) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[48]
+	mi := &file_anyrun_v1_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4947,7 +9230,7 @@ func (x *PortDefinition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PortDefinition.ProtoReflect.Descriptor instead.
 func (*PortDefinition) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{48}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *PortDefinition) GetName() string {
@@ -5046,7 +9329,7 @@ func (*PortDefinition_Public) isPortDefinition_Visibility() {}
 
 func (*PortDefinition_Private) isPortDefinition_Visibility() {}
 
-// Copied from: local:anyrun.v1.PortState (var: _es, class: Yce)
+// Copied from: local:anyrun.v1.PortState (var: aJr)
 type PortState struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PortName      string                 `protobuf:"bytes,1,opt,name=port_name,json=portName,proto3" json:"port_name,omitempty"`
@@ -5068,7 +9351,7 @@ type PortState struct {
 
 func (x *PortState) Reset() {
 	*x = PortState{}
-	mi := &file_anyrun_v1_proto_msgTypes[49]
+	mi := &file_anyrun_v1_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5080,7 +9363,7 @@ func (x *PortState) String() string {
 func (*PortState) ProtoMessage() {}
 
 func (x *PortState) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[49]
+	mi := &file_anyrun_v1_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5093,7 +9376,7 @@ func (x *PortState) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PortState.ProtoReflect.Descriptor instead.
 func (*PortState) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{49}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *PortState) GetPortName() string {
@@ -5199,7 +9482,297 @@ func (*PortState_Public) isPortState_Visibility() {}
 
 func (*PortState_Private) isPortState_Visibility() {}
 
-// Copied from: local:anyrun.v1.ProgressDetail (var: Oje, class: yle)
+// Copied from: local:anyrun.v1.ProcessEvent (var: BPr)
+type ProcessEvent struct {
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	EventId string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	// Types that are valid to be assigned to Data:
+	//
+	//	*ProcessEvent_Stdout
+	//	*ProcessEvent_Stderr
+	//	*ProcessEvent_Exited
+	//	*ProcessEvent_Restarted
+	Data          isProcessEvent_Data `protobuf_oneof:"data"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProcessEvent) Reset() {
+	*x = ProcessEvent{}
+	mi := &file_anyrun_v1_proto_msgTypes[97]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProcessEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProcessEvent) ProtoMessage() {}
+
+func (x *ProcessEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[97]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProcessEvent.ProtoReflect.Descriptor instead.
+func (*ProcessEvent) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{97}
+}
+
+func (x *ProcessEvent) GetEventId() string {
+	if x != nil {
+		return x.EventId
+	}
+	return ""
+}
+
+func (x *ProcessEvent) GetData() isProcessEvent_Data {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *ProcessEvent) GetStdout() *StdoutData {
+	if x != nil {
+		if x, ok := x.Data.(*ProcessEvent_Stdout); ok {
+			return x.Stdout
+		}
+	}
+	return nil
+}
+
+func (x *ProcessEvent) GetStderr() *StderrData {
+	if x != nil {
+		if x, ok := x.Data.(*ProcessEvent_Stderr); ok {
+			return x.Stderr
+		}
+	}
+	return nil
+}
+
+func (x *ProcessEvent) GetExited() *ProcessExited {
+	if x != nil {
+		if x, ok := x.Data.(*ProcessEvent_Exited); ok {
+			return x.Exited
+		}
+	}
+	return nil
+}
+
+func (x *ProcessEvent) GetRestarted() *ProcessRestarted {
+	if x != nil {
+		if x, ok := x.Data.(*ProcessEvent_Restarted); ok {
+			return x.Restarted
+		}
+	}
+	return nil
+}
+
+type isProcessEvent_Data interface {
+	isProcessEvent_Data()
+}
+
+type ProcessEvent_Stdout struct {
+	Stdout *StdoutData `protobuf:"bytes,2,opt,name=stdout,proto3,oneof"`
+}
+
+type ProcessEvent_Stderr struct {
+	Stderr *StderrData `protobuf:"bytes,3,opt,name=stderr,proto3,oneof"`
+}
+
+type ProcessEvent_Exited struct {
+	Exited *ProcessExited `protobuf:"bytes,4,opt,name=exited,proto3,oneof"`
+}
+
+type ProcessEvent_Restarted struct {
+	Restarted *ProcessRestarted `protobuf:"bytes,5,opt,name=restarted,proto3,oneof"`
+}
+
+func (*ProcessEvent_Stdout) isProcessEvent_Data() {}
+
+func (*ProcessEvent_Stderr) isProcessEvent_Data() {}
+
+func (*ProcessEvent_Exited) isProcessEvent_Data() {}
+
+func (*ProcessEvent_Restarted) isProcessEvent_Data() {}
+
+// Copied from: local:anyrun.v1.ProcessExited (var: JKt)
+type ProcessExited struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int32                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProcessExited) Reset() {
+	*x = ProcessExited{}
+	mi := &file_anyrun_v1_proto_msgTypes[98]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProcessExited) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProcessExited) ProtoMessage() {}
+
+func (x *ProcessExited) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[98]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProcessExited.ProtoReflect.Descriptor instead.
+func (*ProcessExited) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{98}
+}
+
+func (x *ProcessExited) GetExitCode() int32 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.ProcessRestarted (var: IKt)
+type ProcessRestarted struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Attempt          uint32                 `protobuf:"varint,1,opt,name=attempt,proto3" json:"attempt,omitempty"`
+	PreviousExitCode int32                  `protobuf:"varint,2,opt,name=previous_exit_code,json=previousExitCode,proto3" json:"previous_exit_code,omitempty"`
+	Reason           RestartReason          `protobuf:"varint,3,opt,name=reason,proto3,enum=anyrun.v1.RestartReason" json:"reason,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ProcessRestarted) Reset() {
+	*x = ProcessRestarted{}
+	mi := &file_anyrun_v1_proto_msgTypes[99]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProcessRestarted) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProcessRestarted) ProtoMessage() {}
+
+func (x *ProcessRestarted) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[99]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProcessRestarted.ProtoReflect.Descriptor instead.
+func (*ProcessRestarted) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{99}
+}
+
+func (x *ProcessRestarted) GetAttempt() uint32 {
+	if x != nil {
+		return x.Attempt
+	}
+	return 0
+}
+
+func (x *ProcessRestarted) GetPreviousExitCode() int32 {
+	if x != nil {
+		return x.PreviousExitCode
+	}
+	return 0
+}
+
+func (x *ProcessRestarted) GetReason() RestartReason {
+	if x != nil {
+		return x.Reason
+	}
+	return RestartReason_RESTART_REASON_UNSPECIFIED
+}
+
+// Copied from: local:anyrun.v1.ProcessSupervision (var: kKt)
+type ProcessSupervision struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RestartPolicy RestartPolicy          `protobuf:"varint,1,opt,name=restart_policy,json=restartPolicy,proto3,enum=anyrun.v1.RestartPolicy" json:"restart_policy,omitempty"`
+	Backoff       *RestartBackoff        `protobuf:"bytes,2,opt,name=backoff,proto3,oneof" json:"backoff,omitempty"`
+	HealthCheck   *HttpHealthCheck       `protobuf:"bytes,3,opt,name=health_check,json=healthCheck,proto3,oneof" json:"health_check,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProcessSupervision) Reset() {
+	*x = ProcessSupervision{}
+	mi := &file_anyrun_v1_proto_msgTypes[100]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProcessSupervision) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProcessSupervision) ProtoMessage() {}
+
+func (x *ProcessSupervision) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[100]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProcessSupervision.ProtoReflect.Descriptor instead.
+func (*ProcessSupervision) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{100}
+}
+
+func (x *ProcessSupervision) GetRestartPolicy() RestartPolicy {
+	if x != nil {
+		return x.RestartPolicy
+	}
+	return RestartPolicy_RESTART_POLICY_UNSPECIFIED
+}
+
+func (x *ProcessSupervision) GetBackoff() *RestartBackoff {
+	if x != nil {
+		return x.Backoff
+	}
+	return nil
+}
+
+func (x *ProcessSupervision) GetHealthCheck() *HttpHealthCheck {
+	if x != nil {
+		return x.HealthCheck
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ProgressDetail (var: jKt)
 type ProgressDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Current       uint64                 `protobuf:"varint,1,opt,name=current,proto3" json:"current,omitempty"`
@@ -5210,7 +9783,7 @@ type ProgressDetail struct {
 
 func (x *ProgressDetail) Reset() {
 	*x = ProgressDetail{}
-	mi := &file_anyrun_v1_proto_msgTypes[50]
+	mi := &file_anyrun_v1_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5222,7 +9795,7 @@ func (x *ProgressDetail) String() string {
 func (*ProgressDetail) ProtoMessage() {}
 
 func (x *ProgressDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[50]
+	mi := &file_anyrun_v1_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5235,7 +9808,7 @@ func (x *ProgressDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProgressDetail.ProtoReflect.Descriptor instead.
 func (*ProgressDetail) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{50}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ProgressDetail) GetCurrent() uint64 {
@@ -5252,7 +9825,248 @@ func (x *ProgressDetail) GetTotal() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.ResourceLimits (var: Bje, class: Ice)
+// Copied from: local:anyrun.v1.ReadBinaryFileRequest (var: MPr)
+type ReadBinaryFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReadBinaryFileRequest) Reset() {
+	*x = ReadBinaryFileRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[102]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReadBinaryFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadBinaryFileRequest) ProtoMessage() {}
+
+func (x *ReadBinaryFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[102]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadBinaryFileRequest.ProtoReflect.Descriptor instead.
+func (*ReadBinaryFileRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{102}
+}
+
+func (x *ReadBinaryFileRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.ReadBinaryFileResponse (var: GPr)
+type ReadBinaryFileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Content       []byte                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReadBinaryFileResponse) Reset() {
+	*x = ReadBinaryFileResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[103]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReadBinaryFileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadBinaryFileResponse) ProtoMessage() {}
+
+func (x *ReadBinaryFileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[103]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadBinaryFileResponse.ProtoReflect.Descriptor instead.
+func (*ReadBinaryFileResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{103}
+}
+
+func (x *ReadBinaryFileResponse) GetContent() []byte {
+	if x != nil {
+		return x.Content
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ReadTextFileRequest (var: DPr)
+type ReadTextFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReadTextFileRequest) Reset() {
+	*x = ReadTextFileRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[104]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReadTextFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadTextFileRequest) ProtoMessage() {}
+
+func (x *ReadTextFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[104]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadTextFileRequest.ProtoReflect.Descriptor instead.
+func (*ReadTextFileRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{104}
+}
+
+func (x *ReadTextFileRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.ReadTextFileResponse (var: FPr)
+type ReadTextFileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Content       string                 `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReadTextFileResponse) Reset() {
+	*x = ReadTextFileResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[105]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReadTextFileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReadTextFileResponse) ProtoMessage() {}
+
+func (x *ReadTextFileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[105]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReadTextFileResponse.ProtoReflect.Descriptor instead.
+func (*ReadTextFileResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{105}
+}
+
+func (x *ReadTextFileResponse) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.RegistryCredentials (var: Cjt)
+type RegistryCredentials struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RegistryUrl   string                 `protobuf:"bytes,1,opt,name=registry_url,json=registryUrl,proto3" json:"registry_url,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegistryCredentials) Reset() {
+	*x = RegistryCredentials{}
+	mi := &file_anyrun_v1_proto_msgTypes[106]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegistryCredentials) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegistryCredentials) ProtoMessage() {}
+
+func (x *RegistryCredentials) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[106]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegistryCredentials.ProtoReflect.Descriptor instead.
+func (*RegistryCredentials) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{106}
+}
+
+func (x *RegistryCredentials) GetRegistryUrl() string {
+	if x != nil {
+		return x.RegistryUrl
+	}
+	return ""
+}
+
+func (x *RegistryCredentials) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RegistryCredentials) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.ResourceLimits (var: ajt)
 type ResourceLimits struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CpuMcores     *uint64                `protobuf:"varint,1,opt,name=cpu_mcores,json=cpuMcores,proto3,oneof" json:"cpu_mcores,omitempty"`
@@ -5265,7 +10079,7 @@ type ResourceLimits struct {
 
 func (x *ResourceLimits) Reset() {
 	*x = ResourceLimits{}
-	mi := &file_anyrun_v1_proto_msgTypes[51]
+	mi := &file_anyrun_v1_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5277,7 +10091,7 @@ func (x *ResourceLimits) String() string {
 func (*ResourceLimits) ProtoMessage() {}
 
 func (x *ResourceLimits) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[51]
+	mi := &file_anyrun_v1_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5290,7 +10104,7 @@ func (x *ResourceLimits) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceLimits.ProtoReflect.Descriptor instead.
 func (*ResourceLimits) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{51}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *ResourceLimits) GetCpuMcores() uint64 {
@@ -5321,7 +10135,7 @@ func (x *ResourceLimits) GetSwapMb() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.ResourceRequests (var: MPe, class: Cce)
+// Copied from: local:anyrun.v1.ResourceRequests (var: ijt)
 type ResourceRequests struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CpuMcores     uint64                 `protobuf:"varint,1,opt,name=cpu_mcores,json=cpuMcores,proto3" json:"cpu_mcores,omitempty"`
@@ -5333,7 +10147,7 @@ type ResourceRequests struct {
 
 func (x *ResourceRequests) Reset() {
 	*x = ResourceRequests{}
-	mi := &file_anyrun_v1_proto_msgTypes[52]
+	mi := &file_anyrun_v1_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5345,7 +10159,7 @@ func (x *ResourceRequests) String() string {
 func (*ResourceRequests) ProtoMessage() {}
 
 func (x *ResourceRequests) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[52]
+	mi := &file_anyrun_v1_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5358,7 +10172,7 @@ func (x *ResourceRequests) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceRequests.ProtoReflect.Descriptor instead.
 func (*ResourceRequests) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{52}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *ResourceRequests) GetCpuMcores() uint64 {
@@ -5382,7 +10196,190 @@ func (x *ResourceRequests) GetDiskMb() uint64 {
 	return 0
 }
 
-// Copied from: local:anyrun.v1.Snapshot (var: $es, class: Rle)
+// Copied from: local:anyrun.v1.RestartBackoff (var: RKt)
+type RestartBackoff struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	InitialMs           uint32                 `protobuf:"varint,1,opt,name=initial_ms,json=initialMs,proto3" json:"initial_ms,omitempty"`
+	MaxMs               uint32                 `protobuf:"varint,2,opt,name=max_ms,json=maxMs,proto3" json:"max_ms,omitempty"`
+	Multiplier          float64                `protobuf:"fixed64,3,opt,name=multiplier,proto3" json:"multiplier,omitempty"`
+	ResetAfterHealthyMs uint32                 `protobuf:"varint,4,opt,name=reset_after_healthy_ms,json=resetAfterHealthyMs,proto3" json:"reset_after_healthy_ms,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *RestartBackoff) Reset() {
+	*x = RestartBackoff{}
+	mi := &file_anyrun_v1_proto_msgTypes[109]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestartBackoff) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestartBackoff) ProtoMessage() {}
+
+func (x *RestartBackoff) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[109]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestartBackoff.ProtoReflect.Descriptor instead.
+func (*RestartBackoff) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{109}
+}
+
+func (x *RestartBackoff) GetInitialMs() uint32 {
+	if x != nil {
+		return x.InitialMs
+	}
+	return 0
+}
+
+func (x *RestartBackoff) GetMaxMs() uint32 {
+	if x != nil {
+		return x.MaxMs
+	}
+	return 0
+}
+
+func (x *RestartBackoff) GetMultiplier() float64 {
+	if x != nil {
+		return x.Multiplier
+	}
+	return 0
+}
+
+func (x *RestartBackoff) GetResetAfterHealthyMs() uint32 {
+	if x != nil {
+		return x.ResetAfterHealthyMs
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.RuntimeStatePersistentState (var: jjt)
+type RuntimeStatePersistentState struct {
+	state           protoimpl.MessageState                          `protogen:"open.v1"`
+	CommandHandlers map[string]*DaemonCommandHandlerPersistentState `protobuf:"bytes,1,rep,name=command_handlers,json=commandHandlers,proto3" json:"command_handlers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RuntimeStatePersistentState) Reset() {
+	*x = RuntimeStatePersistentState{}
+	mi := &file_anyrun_v1_proto_msgTypes[110]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RuntimeStatePersistentState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RuntimeStatePersistentState) ProtoMessage() {}
+
+func (x *RuntimeStatePersistentState) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[110]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RuntimeStatePersistentState.ProtoReflect.Descriptor instead.
+func (*RuntimeStatePersistentState) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{110}
+}
+
+func (x *RuntimeStatePersistentState) GetCommandHandlers() map[string]*DaemonCommandHandlerPersistentState {
+	if x != nil {
+		return x.CommandHandlers
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.ScmConfig (var: xjt)
+type ScmConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Domain        string                 `protobuf:"bytes,1,opt,name=domain,proto3" json:"domain,omitempty"`
+	AuthValue     string                 `protobuf:"bytes,2,opt,name=auth_value,json=authValue,proto3" json:"auth_value,omitempty"`
+	ProxyUrl      string                 `protobuf:"bytes,3,opt,name=proxy_url,json=proxyUrl,proto3" json:"proxy_url,omitempty"`
+	AuthMethod    ScmConfig_AuthMethod   `protobuf:"varint,4,opt,name=auth_method,json=authMethod,proto3,enum=anyrun.v1.ScmConfig_AuthMethod" json:"auth_method,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScmConfig) Reset() {
+	*x = ScmConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[111]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScmConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScmConfig) ProtoMessage() {}
+
+func (x *ScmConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[111]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScmConfig.ProtoReflect.Descriptor instead.
+func (*ScmConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{111}
+}
+
+func (x *ScmConfig) GetDomain() string {
+	if x != nil {
+		return x.Domain
+	}
+	return ""
+}
+
+func (x *ScmConfig) GetAuthValue() string {
+	if x != nil {
+		return x.AuthValue
+	}
+	return ""
+}
+
+func (x *ScmConfig) GetProxyUrl() string {
+	if x != nil {
+		return x.ProxyUrl
+	}
+	return ""
+}
+
+func (x *ScmConfig) GetAuthMethod() ScmConfig_AuthMethod {
+	if x != nil {
+		return x.AuthMethod
+	}
+	return ScmConfig_AUTH_METHOD_UNSPECIFIED
+}
+
+// Copied from: local:anyrun.v1.Snapshot (var: gYt)
 type Snapshot struct {
 	state              protoimpl.MessageState       `protogen:"open.v1"`
 	SnapshotId         string                       `protobuf:"bytes,1,opt,name=snapshot_id,json=snapshotId,proto3" json:"snapshot_id,omitempty"`
@@ -5400,13 +10397,16 @@ type Snapshot struct {
 	State              SnapshotState                `protobuf:"varint,9,opt,name=state,proto3,enum=anyrun.v1.SnapshotState" json:"state,omitempty"`
 	ImageMetadata      *ImageMetadata               `protobuf:"bytes,10,opt,name=image_metadata,json=imageMetadata,proto3" json:"image_metadata,omitempty"`
 	BlobStorageFormat  BlobStorageFormat            `protobuf:"varint,11,opt,name=blob_storage_format,json=blobStorageFormat,proto3,enum=anyrun.v1.BlobStorageFormat" json:"blob_storage_format,omitempty"`
+	NodeMachineType    *string                      `protobuf:"bytes,16,opt,name=node_machine_type,json=nodeMachineType,proto3,oneof" json:"node_machine_type,omitempty"`
+	ResourceRequests   *ResourceRequests            `protobuf:"bytes,17,opt,name=resource_requests,json=resourceRequests,proto3,oneof" json:"resource_requests,omitempty"`
+	ResourceLimits     *ResourceLimits              `protobuf:"bytes,18,opt,name=resource_limits,json=resourceLimits,proto3,oneof" json:"resource_limits,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Snapshot) Reset() {
 	*x = Snapshot{}
-	mi := &file_anyrun_v1_proto_msgTypes[53]
+	mi := &file_anyrun_v1_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5418,7 +10418,7 @@ func (x *Snapshot) String() string {
 func (*Snapshot) ProtoMessage() {}
 
 func (x *Snapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[53]
+	mi := &file_anyrun_v1_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5431,7 +10431,7 @@ func (x *Snapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Snapshot.ProtoReflect.Descriptor instead.
 func (*Snapshot) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{53}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *Snapshot) GetSnapshotId() string {
@@ -5539,7 +10539,28 @@ func (x *Snapshot) GetBlobStorageFormat() BlobStorageFormat {
 	return BlobStorageFormat_BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED
 }
 
-// Copied from: local:anyrun.v1.SnapshotCollection (var: DPs, class: Ple)
+func (x *Snapshot) GetNodeMachineType() string {
+	if x != nil && x.NodeMachineType != nil {
+		return *x.NodeMachineType
+	}
+	return ""
+}
+
+func (x *Snapshot) GetResourceRequests() *ResourceRequests {
+	if x != nil {
+		return x.ResourceRequests
+	}
+	return nil
+}
+
+func (x *Snapshot) GetResourceLimits() *ResourceLimits {
+	if x != nil {
+		return x.ResourceLimits
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.SnapshotCollection (var: cJr)
 type SnapshotCollection struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Snapshot            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -5550,7 +10571,7 @@ type SnapshotCollection struct {
 
 func (x *SnapshotCollection) Reset() {
 	*x = SnapshotCollection{}
-	mi := &file_anyrun_v1_proto_msgTypes[54]
+	mi := &file_anyrun_v1_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5562,7 +10583,7 @@ func (x *SnapshotCollection) String() string {
 func (*SnapshotCollection) ProtoMessage() {}
 
 func (x *SnapshotCollection) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[54]
+	mi := &file_anyrun_v1_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5575,7 +10596,7 @@ func (x *SnapshotCollection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SnapshotCollection.ProtoReflect.Descriptor instead.
 func (*SnapshotCollection) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{54}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *SnapshotCollection) GetItems() []*Snapshot {
@@ -5592,7 +10613,479 @@ func (x *SnapshotCollection) GetNextCursor() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.TarGzipUrlSourceReference (var: ues, class: Lce)
+// Copied from: local:anyrun.v1.SnapshotExtraDriveFile (var: TYt)
+type SnapshotExtraDriveFile struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DriveId       string                 `protobuf:"bytes,1,opt,name=drive_id,json=driveId,proto3" json:"drive_id,omitempty"`
+	FileChunks    []*SnapshotFileChunk   `protobuf:"bytes,2,rep,name=file_chunks,json=fileChunks,proto3" json:"file_chunks,omitempty"`
+	FileSize      uint64                 `protobuf:"varint,3,opt,name=file_size,json=fileSize,proto3" json:"file_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SnapshotExtraDriveFile) Reset() {
+	*x = SnapshotExtraDriveFile{}
+	mi := &file_anyrun_v1_proto_msgTypes[114]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SnapshotExtraDriveFile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SnapshotExtraDriveFile) ProtoMessage() {}
+
+func (x *SnapshotExtraDriveFile) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[114]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SnapshotExtraDriveFile.ProtoReflect.Descriptor instead.
+func (*SnapshotExtraDriveFile) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{114}
+}
+
+func (x *SnapshotExtraDriveFile) GetDriveId() string {
+	if x != nil {
+		return x.DriveId
+	}
+	return ""
+}
+
+func (x *SnapshotExtraDriveFile) GetFileChunks() []*SnapshotFileChunk {
+	if x != nil {
+		return x.FileChunks
+	}
+	return nil
+}
+
+func (x *SnapshotExtraDriveFile) GetFileSize() uint64 {
+	if x != nil {
+		return x.FileSize
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.SnapshotFileChunk (var: vYt)
+type SnapshotFileChunk struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BlobBegin     uint64                 `protobuf:"varint,1,opt,name=blob_begin,json=blobBegin,proto3" json:"blob_begin,omitempty"`
+	BlobEnd       uint64                 `protobuf:"varint,2,opt,name=blob_end,json=blobEnd,proto3" json:"blob_end,omitempty"`
+	FileBegin     uint64                 `protobuf:"varint,3,opt,name=file_begin,json=fileBegin,proto3" json:"file_begin,omitempty"`
+	FileEnd       uint64                 `protobuf:"varint,4,opt,name=file_end,json=fileEnd,proto3" json:"file_end,omitempty"`
+	Hash          string                 `protobuf:"bytes,5,opt,name=hash,proto3" json:"hash,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SnapshotFileChunk) Reset() {
+	*x = SnapshotFileChunk{}
+	mi := &file_anyrun_v1_proto_msgTypes[115]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SnapshotFileChunk) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SnapshotFileChunk) ProtoMessage() {}
+
+func (x *SnapshotFileChunk) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[115]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SnapshotFileChunk.ProtoReflect.Descriptor instead.
+func (*SnapshotFileChunk) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{115}
+}
+
+func (x *SnapshotFileChunk) GetBlobBegin() uint64 {
+	if x != nil {
+		return x.BlobBegin
+	}
+	return 0
+}
+
+func (x *SnapshotFileChunk) GetBlobEnd() uint64 {
+	if x != nil {
+		return x.BlobEnd
+	}
+	return 0
+}
+
+func (x *SnapshotFileChunk) GetFileBegin() uint64 {
+	if x != nil {
+		return x.FileBegin
+	}
+	return 0
+}
+
+func (x *SnapshotFileChunk) GetFileEnd() uint64 {
+	if x != nil {
+		return x.FileEnd
+	}
+	return 0
+}
+
+func (x *SnapshotFileChunk) GetHash() string {
+	if x != nil {
+		return x.Hash
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.SnapshotVmSnapshotV1Metadata (var: mJr)
+type SnapshotVmSnapshotV1Metadata struct {
+	state                protoimpl.MessageState    `protogen:"open.v1"`
+	RootfsFileChunks     []*SnapshotFileChunk      `protobuf:"bytes,1,rep,name=rootfs_file_chunks,json=rootfsFileChunks,proto3" json:"rootfs_file_chunks,omitempty"`
+	RootfsFileSize       uint64                    `protobuf:"varint,2,opt,name=rootfs_file_size,json=rootfsFileSize,proto3" json:"rootfs_file_size,omitempty"`
+	MemoryFileChunk      *SnapshotFileChunk        `protobuf:"bytes,3,opt,name=memory_file_chunk,json=memoryFileChunk,proto3" json:"memory_file_chunk,omitempty"`
+	StateFileChunk       *SnapshotFileChunk        `protobuf:"bytes,4,opt,name=state_file_chunk,json=stateFileChunk,proto3" json:"state_file_chunk,omitempty"`
+	KernelFileChunk      *SnapshotFileChunk        `protobuf:"bytes,5,opt,name=kernel_file_chunk,json=kernelFileChunk,proto3" json:"kernel_file_chunk,omitempty"`
+	DevContainerMetadata *IsoDevContainerMetadata  `protobuf:"bytes,6,opt,name=dev_container_metadata,json=devContainerMetadata,proto3" json:"dev_container_metadata,omitempty"`
+	ExtraDriveFiles      []*SnapshotExtraDriveFile `protobuf:"bytes,7,rep,name=extra_drive_files,json=extraDriveFiles,proto3" json:"extra_drive_files,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) Reset() {
+	*x = SnapshotVmSnapshotV1Metadata{}
+	mi := &file_anyrun_v1_proto_msgTypes[116]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SnapshotVmSnapshotV1Metadata) ProtoMessage() {}
+
+func (x *SnapshotVmSnapshotV1Metadata) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[116]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SnapshotVmSnapshotV1Metadata.ProtoReflect.Descriptor instead.
+func (*SnapshotVmSnapshotV1Metadata) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{116}
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetRootfsFileChunks() []*SnapshotFileChunk {
+	if x != nil {
+		return x.RootfsFileChunks
+	}
+	return nil
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetRootfsFileSize() uint64 {
+	if x != nil {
+		return x.RootfsFileSize
+	}
+	return 0
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetMemoryFileChunk() *SnapshotFileChunk {
+	if x != nil {
+		return x.MemoryFileChunk
+	}
+	return nil
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetStateFileChunk() *SnapshotFileChunk {
+	if x != nil {
+		return x.StateFileChunk
+	}
+	return nil
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetKernelFileChunk() *SnapshotFileChunk {
+	if x != nil {
+		return x.KernelFileChunk
+	}
+	return nil
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetDevContainerMetadata() *IsoDevContainerMetadata {
+	if x != nil {
+		return x.DevContainerMetadata
+	}
+	return nil
+}
+
+func (x *SnapshotVmSnapshotV1Metadata) GetExtraDriveFiles() []*SnapshotExtraDriveFile {
+	if x != nil {
+		return x.ExtraDriveFiles
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.SpanEnded (var: DKt)
+type SpanEnded struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanId        string                 `protobuf:"bytes,1,opt,name=span_id,json=spanId,proto3" json:"span_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpanEnded) Reset() {
+	*x = SpanEnded{}
+	mi := &file_anyrun_v1_proto_msgTypes[117]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpanEnded) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpanEnded) ProtoMessage() {}
+
+func (x *SpanEnded) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[117]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpanEnded.ProtoReflect.Descriptor instead.
+func (*SpanEnded) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{117}
+}
+
+func (x *SpanEnded) GetSpanId() string {
+	if x != nil {
+		return x.SpanId
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.SpanStarted (var: AKt)
+type SpanStarted struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanId        string                 `protobuf:"bytes,1,opt,name=span_id,json=spanId,proto3" json:"span_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ParentSpanId  *string                `protobuf:"bytes,3,opt,name=parent_span_id,json=parentSpanId,proto3,oneof" json:"parent_span_id,omitempty"`
+	Href          *string                `protobuf:"bytes,5,opt,name=href,proto3,oneof" json:"href,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpanStarted) Reset() {
+	*x = SpanStarted{}
+	mi := &file_anyrun_v1_proto_msgTypes[118]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpanStarted) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpanStarted) ProtoMessage() {}
+
+func (x *SpanStarted) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[118]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpanStarted.ProtoReflect.Descriptor instead.
+func (*SpanStarted) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{118}
+}
+
+func (x *SpanStarted) GetSpanId() string {
+	if x != nil {
+		return x.SpanId
+	}
+	return ""
+}
+
+func (x *SpanStarted) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SpanStarted) GetParentSpanId() string {
+	if x != nil && x.ParentSpanId != nil {
+		return *x.ParentSpanId
+	}
+	return ""
+}
+
+func (x *SpanStarted) GetHref() string {
+	if x != nil && x.Href != nil {
+		return *x.Href
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.StderrData (var: PKt)
+type StderrData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StderrData) Reset() {
+	*x = StderrData{}
+	mi := &file_anyrun_v1_proto_msgTypes[119]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StderrData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StderrData) ProtoMessage() {}
+
+func (x *StderrData) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[119]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StderrData.ProtoReflect.Descriptor instead.
+func (*StderrData) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{119}
+}
+
+func (x *StderrData) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.StdoutData (var: CKt)
+type StdoutData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StdoutData) Reset() {
+	*x = StdoutData{}
+	mi := &file_anyrun_v1_proto_msgTypes[120]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StdoutData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StdoutData) ProtoMessage() {}
+
+func (x *StdoutData) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[120]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StdoutData.ProtoReflect.Descriptor instead.
+func (*StdoutData) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{120}
+}
+
+func (x *StdoutData) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.StreamMetricsRequest (var: IPr)
+type StreamMetricsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamMetricsRequest) Reset() {
+	*x = StreamMetricsRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[121]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamMetricsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamMetricsRequest) ProtoMessage() {}
+
+func (x *StreamMetricsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[121]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamMetricsRequest.ProtoReflect.Descriptor instead.
+func (*StreamMetricsRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{121}
+}
+
+// Copied from: local:anyrun.v1.TarGzipUrlSourceReference (var: cjt)
 type TarGzipUrlSourceReference struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -5603,7 +11096,7 @@ type TarGzipUrlSourceReference struct {
 
 func (x *TarGzipUrlSourceReference) Reset() {
 	*x = TarGzipUrlSourceReference{}
-	mi := &file_anyrun_v1_proto_msgTypes[55]
+	mi := &file_anyrun_v1_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5615,7 +11108,7 @@ func (x *TarGzipUrlSourceReference) String() string {
 func (*TarGzipUrlSourceReference) ProtoMessage() {}
 
 func (x *TarGzipUrlSourceReference) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[55]
+	mi := &file_anyrun_v1_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5628,7 +11121,7 @@ func (x *TarGzipUrlSourceReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TarGzipUrlSourceReference.ProtoReflect.Descriptor instead.
 func (*TarGzipUrlSourceReference) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{55}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *TarGzipUrlSourceReference) GetName() string {
@@ -5645,7 +11138,7 @@ func (x *TarGzipUrlSourceReference) GetUrl() string {
 	return ""
 }
 
-// Copied from: local:anyrun.v1.TarRepoSourceReference (var: ces, class: xce)
+// Copied from: local:anyrun.v1.TarRepoSourceReference (var: ujt)
 type TarRepoSourceReference struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -5656,7 +11149,7 @@ type TarRepoSourceReference struct {
 
 func (x *TarRepoSourceReference) Reset() {
 	*x = TarRepoSourceReference{}
-	mi := &file_anyrun_v1_proto_msgTypes[56]
+	mi := &file_anyrun_v1_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5668,7 +11161,7 @@ func (x *TarRepoSourceReference) String() string {
 func (*TarRepoSourceReference) ProtoMessage() {}
 
 func (x *TarRepoSourceReference) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[56]
+	mi := &file_anyrun_v1_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5681,7 +11174,7 @@ func (x *TarRepoSourceReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TarRepoSourceReference.ProtoReflect.Descriptor instead.
 func (*TarRepoSourceReference) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{56}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *TarRepoSourceReference) GetName() string {
@@ -5698,18 +11191,19 @@ func (x *TarRepoSourceReference) GetTarArchive() []byte {
 	return nil
 }
 
-// Copied from: local:anyrun.v1.WaitingForWorkerStatus (var: xes, class: lle)
+// Copied from: local:anyrun.v1.WaitingForWorkerStatus (var: FKt)
 type WaitingForWorkerStatus struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RetryCount    int32                  `protobuf:"varint,1,opt,name=retry_count,json=retryCount,proto3" json:"retry_count,omitempty"`
-	MaxRetries    int32                  `protobuf:"varint,2,opt,name=max_retries,json=maxRetries,proto3" json:"max_retries,omitempty"`
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	RetryCount    int32                   `protobuf:"varint,1,opt,name=retry_count,json=retryCount,proto3" json:"retry_count,omitempty"`
+	MaxRetries    int32                   `protobuf:"varint,2,opt,name=max_retries,json=maxRetries,proto3" json:"max_retries,omitempty"`
+	WaitReason    PrivateWorkerWaitReason `protobuf:"varint,3,opt,name=wait_reason,json=waitReason,proto3,enum=anyrun.v1.PrivateWorkerWaitReason" json:"wait_reason,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *WaitingForWorkerStatus) Reset() {
 	*x = WaitingForWorkerStatus{}
-	mi := &file_anyrun_v1_proto_msgTypes[57]
+	mi := &file_anyrun_v1_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5721,7 +11215,7 @@ func (x *WaitingForWorkerStatus) String() string {
 func (*WaitingForWorkerStatus) ProtoMessage() {}
 
 func (x *WaitingForWorkerStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_anyrun_v1_proto_msgTypes[57]
+	mi := &file_anyrun_v1_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5734,7 +11228,7 @@ func (x *WaitingForWorkerStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WaitingForWorkerStatus.ProtoReflect.Descriptor instead.
 func (*WaitingForWorkerStatus) Descriptor() ([]byte, []int) {
-	return file_anyrun_v1_proto_rawDescGZIP(), []int{57}
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *WaitingForWorkerStatus) GetRetryCount() int32 {
@@ -5751,11 +11245,394 @@ func (x *WaitingForWorkerStatus) GetMaxRetries() int32 {
 	return 0
 }
 
+func (x *WaitingForWorkerStatus) GetWaitReason() PrivateWorkerWaitReason {
+	if x != nil {
+		return x.WaitReason
+	}
+	return PrivateWorkerWaitReason_PRIVATE_WORKER_WAIT_REASON_UNSPECIFIED
+}
+
+// Copied from: local:anyrun.v1.WorkspaceConfig (var: Xjt)
+type WorkspaceConfig struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Config:
+	//
+	//	*WorkspaceConfig_Absolute
+	//	*WorkspaceConfig_WorkdirRelative
+	Config        isWorkspaceConfig_Config `protobuf_oneof:"config"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WorkspaceConfig) Reset() {
+	*x = WorkspaceConfig{}
+	mi := &file_anyrun_v1_proto_msgTypes[125]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorkspaceConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorkspaceConfig) ProtoMessage() {}
+
+func (x *WorkspaceConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[125]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WorkspaceConfig.ProtoReflect.Descriptor instead.
+func (*WorkspaceConfig) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{125}
+}
+
+func (x *WorkspaceConfig) GetConfig() isWorkspaceConfig_Config {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+func (x *WorkspaceConfig) GetAbsolute() string {
+	if x != nil {
+		if x, ok := x.Config.(*WorkspaceConfig_Absolute); ok {
+			return x.Absolute
+		}
+	}
+	return ""
+}
+
+func (x *WorkspaceConfig) GetWorkdirRelative() string {
+	if x != nil {
+		if x, ok := x.Config.(*WorkspaceConfig_WorkdirRelative); ok {
+			return x.WorkdirRelative
+		}
+	}
+	return ""
+}
+
+type isWorkspaceConfig_Config interface {
+	isWorkspaceConfig_Config()
+}
+
+type WorkspaceConfig_Absolute struct {
+	Absolute string `protobuf:"bytes,1,opt,name=absolute,proto3,oneof"`
+}
+
+type WorkspaceConfig_WorkdirRelative struct {
+	WorkdirRelative string `protobuf:"bytes,2,opt,name=workdir_relative,json=workdirRelative,proto3,oneof"`
+}
+
+func (*WorkspaceConfig_Absolute) isWorkspaceConfig_Config() {}
+
+func (*WorkspaceConfig_WorkdirRelative) isWorkspaceConfig_Config() {}
+
+// Copied from: local:anyrun.v1.WriteBinaryFileRequest (var: HPr)
+type WriteBinaryFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	Content       []byte                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WriteBinaryFileRequest) Reset() {
+	*x = WriteBinaryFileRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[126]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WriteBinaryFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WriteBinaryFileRequest) ProtoMessage() {}
+
+func (x *WriteBinaryFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[126]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WriteBinaryFileRequest.ProtoReflect.Descriptor instead.
+func (*WriteBinaryFileRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{126}
+}
+
+func (x *WriteBinaryFileRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *WriteBinaryFileRequest) GetContent() []byte {
+	if x != nil {
+		return x.Content
+	}
+	return nil
+}
+
+// Copied from: local:anyrun.v1.WriteBinaryFileResponse (var: WPr)
+type WriteBinaryFileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WriteBinaryFileResponse) Reset() {
+	*x = WriteBinaryFileResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[127]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WriteBinaryFileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WriteBinaryFileResponse) ProtoMessage() {}
+
+func (x *WriteBinaryFileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[127]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WriteBinaryFileResponse.ProtoReflect.Descriptor instead.
+func (*WriteBinaryFileResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{127}
+}
+
+// Copied from: local:anyrun.v1.WriteTextFileRequest (var: OPr)
+type WriteTextFileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WriteTextFileRequest) Reset() {
+	*x = WriteTextFileRequest{}
+	mi := &file_anyrun_v1_proto_msgTypes[128]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WriteTextFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WriteTextFileRequest) ProtoMessage() {}
+
+func (x *WriteTextFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[128]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WriteTextFileRequest.ProtoReflect.Descriptor instead.
+func (*WriteTextFileRequest) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{128}
+}
+
+func (x *WriteTextFileRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *WriteTextFileRequest) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+// Copied from: local:anyrun.v1.WriteTextFileResponse (var: UPr)
+type WriteTextFileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WriteTextFileResponse) Reset() {
+	*x = WriteTextFileResponse{}
+	mi := &file_anyrun_v1_proto_msgTypes[129]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WriteTextFileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WriteTextFileResponse) ProtoMessage() {}
+
+func (x *WriteTextFileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[129]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WriteTextFileResponse.ProtoReflect.Descriptor instead.
+func (*WriteTextFileResponse) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{129}
+}
+
+// Copied from: local:anyrun.v1.GetProcessStatusResponse.Completed (var: yKt)
+type GetProcessStatusResponse_Completed struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExitCode      int32                  `protobuf:"varint,1,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProcessStatusResponse_Completed) Reset() {
+	*x = GetProcessStatusResponse_Completed{}
+	mi := &file_anyrun_v1_proto_msgTypes[134]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProcessStatusResponse_Completed) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProcessStatusResponse_Completed) ProtoMessage() {}
+
+func (x *GetProcessStatusResponse_Completed) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[134]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProcessStatusResponse_Completed.ProtoReflect.Descriptor instead.
+func (*GetProcessStatusResponse_Completed) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{38, 0}
+}
+
+func (x *GetProcessStatusResponse_Completed) GetExitCode() int32 {
+	if x != nil {
+		return x.ExitCode
+	}
+	return 0
+}
+
+// Copied from: local:anyrun.v1.GetProcessStatusResponse.Running (var: wKt)
+type GetProcessStatusResponse_Running struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProcessStatusResponse_Running) Reset() {
+	*x = GetProcessStatusResponse_Running{}
+	mi := &file_anyrun_v1_proto_msgTypes[135]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProcessStatusResponse_Running) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProcessStatusResponse_Running) ProtoMessage() {}
+
+func (x *GetProcessStatusResponse_Running) ProtoReflect() protoreflect.Message {
+	mi := &file_anyrun_v1_proto_msgTypes[135]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProcessStatusResponse_Running.ProtoReflect.Descriptor instead.
+func (*GetProcessStatusResponse_Running) Descriptor() ([]byte, []int) {
+	return file_anyrun_v1_proto_rawDescGZIP(), []int{38, 1}
+}
+
 var File_anyrun_v1_proto protoreflect.FileDescriptor
 
 const file_anyrun_v1_proto_rawDesc = "" +
 	"\n" +
-	"\x0fanyrun_v1.proto\x12\tanyrun.v1\x1a\x1bgoogle/protobuf/empty.proto\"A\n" +
+	"\x0fanyrun_v1.proto\x12\tanyrun.v1\x1a\x1bgoogle/protobuf/empty.proto\"\x9f\x02\n" +
+	"\x10AgentStoreConfig\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\"\n" +
+	"\rself_store_id\x18\x02 \x01(\tR\vselfStoreId\x120\n" +
+	"\x14additional_store_ids\x18\x03 \x03(\tR\x12additionalStoreIds\x12:\n" +
+	"\tpod_grant\x18\x04 \x01(\v2\x1d.anyrun.v1.PodAgentStoreGrantR\bpodGrant\x12!\n" +
+	"\fbcs_endpoint\x18\x06 \x01(\tR\vbcsEndpoint\x12\x1d\n" +
+	"\n" +
+	"vsock_port\x18\a \x01(\rR\tvsockPort\x12\x1d\n" +
+	"\n" +
+	"mount_root\x18\b \x01(\tR\tmountRoot\"'\n" +
+	"\rAllowedDomain\x12\x16\n" +
+	"\x06domain\x18\x01 \x01(\tR\x06domain\"\x8f\x01\n" +
+	"\x19AnygressLocalPodDenyRules\x12\x18\n" +
+	"\aversion\x18\x01 \x01(\rR\aversion\x12\x15\n" +
+	"\x06pod_id\x18\x02 \x01(\tR\x05podId\x12A\n" +
+	"\n" +
+	"deny_rules\x18\x03 \x01(\v2\".anyrun.v1.AnygressPerPodDenyRulesR\tdenyRules\"\xc0\x01\n" +
+	"\x17AnygressPerPodDenyRules\x12F\n" +
+	"\x06denies\x18\x01 \x03(\v2..anyrun.v1.AnygressPerPodDenyRules.DeniesEntryR\x06denies\x1a]\n" +
+	"\vDeniesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x128\n" +
+	"\x05value\x18\x02 \x01(\v2\".anyrun.v1.AnygressPodDenyRuleListR\x05value:\x028\x01\"=\n" +
+	"\x13AnygressPodDenyRule\x12\x12\n" +
+	"\x04verb\x18\x01 \x01(\tR\x04verb\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\"O\n" +
+	"\x17AnygressPodDenyRuleList\x124\n" +
+	"\x05rules\x18\x01 \x03(\v2\x1e.anyrun.v1.AnygressPodDenyRuleR\x05rules\"c\n" +
+	"\x14AttachProcessRequest\x12\x10\n" +
+	"\x03pid\x18\x01 \x01(\x03R\x03pid\x12'\n" +
+	"\rlast_event_id\x18\x02 \x01(\tH\x00R\vlastEventId\x88\x01\x01B\x10\n" +
+	"\x0e_last_event_id\"A\n" +
 	"\x05Build\x12\x1e\n" +
 	"\n" +
 	"dockerfile\x18\x01 \x01(\tR\n" +
@@ -5774,14 +11651,44 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x0eCloneCompleted\x121\n" +
 	"\apurpose\x18\x01 \x01(\x0e2\x17.anyrun.v1.ClonePurposeR\apurpose\"A\n" +
 	"\fCloneStarted\x121\n" +
-	"\apurpose\x18\x01 \x01(\x0e2\x17.anyrun.v1.ClonePurposeR\apurpose\"\xa0\x02\n" +
-	"\tDaemonPod\x12-\n" +
-	"\x05ports\x18\x01 \x01(\v2\x17.anyrun.v1.PodPortStateR\x05ports\x12,\n" +
+	"\apurpose\x18\x01 \x01(\x0e2\x17.anyrun.v1.ClonePurposeR\apurpose\"M\n" +
+	"\x14ContainerWaitFailure\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x03R\bexitCode\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xfd\x02\n" +
+	"\x14CreateProcessRequest\x12\x18\n" +
+	"\acommand\x18\x01 \x03(\tR\acommand\x12\x12\n" +
+	"\x04user\x18\x02 \x01(\tR\x04user\x12+\n" +
+	"\x11working_directory\x18\x03 \x01(\tR\x10workingDirectory\x12:\n" +
+	"\x03env\x18\x04 \x03(\v2(.anyrun.v1.CreateProcessRequest.EnvEntryR\x03env\x12,\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tH\x00R\x0eidempotencyKey\x88\x01\x01\x12D\n" +
+	"\vsupervision\x18\x06 \x01(\v2\x1d.anyrun.v1.ProcessSupervisionH\x01R\vsupervision\x88\x01\x01\x1a6\n" +
+	"\bEnvEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x12\n" +
+	"\x10_idempotency_keyB\x0e\n" +
+	"\f_supervision\"\x8f\x01\n" +
+	"\x15CreateProcessResponse\x12\x10\n" +
+	"\x03pid\x18\x01 \x01(\x03R\x03pid\x12.\n" +
+	"\x13reused_existing_pid\x18\x02 \x01(\bR\x11reusedExistingPid\x12$\n" +
+	"\vprocess_pid\x18\x03 \x01(\x03H\x00R\n" +
+	"processPid\x88\x01\x01B\x0e\n" +
+	"\f_process_pid\"t\n" +
+	"#DaemonCommandHandlerPersistentState\x12\x12\n" +
+	"\x04vpid\x18\x01 \x01(\x03R\x04vpid\x12'\n" +
+	"\rlast_event_id\x18\x02 \x01(\tH\x00R\vlastEventId\x88\x01\x01B\x10\n" +
+	"\x0e_last_event_id\"\xf1\x04\n" +
+	"\tDaemonPod\x12,\n" +
 	"\x06status\x18\x02 \x01(\v2\x14.anyrun.v1.PodStatusR\x06status\x123\n" +
 	"\x13internal_proxy_port\x18\x03 \x01(\rH\x00R\x11internalProxyPort\x88\x01\x01\x12Q\n" +
-	"\x13default_port_config\x18\x04 \x01(\v2\x1c.anyrun.v1.DefaultPortConfigH\x01R\x11defaultPortConfig\x88\x01\x01B\x16\n" +
+	"\x13default_port_config\x18\x04 \x01(\v2\x1c.anyrun.v1.DefaultPortConfigH\x01R\x11defaultPortConfig\x88\x01\x01\x12K\n" +
+	" started_from_checkpoint_group_id\x18\x05 \x01(\tH\x02R\x1cstartedFromCheckpointGroupId\x88\x01\x01\x12^\n" +
+	"\x19started_from_cache_source\x18\x06 \x01(\x0e2\x1e.anyrun.v1.PodStartCacheSourceH\x03R\x16startedFromCacheSource\x88\x01\x01\x12_\n" +
+	"*started_from_checkpoint_creation_timestamp\x18\a \x01(\x04H\x04R&startedFromCheckpointCreationTimestamp\x88\x01\x01B\x16\n" +
 	"\x14_internal_proxy_portB\x16\n" +
-	"\x14_default_port_config\"\xf7\x01\n" +
+	"\x14_default_port_configB#\n" +
+	"!_started_from_checkpoint_group_idB\x1c\n" +
+	"\x1a_started_from_cache_sourceB-\n" +
+	"+_started_from_checkpoint_creation_timestamp\"\xf7\x01\n" +
 	"\x11DefaultPortConfig\x12,\n" +
 	"\x04open\x18\x03 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x04open\x12.\n" +
 	"\x05token\x18\x04 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x05token\x120\n" +
@@ -5789,7 +11696,7 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\aprivate\x18\x02 \x01(\v2\x16.google.protobuf.EmptyH\x01R\aprivateB\x10\n" +
 	"\x0eauthenticationB\f\n" +
 	"\n" +
-	"visibility\"\x83\r\n" +
+	"visibility\"\xa3\x12\n" +
 	"\x12DevContainerConfig\x125\n" +
 	"\x14prepare_commands_tag\x18\x13 \x01(\fH\x03R\x12prepareCommandsTag\x88\x01\x01\x12M\n" +
 	"\x10prepare_commands\x18\b \x03(\v2\".anyrun.v1.DevContainerExecCommandR\x0fprepareCommands\x125\n" +
@@ -5807,22 +11714,32 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x05shell\x18\x0e \x01(\tR\x05shell\x12#\n" +
 	"\n" +
 	"privileged\x18\x11 \x01(\bH\tR\n" +
-	"privileged\x88\x01\x01\x12;\n" +
-	"\x17checkpoint_threshold_ms\x18\x17 \x01(\x04H\n" +
-	"R\x15checkpointThresholdMs\x88\x01\x01\x12/\n" +
+	"privileged\x88\x01\x01\x12,\n" +
+	"\x0fbuild_container\x18\x1d \x01(\bH\n" +
+	"R\x0ebuildContainer\x88\x01\x01\x12;\n" +
+	"\x17checkpoint_threshold_ms\x18\x17 \x01(\x04H\vR\x15checkpointThresholdMs\x88\x01\x01\x12F\n" +
+	"\x1denable_cgroup_subtree_control\x18\x1e \x01(\bH\fR\x1aenableCgroupSubtreeControl\x88\x01\x01\x12J\n" +
+	"\x1fenable_checkpoint_scratch_drive\x18\" \x01(\bH\rR\x1cenableCheckpointScratchDrive\x88\x01\x01\x12/\n" +
 	"\x12registry_reference\x18\x04 \x01(\tH\x00R\x11registryReference\x12!\n" +
 	"\vsnapshot_id\x18\x05 \x01(\tH\x00R\n" +
 	"snapshotId\x12(\n" +
 	"\x05build\x18\x06 \x01(\v2\x10.anyrun.v1.BuildH\x00R\x05build\x12J\n" +
-	"\x11external_snapshot\x18\x1b \x01(\v2\x1b.anyrun.v1.ExternalSnapshotH\x00R\x10externalSnapshot\x125\n" +
+	"\x11external_snapshot\x18\x1b \x01(\v2\x1b.anyrun.v1.ExternalSnapshotH\x00R\x10externalSnapshot\x120\n" +
+	"\x13checkpoint_group_id\x18\x1c \x01(\tH\x00R\x11checkpointGroupId\x12p\n" +
+	"\x18registry_reference_alias\x18  \x01(\x0e24.anyrun.v1.DevContainerConfig.RegistryReferenceAliasH\x00R\x16registryReferenceAlias\x12;\n" +
+	"\finline_build\x18! \x01(\v2\x16.anyrun.v1.InlineBuildH\x00R\vinlineBuild\x125\n" +
 	"\x03git\x18\x01 \x01(\v2!.anyrun.v1.GitRepoSourceReferenceH\x01R\x03git\x125\n" +
 	"\x03tar\x18\x02 \x01(\v2!.anyrun.v1.TarRepoSourceReferenceH\x01R\x03tar\x12:\n" +
 	"\x05local\x18\x0f \x01(\v2\".anyrun.v1.LocalDirectoryReferenceH\x01R\x05local\x12H\n" +
 	"\ftar_gzip_url\x18\x10 \x01(\v2$.anyrun.v1.TarGzipUrlSourceReferenceH\x01R\n" +
 	"tarGzipUrl\x124\n" +
-	"\x04noop\x18\x16 \x01(\v2\x1e.anyrun.v1.NoopSourceReferenceH\x01R\x04noop\x12'\n" +
+	"\x04noop\x18\x16 \x01(\v2\x1e.anyrun.v1.NoopSourceReferenceH\x01R\x04noop\x127\n" +
+	"\x05multi\x18\x1f \x01(\v2\x1f.anyrun.v1.MultiSourceReferenceH\x01R\x05multi\x12'\n" +
 	"\x0eworkspace_path\x18\a \x01(\tH\x02R\rworkspacePath\x124\n" +
-	"\x15workdir_relative_path\x18\x12 \x01(\tH\x02R\x13workdirRelativePathB\a\n" +
+	"\x15workdir_relative_path\x18\x12 \x01(\tH\x02R\x13workdirRelativePath\"h\n" +
+	"\x16RegistryReferenceAlias\x12(\n" +
+	"$REGISTRY_REFERENCE_ALIAS_UNSPECIFIED\x10\x00\x12$\n" +
+	" REGISTRY_REFERENCE_ALIAS_BUILDER\x10\x01B\a\n" +
 	"\x05imageB\b\n" +
 	"\x06sourceB\v\n" +
 	"\tworkspaceB\x17\n" +
@@ -5832,22 +11749,34 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x13_start_commands_tagB\x16\n" +
 	"\x14_default_port_configB\a\n" +
 	"\x05_userB\r\n" +
-	"\v_privilegedB\x1a\n" +
-	"\x18_checkpoint_threshold_ms\"h\n" +
+	"\v_privilegedB\x12\n" +
+	"\x10_build_containerB\x1a\n" +
+	"\x18_checkpoint_threshold_msB \n" +
+	"\x1e_enable_cgroup_subtree_controlB\"\n" +
+	" _enable_checkpoint_scratch_drive\"\x9b\x01\n" +
 	"\x0fDevContainerEnv\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\"\n" +
+	"\n" +
+	"value_hash\x18\x04 \x01(\tH\x01R\tvalueHash\x88\x01\x01\x12\x18\n" +
 	"\x06inline\x18\x02 \x01(\tH\x00R\x06inline\x12\x1e\n" +
 	"\tencrypted\x18\x03 \x01(\tH\x00R\tencryptedB\a\n" +
-	"\x05value\"\xb6\x01\n" +
+	"\x05valueB\r\n" +
+	"\v_value_hash\"\x8d\x03\n" +
 	"\x17DevContainerExecCommand\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
 	"\x04user\x18\x02 \x01(\tH\x00R\x04user\x88\x01\x01\x12\x18\n" +
 	"\acommand\x18\x03 \x01(\tR\acommand\x12\x1b\n" +
 	"\tis_system\x18\x04 \x01(\bR\bisSystem\x12 \n" +
-	"\tcache_key\x18\x05 \x01(\tH\x01R\bcacheKey\x88\x01\x01B\a\n" +
+	"\tcache_key\x18\x05 \x01(\tH\x01R\bcacheKey\x88\x01\x01\x12)\n" +
+	"\x10failure_tolerant\x18\x06 \x01(\bR\x0ffailureTolerant\x12\x1d\n" +
+	"\n" +
+	"depends_on\x18\a \x03(\tR\tdependsOn\x125\n" +
+	"\x17depends_on_git_checkout\x18\b \x01(\bR\x14dependsOnGitCheckout\x12D\n" +
+	"\vsupervision\x18\t \x01(\v2\x1d.anyrun.v1.ProcessSupervisionH\x02R\vsupervision\x88\x01\x01B\a\n" +
 	"\x05_userB\f\n" +
 	"\n" +
-	"_cache_key\"\x84\v\n" +
+	"_cache_keyB\x0e\n" +
+	"\f_supervision\"\xd8\r\n" +
 	"\x10DevContainerSpec\x12\x12\n" +
 	"\x04name\x18\x05 \x01(\tR\x04name\x12\x1f\n" +
 	"\bplatform\x18\x17 \x01(\tH\x00R\bplatform\x88\x01\x01\x122\n" +
@@ -5856,7 +11785,8 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\n" +
 	"pod_labels\x18\a \x03(\v2*.anyrun.v1.DevContainerSpec.PodLabelsEntryR\tpodLabels\x12L\n" +
 	"\vnode_labels\x18\b \x03(\v2+.anyrun.v1.DevContainerSpec.NodeLabelsEntryR\n" +
-	"nodeLabels\x127\n" +
+	"nodeLabels\x12;\n" +
+	"\x1alow_cardinality_pod_labels\x18\x1b \x03(\tR\x17lowCardinalityPodLabels\x127\n" +
 	"\brequests\x18\t \x01(\v2\x1b.anyrun.v1.ResourceRequestsR\brequests\x12L\n" +
 	"\x13hibernated_requests\x18\x10 \x01(\v2\x1b.anyrun.v1.ResourceRequestsR\x12hibernatedRequests\x121\n" +
 	"\x06limits\x18\n" +
@@ -5870,8 +11800,11 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\bworkload\x18\x15 \x01(\tR\bworkload\x125\n" +
 	"\x06config\x18\f \x01(\v2\x1d.anyrun.v1.DevContainerConfigR\x06config\x12*\n" +
 	"\x0epersist_config\x18\x16 \x01(\bH\bR\rpersistConfig\x88\x01\x01\x123\n" +
-	"\x13expected_fork_count\x18\x18 \x01(\rH\tR\x11expectedForkCount\x88\x01\x01\x12*\n" +
-	"\x11two_pass_download\x18\x19 \x01(\bR\x0ftwoPassDownload\x1a<\n" +
+	"\x13expected_fork_count\x18\x18 \x01(\rH\tR\x11expectedForkCount\x88\x01\x01\x12A\n" +
+	"\regress_policy\x18\x1a \x01(\v2\x17.anyrun.v1.EgressPolicyH\n" +
+	"R\fegressPolicy\x88\x01\x01\x12e\n" +
+	"\x1banygress_per_pod_deny_rules\x18\x1c \x01(\v2\".anyrun.v1.AnygressPerPodDenyRulesH\vR\x17anygressPerPodDenyRules\x88\x01\x01\x12N\n" +
+	"\x12agent_store_config\x18\x1e \x01(\v2\x1b.anyrun.v1.AgentStoreConfigH\fR\x10agentStoreConfig\x88\x01\x01\x1a<\n" +
 	"\x0ePodLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a=\n" +
@@ -5888,18 +11821,102 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\n" +
 	"_cache_tagB\x11\n" +
 	"\x0f_persist_configB\x16\n" +
-	"\x14_expected_fork_count\"K\n" +
+	"\x14_expected_fork_countB\x10\n" +
+	"\x0e_egress_policyB\x1e\n" +
+	"\x1c_anygress_per_pod_deny_rulesB\x15\n" +
+	"\x13_agent_store_config\"\xb0\x01\n" +
+	"\x0eDirectoryEntry\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12(\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x14.anyrun.v1.EntryTypeR\x04type\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\x04 \x01(\x04R\tsizeBytes\x12-\n" +
+	"\x13modified_at_unix_ms\x18\x05 \x01(\x03R\x10modifiedAtUnixMs\"\x8d\x01\n" +
 	"\tDiskUsage\x12\x1d\n" +
 	"\n" +
 	"bytes_used\x18\x01 \x01(\x04R\tbytesUsed\x12\x1f\n" +
 	"\vbytes_total\x18\x02 \x01(\x04R\n" +
-	"bytesTotal\"\xe7\x01\n" +
+	"bytesTotal\x12,\n" +
+	"\x0fbusy_percentage\x18\x03 \x01(\x01H\x00R\x0ebusyPercentage\x88\x01\x01B\x12\n" +
+	"\x10_busy_percentage\"\xdd\x02\n" +
+	"\x11DockerBuildConfig\x12\x1e\n" +
+	"\n" +
+	"dockerfile\x18\x01 \x01(\tR\n" +
+	"dockerfile\x12\x18\n" +
+	"\acontext\x18\x02 \x01(\tR\acontext\x12\x12\n" +
+	"\x04user\x18\x03 \x01(\tR\x04user\x12,\n" +
+	"\x12registry_cache_ref\x18\x04 \x01(\tR\x10registryCacheRef\x12\\\n" +
+	"\x1acache_registry_credentials\x18\x05 \x01(\v2\x1e.anyrun.v1.RegistryCredentialsR\x18cacheRegistryCredentials\x12F\n" +
+	"\rbuild_secrets\x18\x06 \x03(\v2!.anyrun.v1.DockerBuildSecretEntryR\fbuildSecrets\x12&\n" +
+	"\x0fcache_from_refs\x18\a \x03(\tR\rcacheFromRefs\"1\n" +
+	"\x12DockerBuildFailure\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x03R\bexitCode\"D\n" +
+	"\x11DockerBuildResult\x12/\n" +
+	"\x05image\x18\x01 \x01(\v2\x19.anyrun.v1.DockerImageRefR\x05image\"\xa2\x01\n" +
+	"\x16DockerBuildSecretEntry\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\"\n" +
+	"\n" +
+	"value_hash\x18\x04 \x01(\tH\x01R\tvalueHash\x88\x01\x01\x12\x18\n" +
+	"\x06inline\x18\x02 \x01(\tH\x00R\x06inline\x12\x1e\n" +
+	"\tencrypted\x18\x03 \x01(\tH\x00R\tencryptedB\a\n" +
+	"\x05valueB\r\n" +
+	"\v_value_hash\"\xf3\x01\n" +
+	"\x1eDockerContainerPersistentState\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
+	"\astopped\x18\x03 \x01(\bR\astopped\x12\x18\n" +
+	"\aremoved\x18\x04 \x01(\bR\aremoved\x12\x16\n" +
+	"\x06leaked\x18\x05 \x01(\bR\x06leaked\x12A\n" +
+	"\x1bpost_pause_unpause_delay_ms\x18\x06 \x01(\x04H\x00R\x17postPauseUnpauseDelayMs\x88\x01\x01B\x1e\n" +
+	"\x1c_post_pause_unpause_delay_ms\"\xfd\x03\n" +
+	"!DockerDevContainerPersistentState\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
+	"\tcontainer\x18\x02 \x01(\v2).anyrun.v1.DockerContainerPersistentStateR\tcontainer\x12K\n" +
+	"\rruntime_state\x18\x03 \x01(\v2&.anyrun.v1.RuntimeStatePersistentStateR\fruntimeState\x12?\n" +
+	"\x0eimage_metadata\x18\x04 \x01(\v2\x18.anyrun.v1.ImageMetadataR\rimageMetadata\x129\n" +
+	"\fnetwork_info\x18\x05 \x01(\v2\x16.anyrun.v1.NetworkInfoR\vnetworkInfo\x12\x17\n" +
+	"\x04user\x18\x06 \x01(\tH\x00R\x04user\x88\x01\x01\x12\x14\n" +
+	"\x05shell\x18\a \x01(\tR\x05shell\x12\x1f\n" +
+	"\vdaemon_port\x18\b \x01(\rR\n" +
+	"daemonPort\x128\n" +
+	"\tworkspace\x18\t \x01(\v2\x1a.anyrun.v1.WorkspaceConfigR\tworkspace\x12\x1f\n" +
+	"\vv2_hydrated\x18\n" +
+	" \x01(\bR\n" +
+	"v2HydratedB\a\n" +
+	"\x05_user\"\xf5\x04\n" +
+	"\x15DockerImageBuildEvent\x12-\n" +
+	"\x12creation_timestamp\x18\x01 \x01(\x04R\x11creationTimestamp\x120\n" +
+	"\x06queued\x18\x02 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x06queued\x122\n" +
+	"\astarted\x18\x03 \x01(\v2\x16.google.protobuf.EmptyH\x00R\astarted\x122\n" +
+	"\x14build_status_message\x18\x04 \x01(\tH\x00R\x12buildStatusMessage\x12K\n" +
+	"\x12build_step_started\x18\x05 \x01(\v2\x1b.anyrun.v1.BuildStepStartedH\x00R\x10buildStepStarted\x12H\n" +
+	"\x11build_status_line\x18\x06 \x01(\v2\x1a.anyrun.v1.BuildStatusLineH\x00R\x0fbuildStatusLine\x12W\n" +
+	"\x16internal_build_message\x18\a \x01(\v2\x1f.anyrun.v1.InternalBuildMessageH\x00R\x14internalBuildMessage\x120\n" +
+	"\x05error\x18\b \x01(\v2\x18.anyrun.v1.PodErrorEventH\x00R\x05error\x12<\n" +
+	"\tcompleted\x18\t \x01(\v2\x1c.anyrun.v1.DockerBuildResultH\x00R\tcompleted\x12(\n" +
+	"\x0fbuild_exit_code\x18\n" +
+	" \x01(\x05H\x00R\rbuildExitCodeB\t\n" +
+	"\apayload\"?\n" +
+	"\x0eDockerImageRef\x12-\n" +
+	"\x12registry_reference\x18\x01 \x01(\tR\x11registryReference\"\xe9\x01\n" +
+	"\fEgressPolicy\x12&\n" +
+	"\x03scm\x18\x03 \x03(\v2\x14.anyrun.v1.ScmConfigR\x03scm\x121\n" +
+	"\x15use_scm_egress_config\x18\x04 \x01(\bR\x12useScmEgressConfig\x125\n" +
+	"\tallow_all\x18\x01 \x01(\v2\x16.google.protobuf.EmptyH\x00R\ballowAll\x12=\n" +
+	"\n" +
+	"restricted\x18\x02 \x01(\v2\x1b.anyrun.v1.EgressRestrictedH\x00R\n" +
+	"restrictedB\b\n" +
+	"\x06policy\"U\n" +
+	"\x10EgressRestricted\x12A\n" +
+	"\x0fallowed_domains\x18\x01 \x03(\v2\x18.anyrun.v1.AllowedDomainR\x0eallowedDomains\"\xae\x02\n" +
 	"\x10ExternalSnapshot\x12\x1f\n" +
 	"\vsnapshot_id\x18\x01 \x01(\tR\n" +
 	"snapshotId\x12#\n" +
 	"\rpresigned_url\x18\x02 \x01(\tR\fpresignedUrl\x12?\n" +
 	"\x0eimage_metadata\x18\x03 \x01(\v2\x18.anyrun.v1.ImageMetadataR\rimageMetadata\x12L\n" +
-	"\x13blob_storage_format\x18\x04 \x01(\x0e2\x1c.anyrun.v1.BlobStorageFormatR\x11blobStorageFormat\"M\n" +
+	"\x13blob_storage_format\x18\x04 \x01(\x0e2\x1c.anyrun.v1.BlobStorageFormatR\x11blobStorageFormat\x12/\n" +
+	"\x11node_machine_type\x18\x05 \x01(\tH\x00R\x0fnodeMachineType\x88\x01\x01B\x14\n" +
+	"\x12_node_machine_type\"M\n" +
 	"\x0fFeatureExitCode\x12\x1d\n" +
 	"\n" +
 	"feature_id\x18\x01 \x01(\tR\tfeatureId\x12\x1b\n" +
@@ -5907,14 +11924,54 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\rFeatureOutput\x12\x1d\n" +
 	"\n" +
 	"feature_id\x18\x01 \x01(\tR\tfeatureId\x12\x16\n" +
-	"\x06output\x18\x02 \x01(\tR\x06output\"\x98\x01\n" +
+	"\x06output\x18\x02 \x01(\tR\x06output\"+\n" +
+	"\x17GetProcessStatusRequest\x12\x10\n" +
+	"\x03pid\x18\x01 \x01(\x03R\x03pid\"\xf1\x01\n" +
+	"\x18GetProcessStatusResponse\x12G\n" +
+	"\arunning\x18\x01 \x01(\v2+.anyrun.v1.GetProcessStatusResponse.RunningH\x00R\arunning\x12M\n" +
+	"\tcompleted\x18\x02 \x01(\v2-.anyrun.v1.GetProcessStatusResponse.CompletedH\x00R\tcompleted\x1a(\n" +
+	"\tCompleted\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x05R\bexitCode\x1a\t\n" +
+	"\aRunningB\b\n" +
+	"\x06status\"1\n" +
+	"\x12GitCheckoutFailure\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x03R\bexitCode\"\xf8\x01\n" +
+	"\x0fGitCloneFailure\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x03R\bexitCode\x12>\n" +
+	"\bcategory\x18\x02 \x01(\x0e2\".anyrun.v1.GitCloneFailureCategoryR\bcategory\x12\x1c\n" +
+	"\tretryable\x18\x03 \x01(\bR\tretryable\x12$\n" +
+	"\vremote_host\x18\x04 \x01(\tH\x00R\n" +
+	"remoteHost\x88\x01\x01\x12$\n" +
+	"\vhttp_status\x18\x05 \x01(\x05H\x01R\n" +
+	"httpStatus\x88\x01\x01B\x0e\n" +
+	"\f_remote_hostB\x0e\n" +
+	"\f_http_status\"\x8b\x02\n" +
 	"\x16GitRepoSourceReference\x12\x1b\n" +
 	"\tcache_uri\x18\x01 \x01(\tR\bcacheUri\x12!\n" +
 	"\fcheckout_uri\x18\x02 \x01(\tR\vcheckoutUri\x12\x1f\n" +
 	"\vcommit_hash\x18\x03 \x01(\fR\n" +
 	"commitHash\x12\x1d\n" +
 	"\n" +
-	"http_proxy\x18\x05 \x01(\tR\thttpProxy\"K\n" +
+	"http_proxy\x18\x05 \x01(\tR\thttpProxy\x12'\n" +
+	"\rmtls_cert_pem\x18\x06 \x01(\tH\x00R\vmtlsCertPem\x88\x01\x01\x12%\n" +
+	"\fmtls_key_pem\x18\a \x01(\tH\x01R\n" +
+	"mtlsKeyPem\x88\x01\x01B\x10\n" +
+	"\x0e_mtls_cert_pemB\x0f\n" +
+	"\r_mtls_key_pem\"\xe7\x02\n" +
+	"\x0fHttpHealthCheck\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x16\n" +
+	"\x06method\x18\x02 \x01(\tR\x06method\x12A\n" +
+	"\aheaders\x18\x03 \x03(\v2'.anyrun.v1.HttpHealthCheck.HeadersEntryR\aheaders\x12\x12\n" +
+	"\x04body\x18\x04 \x01(\fR\x04body\x12\x1f\n" +
+	"\vinterval_ms\x18\x05 \x01(\rR\n" +
+	"intervalMs\x12\x1d\n" +
+	"\n" +
+	"timeout_ms\x18\x06 \x01(\rR\ttimeoutMs\x12&\n" +
+	"\x0fstart_period_ms\x18\a \x01(\rR\rstartPeriodMs\x12/\n" +
+	"\x13unhealthy_threshold\x18\b \x01(\rR\x12unhealthyThreshold\x1a:\n" +
+	"\fHeadersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"K\n" +
 	"\x11HydrationProgress\x12 \n" +
 	"\vtransferred\x18\x01 \x01(\x04R\vtransferred\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x04R\x05total\"\xf6\x01\n" +
@@ -5959,19 +12016,88 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\n" +
 	"image_name\x18\x01 \x01(\tR\timageName\x12\x17\n" +
 	"\apull_id\x18\x02 \x01(\tR\x06pullId\x12\x16\n" +
-	"\x06status\x18\x03 \x01(\tR\x06status\"}\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\"X\n" +
+	"\vInlineBuild\x12/\n" +
+	"\x13dockerfile_contents\x18\x01 \x01(\tR\x12dockerfileContents\x12\x18\n" +
+	"\acontext\x18\x02 \x01(\tR\acontext\"\xa8\x01\n" +
 	"\x0eInstallCommand\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\acommand\x18\x02 \x01(\tR\acommand\x12\x17\n" +
 	"\x04user\x18\x03 \x01(\tH\x00R\x04user\x88\x01\x01\x12\x1b\n" +
-	"\tis_system\x18\x04 \x01(\bR\bisSystemB\a\n" +
-	"\x05_user\"M\n" +
+	"\tis_system\x18\x04 \x01(\bR\bisSystem\x12)\n" +
+	"\x10failure_tolerant\x18\x05 \x01(\bR\x0ffailureTolerantB\a\n" +
+	"\x05_user\"4\n" +
+	"\x15InstallCommandFailure\x12\x1b\n" +
+	"\tis_system\x18\x01 \x01(\bR\bisSystem\"M\n" +
 	"\x14InternalBuildMessage\x12\x1b\n" +
 	"\tstream_id\x18\x01 \x01(\rR\bstreamId\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"-\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"\xbe\x01\n" +
+	"\x17IsoDevContainerMetadata\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12W\n" +
+	"\x10persistent_state\x18\x02 \x01(\v2,.anyrun.v1.DockerDevContainerPersistentStateR\x0fpersistentState\x126\n" +
+	"\n" +
+	"env_config\x18\x03 \x01(\v2\x17.anyrun.v1.IsoEnvConfigR\tenvConfig\"\xb5\x01\n" +
+	"\x13IsoEnvBalloonConfig\x12\x1d\n" +
+	"\n" +
+	"amount_mib\x18\x01 \x01(\rR\tamountMib\x12$\n" +
+	"\x0edeflate_on_oom\x18\x02 \x01(\bR\fdeflateOnOom\x12<\n" +
+	"\x18stats_polling_interval_s\x18\x03 \x01(\rH\x00R\x15statsPollingIntervalS\x88\x01\x01B\x1b\n" +
+	"\x19_stats_polling_interval_s\"\xdc\x02\n" +
+	"\fIsoEnvConfig\x12\x1d\n" +
+	"\n" +
+	"vcpu_count\x18\x01 \x01(\rR\tvcpuCount\x12 \n" +
+	"\fmem_size_mib\x18\x02 \x01(\rR\n" +
+	"memSizeMib\x12'\n" +
+	"\rswap_size_mib\x18\x03 \x01(\rH\x00R\vswapSizeMib\x88\x01\x01\x12+\n" +
+	"\x0frootfs_size_mib\x18\x04 \x01(\rH\x01R\rrootfsSizeMib\x88\x01\x01\x12D\n" +
+	"\fextra_drives\x18\x05 \x03(\v2!.anyrun.v1.IsoEnvExtraDriveConfigR\vextraDrives\x12=\n" +
+	"\aballoon\x18\x06 \x01(\v2\x1e.anyrun.v1.IsoEnvBalloonConfigH\x02R\aballoon\x88\x01\x01B\x10\n" +
+	"\x0e_swap_size_mibB\x12\n" +
+	"\x10_rootfs_size_mibB\n" +
+	"\n" +
+	"\b_balloon\"\xd9\x01\n" +
+	"\x16IsoEnvExtraDriveConfig\x12<\n" +
+	"\apurpose\x18\x01 \x01(\x0e2\".anyrun.v1.IsoEnvExtraDrivePurposeR\apurpose\x12\x19\n" +
+	"\bsize_mib\x18\x03 \x01(\rR\asizeMib\x12\x19\n" +
+	"\bdrive_id\x18\x04 \x01(\tR\adriveId\x12!\n" +
+	"\fguest_device\x18\x05 \x01(\tR\vguestDevice\x12(\n" +
+	"\x10guest_mount_path\x18\x06 \x01(\tR\x0eguestMountPath\"X\n" +
+	"\x16LifecycleProcessExited\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x05R\bexitCode\x12!\n" +
+	"\fcommand_name\x18\x02 \x01(\tR\vcommandName\"\xb8\x01\n" +
+	"\x19LifecycleProcessRestarted\x12\x18\n" +
+	"\aattempt\x18\x01 \x01(\rR\aattempt\x12,\n" +
+	"\x12previous_exit_code\x18\x02 \x01(\x05R\x10previousExitCode\x120\n" +
+	"\x06reason\x18\x03 \x01(\x0e2\x18.anyrun.v1.RestartReasonR\x06reason\x12!\n" +
+	"\fcommand_name\x18\x04 \x01(\tR\vcommandName\"Q\n" +
+	"\x14ListDirectoryRequest\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12%\n" +
+	"\x0einclude_hidden\x18\x02 \x01(\bR\rincludeHidden\"L\n" +
+	"\x15ListDirectoryResponse\x123\n" +
+	"\aentries\x18\x01 \x03(\v2\x19.anyrun.v1.DirectoryEntryR\aentries\"\x16\n" +
+	"\x14ListProcessesRequest\"O\n" +
+	"\x15ListProcessesResponse\x126\n" +
+	"\tprocesses\x18\x01 \x03(\v2\x18.anyrun.v1.ListedProcessR\tprocesses\"^\n" +
+	"\rListedProcess\x12\x10\n" +
+	"\x03pid\x18\x01 \x01(\x03R\x03pid\x12;\n" +
+	"\x06status\x18\x02 \x01(\v2#.anyrun.v1.GetProcessStatusResponseR\x06status\"-\n" +
 	"\x17LocalDirectoryReference\x12\x12\n" +
-	"\x04path\x18\x01 \x01(\tR\x04path\"\x15\n" +
-	"\x13NoopSourceReference\"\x9b\t\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\"\xeb\x02\n" +
+	"\x10MultiSourceEntry\x12#\n" +
+	"\rrelative_path\x18\x01 \x01(\tR\frelativePath\x125\n" +
+	"\x03git\x18\x02 \x01(\v2!.anyrun.v1.GitRepoSourceReferenceH\x00R\x03git\x125\n" +
+	"\x03tar\x18\x03 \x01(\v2!.anyrun.v1.TarRepoSourceReferenceH\x00R\x03tar\x12:\n" +
+	"\x05local\x18\x04 \x01(\v2\".anyrun.v1.LocalDirectoryReferenceH\x00R\x05local\x12H\n" +
+	"\ftar_gzip_url\x18\x05 \x01(\v2$.anyrun.v1.TarGzipUrlSourceReferenceH\x00R\n" +
+	"tarGzipUrl\x124\n" +
+	"\x04noop\x18\x06 \x01(\v2\x1e.anyrun.v1.NoopSourceReferenceH\x00R\x04noopB\b\n" +
+	"\x06source\"M\n" +
+	"\x14MultiSourceReference\x125\n" +
+	"\asources\x18\x01 \x03(\v2\x1b.anyrun.v1.MultiSourceEntryR\asources\",\n" +
+	"\vNetworkInfo\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x01 \x01(\tR\tipAddress\"\x15\n" +
+	"\x13NoopSourceReference\"\xaa\f\n" +
 	"\x1bPersistedDevContainerConfig\x12M\n" +
 	"\x10prepare_commands\x18\n" +
 	" \x03(\v2\".anyrun.v1.DevContainerExecCommandR\x0fprepareCommands\x12M\n" +
@@ -5984,25 +12110,32 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x04user\x18\x10 \x01(\tH\x03R\x04user\x88\x01\x01\x12#\n" +
 	"\n" +
 	"privileged\x18\x11 \x01(\bH\x04R\n" +
-	"privileged\x88\x01\x01\x12/\n" +
+	"privileged\x88\x01\x01\x12,\n" +
+	"\x0fbuild_container\x18\x16 \x01(\bH\x05R\x0ebuildContainer\x88\x01\x01\x12J\n" +
+	"\x1fenable_checkpoint_scratch_drive\x18\x19 \x01(\bH\x06R\x1cenableCheckpointScratchDrive\x88\x01\x01\x12/\n" +
 	"\x12registry_reference\x18\x05 \x01(\tH\x00R\x11registryReference\x12(\n" +
 	"\x05build\x18\x06 \x01(\v2\x10.anyrun.v1.BuildH\x00R\x05build\x12!\n" +
 	"\vsnapshot_id\x18\a \x01(\tH\x00R\n" +
 	"snapshotId\x12S\n" +
-	"\x11external_snapshot\x18\x14 \x01(\v2$.anyrun.v1.PersistedExternalSnapshotH\x00R\x10externalSnapshot\x125\n" +
+	"\x11external_snapshot\x18\x14 \x01(\v2$.anyrun.v1.PersistedExternalSnapshotH\x00R\x10externalSnapshot\x120\n" +
+	"\x13checkpoint_group_id\x18\x15 \x01(\tH\x00R\x11checkpointGroupId\x12p\n" +
+	"\x18registry_reference_alias\x18\x18 \x01(\x0e24.anyrun.v1.DevContainerConfig.RegistryReferenceAliasH\x00R\x16registryReferenceAlias\x125\n" +
 	"\x03git\x18\x01 \x01(\v2!.anyrun.v1.PersistedGitRepoSourceH\x01R\x03git\x125\n" +
 	"\x03tar\x18\x02 \x01(\v2!.anyrun.v1.PersistedTarRepoSourceH\x01R\x03tar\x12;\n" +
 	"\x05local\x18\x03 \x01(\v2#.anyrun.v1.PersistedLocalRepoSourceH\x01R\x05local\x12H\n" +
 	"\ftar_gzip_url\x18\x04 \x01(\v2$.anyrun.v1.PersistedTarGzipUrlSourceH\x01R\n" +
 	"tarGzipUrl\x124\n" +
-	"\x04noop\x18\x12 \x01(\v2\x1e.anyrun.v1.PersistedNoopSourceH\x01R\x04noop\x12'\n" +
+	"\x04noop\x18\x12 \x01(\v2\x1e.anyrun.v1.PersistedNoopSourceH\x01R\x04noop\x127\n" +
+	"\x05multi\x18\x17 \x01(\v2\x1f.anyrun.v1.PersistedMultiSourceH\x01R\x05multi\x12'\n" +
 	"\x0eworkspace_path\x18\b \x01(\tH\x02R\rworkspacePath\x124\n" +
 	"\x15workdir_relative_path\x18\t \x01(\tH\x02R\x13workdirRelativePathB\a\n" +
 	"\x05imageB\b\n" +
 	"\x06sourceB\v\n" +
 	"\tworkspaceB\a\n" +
 	"\x05_userB\r\n" +
-	"\v_privileged\";\n" +
+	"\v_privilegedB\x12\n" +
+	"\x10_build_containerB\"\n" +
+	" _enable_checkpoint_scratch_drive\";\n" +
 	"\x0fPersistedEnvVar\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\"<\n" +
@@ -6014,12 +12147,23 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\vcommit_hash\x18\x02 \x01(\fR\n" +
 	"commitHash\".\n" +
 	"\x18PersistedLocalRepoSource\x12\x12\n" +
-	"\x04path\x18\x01 \x01(\tR\x04path\"\x15\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\"V\n" +
+	"\x14PersistedMultiSource\x12>\n" +
+	"\asources\x18\x01 \x03(\v2$.anyrun.v1.PersistedMultiSourceEntryR\asources\"\xf5\x02\n" +
+	"\x19PersistedMultiSourceEntry\x12#\n" +
+	"\rrelative_path\x18\x01 \x01(\tR\frelativePath\x125\n" +
+	"\x03git\x18\x02 \x01(\v2!.anyrun.v1.PersistedGitRepoSourceH\x00R\x03git\x125\n" +
+	"\x03tar\x18\x03 \x01(\v2!.anyrun.v1.PersistedTarRepoSourceH\x00R\x03tar\x12;\n" +
+	"\x05local\x18\x04 \x01(\v2#.anyrun.v1.PersistedLocalRepoSourceH\x00R\x05local\x12H\n" +
+	"\ftar_gzip_url\x18\x05 \x01(\v2$.anyrun.v1.PersistedTarGzipUrlSourceH\x00R\n" +
+	"tarGzipUrl\x124\n" +
+	"\x04noop\x18\x06 \x01(\v2\x1e.anyrun.v1.PersistedNoopSourceH\x00R\x04noopB\b\n" +
+	"\x06source\"\x15\n" +
 	"\x13PersistedNoopSource\"/\n" +
 	"\x19PersistedTarGzipUrlSource\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\",\n" +
 	"\x16PersistedTarRepoSource\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\xdf\t\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\x88\x0e\n" +
 	"\x03Pod\x12\x1b\n" +
 	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x15\n" +
 	"\x06pod_id\x18\x02 \x01(\tR\x05podId\x12)\n" +
@@ -6045,7 +12189,14 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x05ports\x18\x06 \x01(\v2\x13.anyrun.v1.PodPortsR\x05ports\x123\n" +
 	"\x13internal_proxy_port\x18\x16 \x01(\rH\x06R\x11internalProxyPort\x88\x01\x01\x12C\n" +
 	"\x06config\x18\x10 \x01(\v2&.anyrun.v1.PersistedDevContainerConfigH\aR\x06config\x88\x01\x01\x122\n" +
-	"\x12modified_timestamp\x18\x17 \x01(\x04H\bR\x11modifiedTimestamp\x88\x01\x01\x1a9\n" +
+	"\x12modified_timestamp\x18\x17 \x01(\x04H\bR\x11modifiedTimestamp\x88\x01\x01\x12+\n" +
+	"\x0fpod_awake_since\x18\x18 \x01(\x04H\tR\rpodAwakeSince\x88\x01\x01\x124\n" +
+	"\x16low_cardinality_labels\x18\x19 \x03(\tR\x14lowCardinalityLabels\x120\n" +
+	"\x14checkpoint_group_ids\x18\x1a \x03(\tR\x12checkpointGroupIds\x12K\n" +
+	" started_from_checkpoint_group_id\x18\x1b \x01(\tH\n" +
+	"R\x1cstartedFromCheckpointGroupId\x88\x01\x01\x12^\n" +
+	"\x19started_from_cache_source\x18\x1c \x01(\x0e2\x1e.anyrun.v1.PodStartCacheSourceH\vR\x16startedFromCacheSource\x88\x01\x01\x12_\n" +
+	"*started_from_checkpoint_creation_timestamp\x18\x1d \x01(\x04H\fR&startedFromCheckpointCreationTimestamp\x88\x01\x01\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x15\n" +
@@ -6058,7 +12209,20 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\v_hibernatedB\x16\n" +
 	"\x14_internal_proxy_portB\t\n" +
 	"\a_configB\x15\n" +
-	"\x13_modified_timestamp\"k\n" +
+	"\x13_modified_timestampB\x12\n" +
+	"\x10_pod_awake_sinceB#\n" +
+	"!_started_from_checkpoint_group_idB\x1c\n" +
+	"\x1a_started_from_cache_sourceB-\n" +
+	"+_started_from_checkpoint_creation_timestamp\"\xdf\x01\n" +
+	"\x12PodAgentStoreGrant\x12\x15\n" +
+	"\x06pod_id\x18\x01 \x01(\tR\x05podId\x12\"\n" +
+	"\rself_store_id\x18\x02 \x01(\tR\vselfStoreId\x12\x17\n" +
+	"\ateam_id\x18\x03 \x01(\x03R\x06teamId\x12 \n" +
+	"\fissued_at_ms\x18\x04 \x01(\x03R\n" +
+	"issuedAtMs\x12\"\n" +
+	"\rexpires_at_ms\x18\x05 \x01(\x03R\vexpiresAtMs\x12\x19\n" +
+	"\bgrant_id\x18\x06 \x01(\tR\agrantId\x12\x14\n" +
+	"\x05token\x18\a \x01(\tR\x05token\"k\n" +
 	"\rPodCollection\x12$\n" +
 	"\x05items\x18\x01 \x03(\v2\x0e.anyrun.v1.PodR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
@@ -6067,7 +12231,7 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x11PodCreatingStatus\x121\n" +
 	"\x05phase\x18\x01 \x01(\x0e2\x1b.anyrun.v1.PodCreatingPhaseR\x05phase\"4\n" +
 	"\rPodErrorEvent\x12#\n" +
-	"\rerror_message\x18\x01 \x01(\tR\ferrorMessage\"\xfe\x19\n" +
+	"\rerror_message\x18\x01 \x01(\tR\ferrorMessage\"\xb9\x1c\n" +
 	"\bPodEvent\x12-\n" +
 	"\x12creation_timestamp\x181 \x01(\x04R\x11creationTimestamp\x120\n" +
 	"\x05error\x18\x1a \x01(\v2\x18.anyrun.v1.PodErrorEventH\x00R\x05error\x12!\n" +
@@ -6122,10 +12286,24 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x12blocked_repo_state\x18) \x01(\v2\x16.anyrun.v1.PodIdentityH\x00R\x10blockedRepoState\x12H\n" +
 	"\x13acquired_repo_state\x18* \x01(\v2\x16.google.protobuf.EmptyH\x00R\x11acquiredRepoState\x12J\n" +
 	"\x14private_worker_ready\x185 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x12privateWorkerReady\x12Q\n" +
-	"\x12waiting_for_worker\x186 \x01(\v2!.anyrun.v1.WaitingForWorkerStatusH\x00R\x10waitingForWorkerB\t\n" +
-	"\apayload\")\n" +
+	"\x12waiting_for_worker\x186 \x01(\v2!.anyrun.v1.WaitingForWorkerStatusH\x00R\x10waitingForWorker\x12;\n" +
+	"\fspan_started\x187 \x01(\v2\x16.anyrun.v1.SpanStartedH\x00R\vspanStarted\x125\n" +
+	"\n" +
+	"span_ended\x188 \x01(\v2\x14.anyrun.v1.SpanEndedH\x00R\tspanEnded\x12f\n" +
+	"\x1blifecycle_process_restarted\x189 \x01(\v2$.anyrun.v1.LifecycleProcessRestartedH\x00R\x19lifecycleProcessRestarted\x12]\n" +
+	"\x18lifecycle_process_exited\x18: \x01(\v2!.anyrun.v1.LifecycleProcessExitedH\x00R\x16lifecycleProcessExitedB\t\n" +
+	"\apayload\"\x89\x01\n" +
 	"\x0fPodFailedStatus\x12\x16\n" +
-	"\x06reason\x18\x01 \x01(\tR\x06reason\"\xa7\x01\n" +
+	"\x06reason\x18\x01 \x01(\tR\x06reason\x12J\n" +
+	"\x0ffailure_details\x18\x02 \x01(\v2\x1c.anyrun.v1.PodFailureDetailsH\x00R\x0efailureDetails\x88\x01\x01B\x12\n" +
+	"\x10_failure_details\"\xc3\x03\n" +
+	"\x11PodFailureDetails\x12Z\n" +
+	"\x17install_command_failure\x18\x01 \x01(\v2 .anyrun.v1.InstallCommandFailureH\x00R\x15installCommandFailure\x12Q\n" +
+	"\x14docker_build_failure\x18\x02 \x01(\v2\x1d.anyrun.v1.DockerBuildFailureH\x00R\x12dockerBuildFailure\x12H\n" +
+	"\x11git_clone_failure\x18\x03 \x01(\v2\x1a.anyrun.v1.GitCloneFailureH\x00R\x0fgitCloneFailure\x12Q\n" +
+	"\x14git_checkout_failure\x18\x04 \x01(\v2\x1d.anyrun.v1.GitCheckoutFailureH\x00R\x12gitCheckoutFailure\x12W\n" +
+	"\x16container_wait_failure\x18\x05 \x01(\v2\x1f.anyrun.v1.ContainerWaitFailureH\x00R\x14containerWaitFailureB\t\n" +
+	"\adetails\"\xa7\x01\n" +
 	"\tPodFilter\x12\x1a\n" +
 	"\x06pod_id\x18\x01 \x01(\tH\x00R\x05podId\x88\x01\x01\x128\n" +
 	"\x06labels\x18\x02 \x03(\v2 .anyrun.v1.PodFilter.LabelsEntryR\x06labels\x1a9\n" +
@@ -6135,9 +12313,12 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\a_pod_id\"A\n" +
 	"\vPodIdentity\x12\x1b\n" +
 	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x15\n" +
-	"\x06pod_id\x18\x02 \x01(\tR\x05podId\":\n" +
-	"\fPodPortState\x12*\n" +
-	"\x05ports\x18\x01 \x03(\v2\x14.anyrun.v1.PortStateR\x05ports\"\xa6\x01\n" +
+	"\x06pod_id\x18\x02 \x01(\tR\x05podId\"\xc2\x01\n" +
+	"\x10PodMetricsSample\x12(\n" +
+	"\x10cpu_usage_mcores\x18\x01 \x01(\x04R\x0ecpuUsageMcores\x12(\n" +
+	"\x10cpu_limit_mcores\x18\x02 \x01(\x04R\x0ecpuLimitMcores\x12,\n" +
+	"\x12memory_usage_bytes\x18\x03 \x01(\x04R\x10memoryUsageBytes\x12,\n" +
+	"\x12memory_limit_bytes\x18\x04 \x01(\x04R\x10memoryLimitBytes\"\xa6\x01\n" +
 	"\bPodPorts\x12/\n" +
 	"\x05ports\x18\x01 \x03(\v2\x19.anyrun.v1.PortDefinitionR\x05ports\x12Q\n" +
 	"\x13default_port_config\x18\x02 \x01(\v2\x1c.anyrun.v1.DefaultPortConfigH\x00R\x11defaultPortConfig\x88\x01\x01B\x16\n" +
@@ -6186,10 +12367,42 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\aprivate\x18\x05 \x01(\v2\x16.google.protobuf.EmptyH\x01R\aprivateB\x10\n" +
 	"\x0eauthenticationB\f\n" +
 	"\n" +
-	"visibility\"@\n" +
+	"visibility\"\x84\x02\n" +
+	"\fProcessEvent\x12\x19\n" +
+	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12/\n" +
+	"\x06stdout\x18\x02 \x01(\v2\x15.anyrun.v1.StdoutDataH\x00R\x06stdout\x12/\n" +
+	"\x06stderr\x18\x03 \x01(\v2\x15.anyrun.v1.StderrDataH\x00R\x06stderr\x122\n" +
+	"\x06exited\x18\x04 \x01(\v2\x18.anyrun.v1.ProcessExitedH\x00R\x06exited\x12;\n" +
+	"\trestarted\x18\x05 \x01(\v2\x1b.anyrun.v1.ProcessRestartedH\x00R\trestartedB\x06\n" +
+	"\x04data\",\n" +
+	"\rProcessExited\x12\x1b\n" +
+	"\texit_code\x18\x01 \x01(\x05R\bexitCode\"\x8c\x01\n" +
+	"\x10ProcessRestarted\x12\x18\n" +
+	"\aattempt\x18\x01 \x01(\rR\aattempt\x12,\n" +
+	"\x12previous_exit_code\x18\x02 \x01(\x05R\x10previousExitCode\x120\n" +
+	"\x06reason\x18\x03 \x01(\x0e2\x18.anyrun.v1.RestartReasonR\x06reason\"\xf0\x01\n" +
+	"\x12ProcessSupervision\x12?\n" +
+	"\x0erestart_policy\x18\x01 \x01(\x0e2\x18.anyrun.v1.RestartPolicyR\rrestartPolicy\x128\n" +
+	"\abackoff\x18\x02 \x01(\v2\x19.anyrun.v1.RestartBackoffH\x00R\abackoff\x88\x01\x01\x12B\n" +
+	"\fhealth_check\x18\x03 \x01(\v2\x1a.anyrun.v1.HttpHealthCheckH\x01R\vhealthCheck\x88\x01\x01B\n" +
+	"\n" +
+	"\b_backoffB\x0f\n" +
+	"\r_health_check\"@\n" +
 	"\x0eProgressDetail\x12\x18\n" +
 	"\acurrent\x18\x01 \x01(\x04R\acurrent\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x04R\x05total\"\xc7\x01\n" +
+	"\x05total\x18\x02 \x01(\x04R\x05total\"+\n" +
+	"\x15ReadBinaryFileRequest\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\"2\n" +
+	"\x16ReadBinaryFileResponse\x12\x18\n" +
+	"\acontent\x18\x01 \x01(\fR\acontent\")\n" +
+	"\x13ReadTextFileRequest\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\"0\n" +
+	"\x14ReadTextFileResponse\x12\x18\n" +
+	"\acontent\x18\x01 \x01(\tR\acontent\"p\n" +
+	"\x13RegistryCredentials\x12!\n" +
+	"\fregistry_url\x18\x01 \x01(\tR\vregistryUrl\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\"\xc7\x01\n" +
 	"\x0eResourceLimits\x12\"\n" +
 	"\n" +
 	"cpu_mcores\x18\x01 \x01(\x04H\x00R\tcpuMcores\x88\x01\x01\x12 \n" +
@@ -6207,7 +12420,32 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\n" +
 	"cpu_mcores\x18\x01 \x01(\x04R\tcpuMcores\x12\x1b\n" +
 	"\tmemory_mb\x18\x02 \x01(\x04R\bmemoryMb\x12\x17\n" +
-	"\adisk_mb\x18\x03 \x01(\x04R\x06diskMb\"\x8b\a\n" +
+	"\adisk_mb\x18\x03 \x01(\x04R\x06diskMb\"\x9b\x01\n" +
+	"\x0eRestartBackoff\x12\x1d\n" +
+	"\n" +
+	"initial_ms\x18\x01 \x01(\rR\tinitialMs\x12\x15\n" +
+	"\x06max_ms\x18\x02 \x01(\rR\x05maxMs\x12\x1e\n" +
+	"\n" +
+	"multiplier\x18\x03 \x01(\x01R\n" +
+	"multiplier\x123\n" +
+	"\x16reset_after_healthy_ms\x18\x04 \x01(\rR\x13resetAfterHealthyMs\"\xf9\x01\n" +
+	"\x1bRuntimeStatePersistentState\x12f\n" +
+	"\x10command_handlers\x18\x01 \x03(\v2;.anyrun.v1.RuntimeStatePersistentState.CommandHandlersEntryR\x0fcommandHandlers\x1ar\n" +
+	"\x14CommandHandlersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12D\n" +
+	"\x05value\x18\x02 \x01(\v2..anyrun.v1.DaemonCommandHandlerPersistentStateR\x05value:\x028\x01\"\xfb\x01\n" +
+	"\tScmConfig\x12\x16\n" +
+	"\x06domain\x18\x01 \x01(\tR\x06domain\x12\x1d\n" +
+	"\n" +
+	"auth_value\x18\x02 \x01(\tR\tauthValue\x12\x1b\n" +
+	"\tproxy_url\x18\x03 \x01(\tR\bproxyUrl\x12@\n" +
+	"\vauth_method\x18\x04 \x01(\x0e2\x1f.anyrun.v1.ScmConfig.AuthMethodR\n" +
+	"authMethod\"X\n" +
+	"\n" +
+	"AuthMethod\x12\x1b\n" +
+	"\x17AUTH_METHOD_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11AUTH_METHOD_BASIC\x10\x01\x12\x16\n" +
+	"\x12AUTH_METHOD_BEARER\x10\x02\"\x94\t\n" +
 	"\bSnapshot\x12\x1f\n" +
 	"\vsnapshot_id\x18\x01 \x01(\tR\n" +
 	"snapshotId\x12)\n" +
@@ -6226,7 +12464,10 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x05state\x18\t \x01(\x0e2\x18.anyrun.v1.SnapshotStateR\x05state\x12?\n" +
 	"\x0eimage_metadata\x18\n" +
 	" \x01(\v2\x18.anyrun.v1.ImageMetadataR\rimageMetadata\x12L\n" +
-	"\x13blob_storage_format\x18\v \x01(\x0e2\x1c.anyrun.v1.BlobStorageFormatR\x11blobStorageFormat\x1a9\n" +
+	"\x13blob_storage_format\x18\v \x01(\x0e2\x1c.anyrun.v1.BlobStorageFormatR\x11blobStorageFormat\x12/\n" +
+	"\x11node_machine_type\x18\x10 \x01(\tH\x05R\x0fnodeMachineType\x88\x01\x01\x12M\n" +
+	"\x11resource_requests\x18\x11 \x01(\v2\x1b.anyrun.v1.ResourceRequestsH\x06R\x10resourceRequests\x88\x01\x01\x12G\n" +
+	"\x0fresource_limits\x18\x12 \x01(\v2\x19.anyrun.v1.ResourceLimitsH\aR\x0eresourceLimits\x88\x01\x01\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x15\n" +
@@ -6234,38 +12475,139 @@ const file_anyrun_v1_proto_rawDesc = "" +
 	"\x15_deletion_duration_msB\x14\n" +
 	"\x12_archive_timestampB\x16\n" +
 	"\x14_archive_duration_msB\r\n" +
-	"\v_pod_config\"u\n" +
+	"\v_pod_configB\x14\n" +
+	"\x12_node_machine_typeB\x14\n" +
+	"\x12_resource_requestsB\x12\n" +
+	"\x10_resource_limits\"u\n" +
 	"\x12SnapshotCollection\x12)\n" +
 	"\x05items\x18\x01 \x03(\v2\x13.anyrun.v1.SnapshotR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"A\n" +
+	"\f_next_cursor\"\x8f\x01\n" +
+	"\x16SnapshotExtraDriveFile\x12\x19\n" +
+	"\bdrive_id\x18\x01 \x01(\tR\adriveId\x12=\n" +
+	"\vfile_chunks\x18\x02 \x03(\v2\x1c.anyrun.v1.SnapshotFileChunkR\n" +
+	"fileChunks\x12\x1b\n" +
+	"\tfile_size\x18\x03 \x01(\x04R\bfileSize\"\x9b\x01\n" +
+	"\x11SnapshotFileChunk\x12\x1d\n" +
+	"\n" +
+	"blob_begin\x18\x01 \x01(\x04R\tblobBegin\x12\x19\n" +
+	"\bblob_end\x18\x02 \x01(\x04R\ablobEnd\x12\x1d\n" +
+	"\n" +
+	"file_begin\x18\x03 \x01(\x04R\tfileBegin\x12\x19\n" +
+	"\bfile_end\x18\x04 \x01(\x04R\afileEnd\x12\x12\n" +
+	"\x04hash\x18\x05 \x01(\tR\x04hash\"\x99\x04\n" +
+	"\x1cSnapshotVmSnapshotV1Metadata\x12J\n" +
+	"\x12rootfs_file_chunks\x18\x01 \x03(\v2\x1c.anyrun.v1.SnapshotFileChunkR\x10rootfsFileChunks\x12(\n" +
+	"\x10rootfs_file_size\x18\x02 \x01(\x04R\x0erootfsFileSize\x12H\n" +
+	"\x11memory_file_chunk\x18\x03 \x01(\v2\x1c.anyrun.v1.SnapshotFileChunkR\x0fmemoryFileChunk\x12F\n" +
+	"\x10state_file_chunk\x18\x04 \x01(\v2\x1c.anyrun.v1.SnapshotFileChunkR\x0estateFileChunk\x12H\n" +
+	"\x11kernel_file_chunk\x18\x05 \x01(\v2\x1c.anyrun.v1.SnapshotFileChunkR\x0fkernelFileChunk\x12X\n" +
+	"\x16dev_container_metadata\x18\x06 \x01(\v2\".anyrun.v1.IsoDevContainerMetadataR\x14devContainerMetadata\x12M\n" +
+	"\x11extra_drive_files\x18\a \x03(\v2!.anyrun.v1.SnapshotExtraDriveFileR\x0fextraDriveFiles\"$\n" +
+	"\tSpanEnded\x12\x17\n" +
+	"\aspan_id\x18\x01 \x01(\tR\x06spanId\"\x9a\x01\n" +
+	"\vSpanStarted\x12\x17\n" +
+	"\aspan_id\x18\x01 \x01(\tR\x06spanId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12)\n" +
+	"\x0eparent_span_id\x18\x03 \x01(\tH\x00R\fparentSpanId\x88\x01\x01\x12\x17\n" +
+	"\x04href\x18\x05 \x01(\tH\x01R\x04href\x88\x01\x01B\x11\n" +
+	"\x0f_parent_span_idB\a\n" +
+	"\x05_href\" \n" +
+	"\n" +
+	"StderrData\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\" \n" +
+	"\n" +
+	"StdoutData\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\"\x16\n" +
+	"\x14StreamMetricsRequest\"A\n" +
 	"\x19TarGzipUrlSourceReference\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url\"M\n" +
 	"\x16TarRepoSourceReference\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1f\n" +
 	"\vtar_archive\x18\x02 \x01(\fR\n" +
-	"tarArchive\"Z\n" +
+	"tarArchive\"\x9f\x01\n" +
 	"\x16WaitingForWorkerStatus\x12\x1f\n" +
 	"\vretry_count\x18\x01 \x01(\x05R\n" +
 	"retryCount\x12\x1f\n" +
 	"\vmax_retries\x18\x02 \x01(\x05R\n" +
-	"maxRetries*[\n" +
+	"maxRetries\x12C\n" +
+	"\vwait_reason\x18\x03 \x01(\x0e2\".anyrun.v1.PrivateWorkerWaitReasonR\n" +
+	"waitReason\"f\n" +
+	"\x0fWorkspaceConfig\x12\x1c\n" +
+	"\babsolute\x18\x01 \x01(\tH\x00R\babsolute\x12+\n" +
+	"\x10workdir_relative\x18\x02 \x01(\tH\x00R\x0fworkdirRelativeB\b\n" +
+	"\x06config\"F\n" +
+	"\x16WriteBinaryFileRequest\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\fR\acontent\"\x19\n" +
+	"\x17WriteBinaryFileResponse\"D\n" +
+	"\x14WriteTextFileRequest\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"\x17\n" +
+	"\x15WriteTextFileResponse*\xc3\x01\n" +
 	"\x11BlobStorageFormat\x12*\n" +
 	"&BLOB_STORAGE_FORMAT_LEGACY_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16BLOB_STORAGE_FORMAT_V1\x10\x01*p\n" +
+	"\x16BLOB_STORAGE_FORMAT_V1\x10\x01\x12&\n" +
+	"\"BLOB_STORAGE_FORMAT_VM_SNAPSHOT_V1\x10\x02\x12\x1a\n" +
+	"\x16BLOB_STORAGE_FORMAT_V2\x10\x03\x12\"\n" +
+	"\x1eBLOB_STORAGE_FORMAT_V2_LAYERED\x10\x04*p\n" +
 	"\fClonePurpose\x12\x1d\n" +
 	"\x19CLONE_PURPOSE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aCLONE_PURPOSE_DOCKER_BUILD\x10\x01\x12!\n" +
-	"\x1dCLONE_PURPOSE_WORKSPACE_SETUP\x10\x02*\xe0\x01\n" +
+	"\x1dCLONE_PURPOSE_WORKSPACE_SETUP\x10\x02*\xa4\x01\n" +
+	"\x0eDrainingReason\x12\x1f\n" +
+	"\x1bDRAINING_REASON_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18DRAINING_REASON_CAPACITY\x10\x01\x12\x1b\n" +
+	"\x17DRAINING_REASON_UPGRADE\x10\x02\x12\x1a\n" +
+	"\x16DRAINING_REASON_MANUAL\x10\x03\x12\x1a\n" +
+	"\x16DRAINING_REASON_HEALTH\x10\x04*n\n" +
+	"\tEntryType\x12\x1a\n" +
+	"\x16ENTRY_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fENTRY_TYPE_FILE\x10\x01\x12\x18\n" +
+	"\x14ENTRY_TYPE_DIRECTORY\x10\x02\x12\x16\n" +
+	"\x12ENTRY_TYPE_SYMLINK\x10\x03*\xcf\x03\n" +
+	"\x17GitCloneFailureCategory\x12*\n" +
+	"&GIT_CLONE_FAILURE_CATEGORY_UNSPECIFIED\x10\x00\x12,\n" +
+	"(GIT_CLONE_FAILURE_CATEGORY_IP_ALLOW_LIST\x10\x01\x122\n" +
+	".GIT_CLONE_FAILURE_CATEGORY_INVALID_CREDENTIALS\x10\x02\x12+\n" +
+	"'GIT_CLONE_FAILURE_CATEGORY_SSO_REDIRECT\x10\x03\x12,\n" +
+	"(GIT_CLONE_FAILURE_CATEGORY_PROXY_CONNECT\x10\x04\x12/\n" +
+	"+GIT_CLONE_FAILURE_CATEGORY_CONNECTION_RESET\x10\x05\x124\n" +
+	"0GIT_CLONE_FAILURE_CATEGORY_TRANSPORT_INTERRUPTED\x10\x06\x12/\n" +
+	"+GIT_CLONE_FAILURE_CATEGORY_REMOTE_FORBIDDEN\x10\a\x123\n" +
+	"/GIT_CLONE_FAILURE_CATEGORY_UPSTREAM_BAD_GATEWAY\x10\b*z\n" +
+	"\x17IsoEnvExtraDrivePurpose\x12+\n" +
+	"'ISO_ENV_EXTRA_DRIVE_PURPOSE_UNSPECIFIED\x10\x00\x122\n" +
+	".ISO_ENV_EXTRA_DRIVE_PURPOSE_CHECKPOINT_SCRATCH\x10\x01*\xe0\x01\n" +
 	"\x10PodCreatingPhase\x12\"\n" +
 	"\x1ePOD_CREATING_PHASE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18POD_CREATING_PHASE_CLONE\x10\x01\x12\x1c\n" +
 	"\x18POD_CREATING_PHASE_BUILD\x10\x02\x12\"\n" +
 	"\x1ePOD_CREATING_PHASE_POST_CREATE\x10\x03\x12%\n" +
 	"!POD_CREATING_PHASE_UPDATE_CONTENT\x10\x04\x12!\n" +
-	"\x1dPOD_CREATING_PHASE_POST_START\x10\x05*\x81\x01\n" +
+	"\x1dPOD_CREATING_PHASE_POST_START\x10\x05*\xae\x01\n" +
+	"\x13PodStartCacheSource\x12&\n" +
+	"\"POD_START_CACHE_SOURCE_UNSPECIFIED\x10\x00\x12:\n" +
+	"6POD_START_CACHE_SOURCE_NODE_LOCAL_FIRECRACKER_SNAPSHOT\x10\x01\x123\n" +
+	"/POD_START_CACHE_SOURCE_REMOTE_ROOTAR_CHECKPOINT\x10\x02*\xbc\x02\n" +
+	"\x17PrivateWorkerWaitReason\x12*\n" +
+	"&PRIVATE_WORKER_WAIT_REASON_UNSPECIFIED\x10\x00\x123\n" +
+	"/PRIVATE_WORKER_WAIT_REASON_NO_CONNECTED_WORKERS\x10\x01\x12-\n" +
+	")PRIVATE_WORKER_WAIT_REASON_LABEL_MISMATCH\x10\x02\x12-\n" +
+	")PRIVATE_WORKER_WAIT_REASON_OWNER_FILTERED\x10\x03\x129\n" +
+	"5PRIVATE_WORKER_WAIT_REASON_SHARED_ASSIGNMENT_FILTERED\x10\x04\x12'\n" +
+	"#PRIVATE_WORKER_WAIT_REASON_ALL_BUSY\x10\x05*\x83\x01\n" +
+	"\rRestartPolicy\x12\x1e\n" +
+	"\x1aRESTART_POLICY_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14RESTART_POLICY_NEVER\x10\x01\x12\x1d\n" +
+	"\x19RESTART_POLICY_ON_FAILURE\x10\x02\x12\x19\n" +
+	"\x15RESTART_POLICY_ALWAYS\x10\x03*z\n" +
+	"\rRestartReason\x12\x1e\n" +
+	"\x1aRESTART_REASON_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dRESTART_REASON_PROCESS_EXITED\x10\x01\x12&\n" +
+	"\"RESTART_REASON_HEALTH_CHECK_FAILED\x10\x02*\x81\x01\n" +
 	"\rSnapshotState\x12\x1e\n" +
 	"\x1aSNAPSHOT_STATE_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17SNAPSHOT_STATE_CREATING\x10\x01\x12\x18\n" +
@@ -6284,200 +12626,380 @@ func file_anyrun_v1_proto_rawDescGZIP() []byte {
 	return file_anyrun_v1_proto_rawDescData
 }
 
-var file_anyrun_v1_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_anyrun_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
+var file_anyrun_v1_proto_enumTypes = make([]protoimpl.EnumInfo, 14)
+var file_anyrun_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 142)
 var file_anyrun_v1_proto_goTypes = []any{
-	(BlobStorageFormat)(0),              // 0: anyrun.v1.BlobStorageFormat
-	(ClonePurpose)(0),                   // 1: anyrun.v1.ClonePurpose
-	(PodCreatingPhase)(0),               // 2: anyrun.v1.PodCreatingPhase
-	(SnapshotState)(0),                  // 3: anyrun.v1.SnapshotState
-	(*Build)(nil),                       // 4: anyrun.v1.Build
-	(*BuildStatusLine)(nil),             // 5: anyrun.v1.BuildStatusLine
-	(*BuildStepStarted)(nil),            // 6: anyrun.v1.BuildStepStarted
-	(*CloneCompleted)(nil),              // 7: anyrun.v1.CloneCompleted
-	(*CloneStarted)(nil),                // 8: anyrun.v1.CloneStarted
-	(*DaemonPod)(nil),                   // 9: anyrun.v1.DaemonPod
-	(*DefaultPortConfig)(nil),           // 10: anyrun.v1.DefaultPortConfig
-	(*DevContainerConfig)(nil),          // 11: anyrun.v1.DevContainerConfig
-	(*DevContainerEnv)(nil),             // 12: anyrun.v1.DevContainerEnv
-	(*DevContainerExecCommand)(nil),     // 13: anyrun.v1.DevContainerExecCommand
-	(*DevContainerSpec)(nil),            // 14: anyrun.v1.DevContainerSpec
-	(*DiskUsage)(nil),                   // 15: anyrun.v1.DiskUsage
-	(*ExternalSnapshot)(nil),            // 16: anyrun.v1.ExternalSnapshot
-	(*FeatureExitCode)(nil),             // 17: anyrun.v1.FeatureExitCode
-	(*FeatureOutput)(nil),               // 18: anyrun.v1.FeatureOutput
-	(*GitRepoSourceReference)(nil),      // 19: anyrun.v1.GitRepoSourceReference
-	(*HydrationProgress)(nil),           // 20: anyrun.v1.HydrationProgress
-	(*ImageMetadata)(nil),               // 21: anyrun.v1.ImageMetadata
-	(*ImagePullCompleted)(nil),          // 22: anyrun.v1.ImagePullCompleted
-	(*ImagePullLayerUpdate)(nil),        // 23: anyrun.v1.ImagePullLayerUpdate
-	(*ImagePullStarted)(nil),            // 24: anyrun.v1.ImagePullStarted
-	(*ImagePullStatusUpdate)(nil),       // 25: anyrun.v1.ImagePullStatusUpdate
-	(*InstallCommand)(nil),              // 26: anyrun.v1.InstallCommand
-	(*InternalBuildMessage)(nil),        // 27: anyrun.v1.InternalBuildMessage
-	(*LocalDirectoryReference)(nil),     // 28: anyrun.v1.LocalDirectoryReference
-	(*NoopSourceReference)(nil),         // 29: anyrun.v1.NoopSourceReference
-	(*PersistedDevContainerConfig)(nil), // 30: anyrun.v1.PersistedDevContainerConfig
-	(*PersistedEnvVar)(nil),             // 31: anyrun.v1.PersistedEnvVar
-	(*PersistedExternalSnapshot)(nil),   // 32: anyrun.v1.PersistedExternalSnapshot
-	(*PersistedGitRepoSource)(nil),      // 33: anyrun.v1.PersistedGitRepoSource
-	(*PersistedLocalRepoSource)(nil),    // 34: anyrun.v1.PersistedLocalRepoSource
-	(*PersistedNoopSource)(nil),         // 35: anyrun.v1.PersistedNoopSource
-	(*PersistedTarGzipUrlSource)(nil),   // 36: anyrun.v1.PersistedTarGzipUrlSource
-	(*PersistedTarRepoSource)(nil),      // 37: anyrun.v1.PersistedTarRepoSource
-	(*Pod)(nil),                         // 38: anyrun.v1.Pod
-	(*PodCollection)(nil),               // 39: anyrun.v1.PodCollection
-	(*PodCreatingStatus)(nil),           // 40: anyrun.v1.PodCreatingStatus
-	(*PodErrorEvent)(nil),               // 41: anyrun.v1.PodErrorEvent
-	(*PodEvent)(nil),                    // 42: anyrun.v1.PodEvent
-	(*PodFailedStatus)(nil),             // 43: anyrun.v1.PodFailedStatus
-	(*PodFilter)(nil),                   // 44: anyrun.v1.PodFilter
-	(*PodIdentity)(nil),                 // 45: anyrun.v1.PodIdentity
-	(*PodPortState)(nil),                // 46: anyrun.v1.PodPortState
-	(*PodPorts)(nil),                    // 47: anyrun.v1.PodPorts
-	(*PodRunningStatus)(nil),            // 48: anyrun.v1.PodRunningStatus
-	(*PodStatus)(nil),                   // 49: anyrun.v1.PodStatus
-	(*PodTerminatedStatus)(nil),         // 50: anyrun.v1.PodTerminatedStatus
-	(*PodUpdate)(nil),                   // 51: anyrun.v1.PodUpdate
-	(*PortDefinition)(nil),              // 52: anyrun.v1.PortDefinition
-	(*PortState)(nil),                   // 53: anyrun.v1.PortState
-	(*ProgressDetail)(nil),              // 54: anyrun.v1.ProgressDetail
-	(*ResourceLimits)(nil),              // 55: anyrun.v1.ResourceLimits
-	(*ResourceRequests)(nil),            // 56: anyrun.v1.ResourceRequests
-	(*Snapshot)(nil),                    // 57: anyrun.v1.Snapshot
-	(*SnapshotCollection)(nil),          // 58: anyrun.v1.SnapshotCollection
-	(*TarGzipUrlSourceReference)(nil),   // 59: anyrun.v1.TarGzipUrlSourceReference
-	(*TarRepoSourceReference)(nil),      // 60: anyrun.v1.TarRepoSourceReference
-	(*WaitingForWorkerStatus)(nil),      // 61: anyrun.v1.WaitingForWorkerStatus
-	nil,                                 // 62: anyrun.v1.DevContainerSpec.PodLabelsEntry
-	nil,                                 // 63: anyrun.v1.DevContainerSpec.NodeLabelsEntry
-	nil,                                 // 64: anyrun.v1.ImageMetadata.EnvEntry
-	nil,                                 // 65: anyrun.v1.Pod.LabelsEntry
-	nil,                                 // 66: anyrun.v1.PodFilter.LabelsEntry
-	nil,                                 // 67: anyrun.v1.Snapshot.LabelsEntry
-	(*emptypb.Empty)(nil),               // 68: google.protobuf.Empty
+	(BlobStorageFormat)(0),                         // 0: anyrun.v1.BlobStorageFormat
+	(ClonePurpose)(0),                              // 1: anyrun.v1.ClonePurpose
+	(DrainingReason)(0),                            // 2: anyrun.v1.DrainingReason
+	(EntryType)(0),                                 // 3: anyrun.v1.EntryType
+	(GitCloneFailureCategory)(0),                   // 4: anyrun.v1.GitCloneFailureCategory
+	(IsoEnvExtraDrivePurpose)(0),                   // 5: anyrun.v1.IsoEnvExtraDrivePurpose
+	(PodCreatingPhase)(0),                          // 6: anyrun.v1.PodCreatingPhase
+	(PodStartCacheSource)(0),                       // 7: anyrun.v1.PodStartCacheSource
+	(PrivateWorkerWaitReason)(0),                   // 8: anyrun.v1.PrivateWorkerWaitReason
+	(RestartPolicy)(0),                             // 9: anyrun.v1.RestartPolicy
+	(RestartReason)(0),                             // 10: anyrun.v1.RestartReason
+	(SnapshotState)(0),                             // 11: anyrun.v1.SnapshotState
+	(DevContainerConfig_RegistryReferenceAlias)(0), // 12: anyrun.v1.DevContainerConfig.RegistryReferenceAlias
+	(ScmConfig_AuthMethod)(0),                      // 13: anyrun.v1.ScmConfig.AuthMethod
+	(*AgentStoreConfig)(nil),                       // 14: anyrun.v1.AgentStoreConfig
+	(*AllowedDomain)(nil),                          // 15: anyrun.v1.AllowedDomain
+	(*AnygressLocalPodDenyRules)(nil),              // 16: anyrun.v1.AnygressLocalPodDenyRules
+	(*AnygressPerPodDenyRules)(nil),                // 17: anyrun.v1.AnygressPerPodDenyRules
+	(*AnygressPodDenyRule)(nil),                    // 18: anyrun.v1.AnygressPodDenyRule
+	(*AnygressPodDenyRuleList)(nil),                // 19: anyrun.v1.AnygressPodDenyRuleList
+	(*AttachProcessRequest)(nil),                   // 20: anyrun.v1.AttachProcessRequest
+	(*Build)(nil),                                  // 21: anyrun.v1.Build
+	(*BuildStatusLine)(nil),                        // 22: anyrun.v1.BuildStatusLine
+	(*BuildStepStarted)(nil),                       // 23: anyrun.v1.BuildStepStarted
+	(*CloneCompleted)(nil),                         // 24: anyrun.v1.CloneCompleted
+	(*CloneStarted)(nil),                           // 25: anyrun.v1.CloneStarted
+	(*ContainerWaitFailure)(nil),                   // 26: anyrun.v1.ContainerWaitFailure
+	(*CreateProcessRequest)(nil),                   // 27: anyrun.v1.CreateProcessRequest
+	(*CreateProcessResponse)(nil),                  // 28: anyrun.v1.CreateProcessResponse
+	(*DaemonCommandHandlerPersistentState)(nil),    // 29: anyrun.v1.DaemonCommandHandlerPersistentState
+	(*DaemonPod)(nil),                              // 30: anyrun.v1.DaemonPod
+	(*DefaultPortConfig)(nil),                      // 31: anyrun.v1.DefaultPortConfig
+	(*DevContainerConfig)(nil),                     // 32: anyrun.v1.DevContainerConfig
+	(*DevContainerEnv)(nil),                        // 33: anyrun.v1.DevContainerEnv
+	(*DevContainerExecCommand)(nil),                // 34: anyrun.v1.DevContainerExecCommand
+	(*DevContainerSpec)(nil),                       // 35: anyrun.v1.DevContainerSpec
+	(*DirectoryEntry)(nil),                         // 36: anyrun.v1.DirectoryEntry
+	(*DiskUsage)(nil),                              // 37: anyrun.v1.DiskUsage
+	(*DockerBuildConfig)(nil),                      // 38: anyrun.v1.DockerBuildConfig
+	(*DockerBuildFailure)(nil),                     // 39: anyrun.v1.DockerBuildFailure
+	(*DockerBuildResult)(nil),                      // 40: anyrun.v1.DockerBuildResult
+	(*DockerBuildSecretEntry)(nil),                 // 41: anyrun.v1.DockerBuildSecretEntry
+	(*DockerContainerPersistentState)(nil),         // 42: anyrun.v1.DockerContainerPersistentState
+	(*DockerDevContainerPersistentState)(nil),      // 43: anyrun.v1.DockerDevContainerPersistentState
+	(*DockerImageBuildEvent)(nil),                  // 44: anyrun.v1.DockerImageBuildEvent
+	(*DockerImageRef)(nil),                         // 45: anyrun.v1.DockerImageRef
+	(*EgressPolicy)(nil),                           // 46: anyrun.v1.EgressPolicy
+	(*EgressRestricted)(nil),                       // 47: anyrun.v1.EgressRestricted
+	(*ExternalSnapshot)(nil),                       // 48: anyrun.v1.ExternalSnapshot
+	(*FeatureExitCode)(nil),                        // 49: anyrun.v1.FeatureExitCode
+	(*FeatureOutput)(nil),                          // 50: anyrun.v1.FeatureOutput
+	(*GetProcessStatusRequest)(nil),                // 51: anyrun.v1.GetProcessStatusRequest
+	(*GetProcessStatusResponse)(nil),               // 52: anyrun.v1.GetProcessStatusResponse
+	(*GitCheckoutFailure)(nil),                     // 53: anyrun.v1.GitCheckoutFailure
+	(*GitCloneFailure)(nil),                        // 54: anyrun.v1.GitCloneFailure
+	(*GitRepoSourceReference)(nil),                 // 55: anyrun.v1.GitRepoSourceReference
+	(*HttpHealthCheck)(nil),                        // 56: anyrun.v1.HttpHealthCheck
+	(*HydrationProgress)(nil),                      // 57: anyrun.v1.HydrationProgress
+	(*ImageMetadata)(nil),                          // 58: anyrun.v1.ImageMetadata
+	(*ImagePullCompleted)(nil),                     // 59: anyrun.v1.ImagePullCompleted
+	(*ImagePullLayerUpdate)(nil),                   // 60: anyrun.v1.ImagePullLayerUpdate
+	(*ImagePullStarted)(nil),                       // 61: anyrun.v1.ImagePullStarted
+	(*ImagePullStatusUpdate)(nil),                  // 62: anyrun.v1.ImagePullStatusUpdate
+	(*InlineBuild)(nil),                            // 63: anyrun.v1.InlineBuild
+	(*InstallCommand)(nil),                         // 64: anyrun.v1.InstallCommand
+	(*InstallCommandFailure)(nil),                  // 65: anyrun.v1.InstallCommandFailure
+	(*InternalBuildMessage)(nil),                   // 66: anyrun.v1.InternalBuildMessage
+	(*IsoDevContainerMetadata)(nil),                // 67: anyrun.v1.IsoDevContainerMetadata
+	(*IsoEnvBalloonConfig)(nil),                    // 68: anyrun.v1.IsoEnvBalloonConfig
+	(*IsoEnvConfig)(nil),                           // 69: anyrun.v1.IsoEnvConfig
+	(*IsoEnvExtraDriveConfig)(nil),                 // 70: anyrun.v1.IsoEnvExtraDriveConfig
+	(*LifecycleProcessExited)(nil),                 // 71: anyrun.v1.LifecycleProcessExited
+	(*LifecycleProcessRestarted)(nil),              // 72: anyrun.v1.LifecycleProcessRestarted
+	(*ListDirectoryRequest)(nil),                   // 73: anyrun.v1.ListDirectoryRequest
+	(*ListDirectoryResponse)(nil),                  // 74: anyrun.v1.ListDirectoryResponse
+	(*ListProcessesRequest)(nil),                   // 75: anyrun.v1.ListProcessesRequest
+	(*ListProcessesResponse)(nil),                  // 76: anyrun.v1.ListProcessesResponse
+	(*ListedProcess)(nil),                          // 77: anyrun.v1.ListedProcess
+	(*LocalDirectoryReference)(nil),                // 78: anyrun.v1.LocalDirectoryReference
+	(*MultiSourceEntry)(nil),                       // 79: anyrun.v1.MultiSourceEntry
+	(*MultiSourceReference)(nil),                   // 80: anyrun.v1.MultiSourceReference
+	(*NetworkInfo)(nil),                            // 81: anyrun.v1.NetworkInfo
+	(*NoopSourceReference)(nil),                    // 82: anyrun.v1.NoopSourceReference
+	(*PersistedDevContainerConfig)(nil),            // 83: anyrun.v1.PersistedDevContainerConfig
+	(*PersistedEnvVar)(nil),                        // 84: anyrun.v1.PersistedEnvVar
+	(*PersistedExternalSnapshot)(nil),              // 85: anyrun.v1.PersistedExternalSnapshot
+	(*PersistedGitRepoSource)(nil),                 // 86: anyrun.v1.PersistedGitRepoSource
+	(*PersistedLocalRepoSource)(nil),               // 87: anyrun.v1.PersistedLocalRepoSource
+	(*PersistedMultiSource)(nil),                   // 88: anyrun.v1.PersistedMultiSource
+	(*PersistedMultiSourceEntry)(nil),              // 89: anyrun.v1.PersistedMultiSourceEntry
+	(*PersistedNoopSource)(nil),                    // 90: anyrun.v1.PersistedNoopSource
+	(*PersistedTarGzipUrlSource)(nil),              // 91: anyrun.v1.PersistedTarGzipUrlSource
+	(*PersistedTarRepoSource)(nil),                 // 92: anyrun.v1.PersistedTarRepoSource
+	(*Pod)(nil),                                    // 93: anyrun.v1.Pod
+	(*PodAgentStoreGrant)(nil),                     // 94: anyrun.v1.PodAgentStoreGrant
+	(*PodCollection)(nil),                          // 95: anyrun.v1.PodCollection
+	(*PodCreatingStatus)(nil),                      // 96: anyrun.v1.PodCreatingStatus
+	(*PodErrorEvent)(nil),                          // 97: anyrun.v1.PodErrorEvent
+	(*PodEvent)(nil),                               // 98: anyrun.v1.PodEvent
+	(*PodFailedStatus)(nil),                        // 99: anyrun.v1.PodFailedStatus
+	(*PodFailureDetails)(nil),                      // 100: anyrun.v1.PodFailureDetails
+	(*PodFilter)(nil),                              // 101: anyrun.v1.PodFilter
+	(*PodIdentity)(nil),                            // 102: anyrun.v1.PodIdentity
+	(*PodMetricsSample)(nil),                       // 103: anyrun.v1.PodMetricsSample
+	(*PodPorts)(nil),                               // 104: anyrun.v1.PodPorts
+	(*PodRunningStatus)(nil),                       // 105: anyrun.v1.PodRunningStatus
+	(*PodStatus)(nil),                              // 106: anyrun.v1.PodStatus
+	(*PodTerminatedStatus)(nil),                    // 107: anyrun.v1.PodTerminatedStatus
+	(*PodUpdate)(nil),                              // 108: anyrun.v1.PodUpdate
+	(*PortDefinition)(nil),                         // 109: anyrun.v1.PortDefinition
+	(*PortState)(nil),                              // 110: anyrun.v1.PortState
+	(*ProcessEvent)(nil),                           // 111: anyrun.v1.ProcessEvent
+	(*ProcessExited)(nil),                          // 112: anyrun.v1.ProcessExited
+	(*ProcessRestarted)(nil),                       // 113: anyrun.v1.ProcessRestarted
+	(*ProcessSupervision)(nil),                     // 114: anyrun.v1.ProcessSupervision
+	(*ProgressDetail)(nil),                         // 115: anyrun.v1.ProgressDetail
+	(*ReadBinaryFileRequest)(nil),                  // 116: anyrun.v1.ReadBinaryFileRequest
+	(*ReadBinaryFileResponse)(nil),                 // 117: anyrun.v1.ReadBinaryFileResponse
+	(*ReadTextFileRequest)(nil),                    // 118: anyrun.v1.ReadTextFileRequest
+	(*ReadTextFileResponse)(nil),                   // 119: anyrun.v1.ReadTextFileResponse
+	(*RegistryCredentials)(nil),                    // 120: anyrun.v1.RegistryCredentials
+	(*ResourceLimits)(nil),                         // 121: anyrun.v1.ResourceLimits
+	(*ResourceRequests)(nil),                       // 122: anyrun.v1.ResourceRequests
+	(*RestartBackoff)(nil),                         // 123: anyrun.v1.RestartBackoff
+	(*RuntimeStatePersistentState)(nil),            // 124: anyrun.v1.RuntimeStatePersistentState
+	(*ScmConfig)(nil),                              // 125: anyrun.v1.ScmConfig
+	(*Snapshot)(nil),                               // 126: anyrun.v1.Snapshot
+	(*SnapshotCollection)(nil),                     // 127: anyrun.v1.SnapshotCollection
+	(*SnapshotExtraDriveFile)(nil),                 // 128: anyrun.v1.SnapshotExtraDriveFile
+	(*SnapshotFileChunk)(nil),                      // 129: anyrun.v1.SnapshotFileChunk
+	(*SnapshotVmSnapshotV1Metadata)(nil),           // 130: anyrun.v1.SnapshotVmSnapshotV1Metadata
+	(*SpanEnded)(nil),                              // 131: anyrun.v1.SpanEnded
+	(*SpanStarted)(nil),                            // 132: anyrun.v1.SpanStarted
+	(*StderrData)(nil),                             // 133: anyrun.v1.StderrData
+	(*StdoutData)(nil),                             // 134: anyrun.v1.StdoutData
+	(*StreamMetricsRequest)(nil),                   // 135: anyrun.v1.StreamMetricsRequest
+	(*TarGzipUrlSourceReference)(nil),              // 136: anyrun.v1.TarGzipUrlSourceReference
+	(*TarRepoSourceReference)(nil),                 // 137: anyrun.v1.TarRepoSourceReference
+	(*WaitingForWorkerStatus)(nil),                 // 138: anyrun.v1.WaitingForWorkerStatus
+	(*WorkspaceConfig)(nil),                        // 139: anyrun.v1.WorkspaceConfig
+	(*WriteBinaryFileRequest)(nil),                 // 140: anyrun.v1.WriteBinaryFileRequest
+	(*WriteBinaryFileResponse)(nil),                // 141: anyrun.v1.WriteBinaryFileResponse
+	(*WriteTextFileRequest)(nil),                   // 142: anyrun.v1.WriteTextFileRequest
+	(*WriteTextFileResponse)(nil),                  // 143: anyrun.v1.WriteTextFileResponse
+	nil,                                            // 144: anyrun.v1.AnygressPerPodDenyRules.DeniesEntry
+	nil,                                            // 145: anyrun.v1.CreateProcessRequest.EnvEntry
+	nil,                                            // 146: anyrun.v1.DevContainerSpec.PodLabelsEntry
+	nil,                                            // 147: anyrun.v1.DevContainerSpec.NodeLabelsEntry
+	(*GetProcessStatusResponse_Completed)(nil),     // 148: anyrun.v1.GetProcessStatusResponse.Completed
+	(*GetProcessStatusResponse_Running)(nil),       // 149: anyrun.v1.GetProcessStatusResponse.Running
+	nil,                                            // 150: anyrun.v1.HttpHealthCheck.HeadersEntry
+	nil,                                            // 151: anyrun.v1.ImageMetadata.EnvEntry
+	nil,                                            // 152: anyrun.v1.Pod.LabelsEntry
+	nil,                                            // 153: anyrun.v1.PodFilter.LabelsEntry
+	nil,                                            // 154: anyrun.v1.RuntimeStatePersistentState.CommandHandlersEntry
+	nil,                                            // 155: anyrun.v1.Snapshot.LabelsEntry
+	(*emptypb.Empty)(nil),                          // 156: google.protobuf.Empty
 }
 var file_anyrun_v1_proto_depIdxs = []int32{
-	1,   // 0: anyrun.v1.CloneCompleted.purpose:type_name -> anyrun.v1.ClonePurpose
-	1,   // 1: anyrun.v1.CloneStarted.purpose:type_name -> anyrun.v1.ClonePurpose
-	46,  // 2: anyrun.v1.DaemonPod.ports:type_name -> anyrun.v1.PodPortState
-	49,  // 3: anyrun.v1.DaemonPod.status:type_name -> anyrun.v1.PodStatus
-	10,  // 4: anyrun.v1.DaemonPod.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
-	68,  // 5: anyrun.v1.DefaultPortConfig.open:type_name -> google.protobuf.Empty
-	68,  // 6: anyrun.v1.DefaultPortConfig.token:type_name -> google.protobuf.Empty
-	68,  // 7: anyrun.v1.DefaultPortConfig.public:type_name -> google.protobuf.Empty
-	68,  // 8: anyrun.v1.DefaultPortConfig.private:type_name -> google.protobuf.Empty
-	13,  // 9: anyrun.v1.DevContainerConfig.prepare_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 10: anyrun.v1.DevContainerConfig.install_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 11: anyrun.v1.DevContainerConfig.verify_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 12: anyrun.v1.DevContainerConfig.start_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	52,  // 13: anyrun.v1.DevContainerConfig.ports:type_name -> anyrun.v1.PortDefinition
-	10,  // 14: anyrun.v1.DevContainerConfig.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
-	12,  // 15: anyrun.v1.DevContainerConfig.env:type_name -> anyrun.v1.DevContainerEnv
-	4,   // 16: anyrun.v1.DevContainerConfig.build:type_name -> anyrun.v1.Build
-	16,  // 17: anyrun.v1.DevContainerConfig.external_snapshot:type_name -> anyrun.v1.ExternalSnapshot
-	19,  // 18: anyrun.v1.DevContainerConfig.git:type_name -> anyrun.v1.GitRepoSourceReference
-	60,  // 19: anyrun.v1.DevContainerConfig.tar:type_name -> anyrun.v1.TarRepoSourceReference
-	28,  // 20: anyrun.v1.DevContainerConfig.local:type_name -> anyrun.v1.LocalDirectoryReference
-	59,  // 21: anyrun.v1.DevContainerConfig.tar_gzip_url:type_name -> anyrun.v1.TarGzipUrlSourceReference
-	29,  // 22: anyrun.v1.DevContainerConfig.noop:type_name -> anyrun.v1.NoopSourceReference
-	62,  // 23: anyrun.v1.DevContainerSpec.pod_labels:type_name -> anyrun.v1.DevContainerSpec.PodLabelsEntry
-	63,  // 24: anyrun.v1.DevContainerSpec.node_labels:type_name -> anyrun.v1.DevContainerSpec.NodeLabelsEntry
-	56,  // 25: anyrun.v1.DevContainerSpec.requests:type_name -> anyrun.v1.ResourceRequests
-	56,  // 26: anyrun.v1.DevContainerSpec.hibernated_requests:type_name -> anyrun.v1.ResourceRequests
-	55,  // 27: anyrun.v1.DevContainerSpec.limits:type_name -> anyrun.v1.ResourceLimits
-	0,   // 28: anyrun.v1.DevContainerSpec.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
-	11,  // 29: anyrun.v1.DevContainerSpec.config:type_name -> anyrun.v1.DevContainerConfig
-	21,  // 30: anyrun.v1.ExternalSnapshot.image_metadata:type_name -> anyrun.v1.ImageMetadata
-	0,   // 31: anyrun.v1.ExternalSnapshot.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
-	64,  // 32: anyrun.v1.ImageMetadata.env:type_name -> anyrun.v1.ImageMetadata.EnvEntry
-	54,  // 33: anyrun.v1.ImagePullLayerUpdate.downloading:type_name -> anyrun.v1.ProgressDetail
-	54,  // 34: anyrun.v1.ImagePullLayerUpdate.extracting:type_name -> anyrun.v1.ProgressDetail
-	13,  // 35: anyrun.v1.PersistedDevContainerConfig.prepare_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 36: anyrun.v1.PersistedDevContainerConfig.install_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 37: anyrun.v1.PersistedDevContainerConfig.verify_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	13,  // 38: anyrun.v1.PersistedDevContainerConfig.start_commands:type_name -> anyrun.v1.DevContainerExecCommand
-	31,  // 39: anyrun.v1.PersistedDevContainerConfig.env:type_name -> anyrun.v1.PersistedEnvVar
-	52,  // 40: anyrun.v1.PersistedDevContainerConfig.ports:type_name -> anyrun.v1.PortDefinition
-	4,   // 41: anyrun.v1.PersistedDevContainerConfig.build:type_name -> anyrun.v1.Build
-	32,  // 42: anyrun.v1.PersistedDevContainerConfig.external_snapshot:type_name -> anyrun.v1.PersistedExternalSnapshot
-	33,  // 43: anyrun.v1.PersistedDevContainerConfig.git:type_name -> anyrun.v1.PersistedGitRepoSource
-	37,  // 44: anyrun.v1.PersistedDevContainerConfig.tar:type_name -> anyrun.v1.PersistedTarRepoSource
-	34,  // 45: anyrun.v1.PersistedDevContainerConfig.local:type_name -> anyrun.v1.PersistedLocalRepoSource
-	36,  // 46: anyrun.v1.PersistedDevContainerConfig.tar_gzip_url:type_name -> anyrun.v1.PersistedTarGzipUrlSource
-	35,  // 47: anyrun.v1.PersistedDevContainerConfig.noop:type_name -> anyrun.v1.PersistedNoopSource
-	65,  // 48: anyrun.v1.Pod.labels:type_name -> anyrun.v1.Pod.LabelsEntry
-	56,  // 49: anyrun.v1.Pod.resource_requests:type_name -> anyrun.v1.ResourceRequests
-	56,  // 50: anyrun.v1.Pod.hibernated_resource_requests:type_name -> anyrun.v1.ResourceRequests
-	55,  // 51: anyrun.v1.Pod.resource_limits:type_name -> anyrun.v1.ResourceLimits
-	49,  // 52: anyrun.v1.Pod.status:type_name -> anyrun.v1.PodStatus
-	47,  // 53: anyrun.v1.Pod.ports:type_name -> anyrun.v1.PodPorts
-	30,  // 54: anyrun.v1.Pod.config:type_name -> anyrun.v1.PersistedDevContainerConfig
-	38,  // 55: anyrun.v1.PodCollection.items:type_name -> anyrun.v1.Pod
-	2,   // 56: anyrun.v1.PodCreatingStatus.phase:type_name -> anyrun.v1.PodCreatingPhase
-	41,  // 57: anyrun.v1.PodEvent.error:type_name -> anyrun.v1.PodErrorEvent
-	68,  // 58: anyrun.v1.PodEvent.hydration_started:type_name -> google.protobuf.Empty
-	20,  // 59: anyrun.v1.PodEvent.hydration_progress:type_name -> anyrun.v1.HydrationProgress
-	68,  // 60: anyrun.v1.PodEvent.hydration_completed:type_name -> google.protobuf.Empty
-	68,  // 61: anyrun.v1.PodEvent.clone_started:type_name -> google.protobuf.Empty
-	68,  // 62: anyrun.v1.PodEvent.clone_completed:type_name -> google.protobuf.Empty
-	8,   // 63: anyrun.v1.PodEvent.clone_started_v2:type_name -> anyrun.v1.CloneStarted
-	7,   // 64: anyrun.v1.PodEvent.clone_completed_v2:type_name -> anyrun.v1.CloneCompleted
-	68,  // 65: anyrun.v1.PodEvent.checkout_started:type_name -> google.protobuf.Empty
-	68,  // 66: anyrun.v1.PodEvent.checkout_completed:type_name -> google.protobuf.Empty
-	6,   // 67: anyrun.v1.PodEvent.build_step_started:type_name -> anyrun.v1.BuildStepStarted
-	5,   // 68: anyrun.v1.PodEvent.build_status_line:type_name -> anyrun.v1.BuildStatusLine
-	27,  // 69: anyrun.v1.PodEvent.internal_build_message:type_name -> anyrun.v1.InternalBuildMessage
-	26,  // 70: anyrun.v1.PodEvent.install_command:type_name -> anyrun.v1.InstallCommand
-	18,  // 71: anyrun.v1.PodEvent.extension_install_stdout:type_name -> anyrun.v1.FeatureOutput
-	18,  // 72: anyrun.v1.PodEvent.extension_install_stderr:type_name -> anyrun.v1.FeatureOutput
-	17,  // 73: anyrun.v1.PodEvent.extension_install_exit_code:type_name -> anyrun.v1.FeatureExitCode
-	68,  // 74: anyrun.v1.PodEvent.snapshot_started:type_name -> google.protobuf.Empty
-	68,  // 75: anyrun.v1.PodEvent.snapshot_completed:type_name -> google.protobuf.Empty
-	68,  // 76: anyrun.v1.PodEvent.creation_completed:type_name -> google.protobuf.Empty
-	18,  // 77: anyrun.v1.PodEvent.extension_start_stdout:type_name -> anyrun.v1.FeatureOutput
-	18,  // 78: anyrun.v1.PodEvent.extension_start_stderr:type_name -> anyrun.v1.FeatureOutput
-	17,  // 79: anyrun.v1.PodEvent.extension_start_exit_code:type_name -> anyrun.v1.FeatureExitCode
-	68,  // 80: anyrun.v1.PodEvent.startup_completed:type_name -> google.protobuf.Empty
-	24,  // 81: anyrun.v1.PodEvent.image_pull_started:type_name -> anyrun.v1.ImagePullStarted
-	23,  // 82: anyrun.v1.PodEvent.image_pull_layer_update:type_name -> anyrun.v1.ImagePullLayerUpdate
-	25,  // 83: anyrun.v1.PodEvent.image_pull_status_update:type_name -> anyrun.v1.ImagePullStatusUpdate
-	22,  // 84: anyrun.v1.PodEvent.image_pull_completed:type_name -> anyrun.v1.ImagePullCompleted
-	45,  // 85: anyrun.v1.PodEvent.blocked_repo_state:type_name -> anyrun.v1.PodIdentity
-	68,  // 86: anyrun.v1.PodEvent.acquired_repo_state:type_name -> google.protobuf.Empty
-	68,  // 87: anyrun.v1.PodEvent.private_worker_ready:type_name -> google.protobuf.Empty
-	61,  // 88: anyrun.v1.PodEvent.waiting_for_worker:type_name -> anyrun.v1.WaitingForWorkerStatus
-	66,  // 89: anyrun.v1.PodFilter.labels:type_name -> anyrun.v1.PodFilter.LabelsEntry
-	53,  // 90: anyrun.v1.PodPortState.ports:type_name -> anyrun.v1.PortState
-	52,  // 91: anyrun.v1.PodPorts.ports:type_name -> anyrun.v1.PortDefinition
-	10,  // 92: anyrun.v1.PodPorts.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
-	40,  // 93: anyrun.v1.PodStatus.creating:type_name -> anyrun.v1.PodCreatingStatus
-	48,  // 94: anyrun.v1.PodStatus.running:type_name -> anyrun.v1.PodRunningStatus
-	43,  // 95: anyrun.v1.PodStatus.failed:type_name -> anyrun.v1.PodFailedStatus
-	50,  // 96: anyrun.v1.PodStatus.terminated:type_name -> anyrun.v1.PodTerminatedStatus
-	39,  // 97: anyrun.v1.PodUpdate.initial:type_name -> anyrun.v1.PodCollection
-	38,  // 98: anyrun.v1.PodUpdate.added:type_name -> anyrun.v1.Pod
-	38,  // 99: anyrun.v1.PodUpdate.updated:type_name -> anyrun.v1.Pod
-	38,  // 100: anyrun.v1.PodUpdate.removed:type_name -> anyrun.v1.Pod
-	68,  // 101: anyrun.v1.PortDefinition.open:type_name -> google.protobuf.Empty
-	68,  // 102: anyrun.v1.PortDefinition.token:type_name -> google.protobuf.Empty
-	68,  // 103: anyrun.v1.PortDefinition.public:type_name -> google.protobuf.Empty
-	68,  // 104: anyrun.v1.PortDefinition.private:type_name -> google.protobuf.Empty
-	68,  // 105: anyrun.v1.PortState.open:type_name -> google.protobuf.Empty
-	68,  // 106: anyrun.v1.PortState.token:type_name -> google.protobuf.Empty
-	68,  // 107: anyrun.v1.PortState.public:type_name -> google.protobuf.Empty
-	68,  // 108: anyrun.v1.PortState.private:type_name -> google.protobuf.Empty
-	67,  // 109: anyrun.v1.Snapshot.labels:type_name -> anyrun.v1.Snapshot.LabelsEntry
-	30,  // 110: anyrun.v1.Snapshot.pod_config:type_name -> anyrun.v1.PersistedDevContainerConfig
-	3,   // 111: anyrun.v1.Snapshot.state:type_name -> anyrun.v1.SnapshotState
-	21,  // 112: anyrun.v1.Snapshot.image_metadata:type_name -> anyrun.v1.ImageMetadata
-	0,   // 113: anyrun.v1.Snapshot.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
-	57,  // 114: anyrun.v1.SnapshotCollection.items:type_name -> anyrun.v1.Snapshot
-	115, // [115:115] is the sub-list for method output_type
-	115, // [115:115] is the sub-list for method input_type
-	115, // [115:115] is the sub-list for extension type_name
-	115, // [115:115] is the sub-list for extension extendee
-	0,   // [0:115] is the sub-list for field type_name
+	94,  // 0: anyrun.v1.AgentStoreConfig.pod_grant:type_name -> anyrun.v1.PodAgentStoreGrant
+	17,  // 1: anyrun.v1.AnygressLocalPodDenyRules.deny_rules:type_name -> anyrun.v1.AnygressPerPodDenyRules
+	144, // 2: anyrun.v1.AnygressPerPodDenyRules.denies:type_name -> anyrun.v1.AnygressPerPodDenyRules.DeniesEntry
+	18,  // 3: anyrun.v1.AnygressPodDenyRuleList.rules:type_name -> anyrun.v1.AnygressPodDenyRule
+	1,   // 4: anyrun.v1.CloneCompleted.purpose:type_name -> anyrun.v1.ClonePurpose
+	1,   // 5: anyrun.v1.CloneStarted.purpose:type_name -> anyrun.v1.ClonePurpose
+	145, // 6: anyrun.v1.CreateProcessRequest.env:type_name -> anyrun.v1.CreateProcessRequest.EnvEntry
+	114, // 7: anyrun.v1.CreateProcessRequest.supervision:type_name -> anyrun.v1.ProcessSupervision
+	106, // 8: anyrun.v1.DaemonPod.status:type_name -> anyrun.v1.PodStatus
+	31,  // 9: anyrun.v1.DaemonPod.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
+	7,   // 10: anyrun.v1.DaemonPod.started_from_cache_source:type_name -> anyrun.v1.PodStartCacheSource
+	156, // 11: anyrun.v1.DefaultPortConfig.open:type_name -> google.protobuf.Empty
+	156, // 12: anyrun.v1.DefaultPortConfig.token:type_name -> google.protobuf.Empty
+	156, // 13: anyrun.v1.DefaultPortConfig.public:type_name -> google.protobuf.Empty
+	156, // 14: anyrun.v1.DefaultPortConfig.private:type_name -> google.protobuf.Empty
+	34,  // 15: anyrun.v1.DevContainerConfig.prepare_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 16: anyrun.v1.DevContainerConfig.install_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 17: anyrun.v1.DevContainerConfig.verify_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 18: anyrun.v1.DevContainerConfig.start_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	109, // 19: anyrun.v1.DevContainerConfig.ports:type_name -> anyrun.v1.PortDefinition
+	31,  // 20: anyrun.v1.DevContainerConfig.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
+	33,  // 21: anyrun.v1.DevContainerConfig.env:type_name -> anyrun.v1.DevContainerEnv
+	21,  // 22: anyrun.v1.DevContainerConfig.build:type_name -> anyrun.v1.Build
+	48,  // 23: anyrun.v1.DevContainerConfig.external_snapshot:type_name -> anyrun.v1.ExternalSnapshot
+	12,  // 24: anyrun.v1.DevContainerConfig.registry_reference_alias:type_name -> anyrun.v1.DevContainerConfig.RegistryReferenceAlias
+	63,  // 25: anyrun.v1.DevContainerConfig.inline_build:type_name -> anyrun.v1.InlineBuild
+	55,  // 26: anyrun.v1.DevContainerConfig.git:type_name -> anyrun.v1.GitRepoSourceReference
+	137, // 27: anyrun.v1.DevContainerConfig.tar:type_name -> anyrun.v1.TarRepoSourceReference
+	78,  // 28: anyrun.v1.DevContainerConfig.local:type_name -> anyrun.v1.LocalDirectoryReference
+	136, // 29: anyrun.v1.DevContainerConfig.tar_gzip_url:type_name -> anyrun.v1.TarGzipUrlSourceReference
+	82,  // 30: anyrun.v1.DevContainerConfig.noop:type_name -> anyrun.v1.NoopSourceReference
+	80,  // 31: anyrun.v1.DevContainerConfig.multi:type_name -> anyrun.v1.MultiSourceReference
+	114, // 32: anyrun.v1.DevContainerExecCommand.supervision:type_name -> anyrun.v1.ProcessSupervision
+	146, // 33: anyrun.v1.DevContainerSpec.pod_labels:type_name -> anyrun.v1.DevContainerSpec.PodLabelsEntry
+	147, // 34: anyrun.v1.DevContainerSpec.node_labels:type_name -> anyrun.v1.DevContainerSpec.NodeLabelsEntry
+	122, // 35: anyrun.v1.DevContainerSpec.requests:type_name -> anyrun.v1.ResourceRequests
+	122, // 36: anyrun.v1.DevContainerSpec.hibernated_requests:type_name -> anyrun.v1.ResourceRequests
+	121, // 37: anyrun.v1.DevContainerSpec.limits:type_name -> anyrun.v1.ResourceLimits
+	0,   // 38: anyrun.v1.DevContainerSpec.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
+	32,  // 39: anyrun.v1.DevContainerSpec.config:type_name -> anyrun.v1.DevContainerConfig
+	46,  // 40: anyrun.v1.DevContainerSpec.egress_policy:type_name -> anyrun.v1.EgressPolicy
+	17,  // 41: anyrun.v1.DevContainerSpec.anygress_per_pod_deny_rules:type_name -> anyrun.v1.AnygressPerPodDenyRules
+	14,  // 42: anyrun.v1.DevContainerSpec.agent_store_config:type_name -> anyrun.v1.AgentStoreConfig
+	3,   // 43: anyrun.v1.DirectoryEntry.type:type_name -> anyrun.v1.EntryType
+	120, // 44: anyrun.v1.DockerBuildConfig.cache_registry_credentials:type_name -> anyrun.v1.RegistryCredentials
+	41,  // 45: anyrun.v1.DockerBuildConfig.build_secrets:type_name -> anyrun.v1.DockerBuildSecretEntry
+	45,  // 46: anyrun.v1.DockerBuildResult.image:type_name -> anyrun.v1.DockerImageRef
+	42,  // 47: anyrun.v1.DockerDevContainerPersistentState.container:type_name -> anyrun.v1.DockerContainerPersistentState
+	124, // 48: anyrun.v1.DockerDevContainerPersistentState.runtime_state:type_name -> anyrun.v1.RuntimeStatePersistentState
+	58,  // 49: anyrun.v1.DockerDevContainerPersistentState.image_metadata:type_name -> anyrun.v1.ImageMetadata
+	81,  // 50: anyrun.v1.DockerDevContainerPersistentState.network_info:type_name -> anyrun.v1.NetworkInfo
+	139, // 51: anyrun.v1.DockerDevContainerPersistentState.workspace:type_name -> anyrun.v1.WorkspaceConfig
+	156, // 52: anyrun.v1.DockerImageBuildEvent.queued:type_name -> google.protobuf.Empty
+	156, // 53: anyrun.v1.DockerImageBuildEvent.started:type_name -> google.protobuf.Empty
+	23,  // 54: anyrun.v1.DockerImageBuildEvent.build_step_started:type_name -> anyrun.v1.BuildStepStarted
+	22,  // 55: anyrun.v1.DockerImageBuildEvent.build_status_line:type_name -> anyrun.v1.BuildStatusLine
+	66,  // 56: anyrun.v1.DockerImageBuildEvent.internal_build_message:type_name -> anyrun.v1.InternalBuildMessage
+	97,  // 57: anyrun.v1.DockerImageBuildEvent.error:type_name -> anyrun.v1.PodErrorEvent
+	40,  // 58: anyrun.v1.DockerImageBuildEvent.completed:type_name -> anyrun.v1.DockerBuildResult
+	125, // 59: anyrun.v1.EgressPolicy.scm:type_name -> anyrun.v1.ScmConfig
+	156, // 60: anyrun.v1.EgressPolicy.allow_all:type_name -> google.protobuf.Empty
+	47,  // 61: anyrun.v1.EgressPolicy.restricted:type_name -> anyrun.v1.EgressRestricted
+	15,  // 62: anyrun.v1.EgressRestricted.allowed_domains:type_name -> anyrun.v1.AllowedDomain
+	58,  // 63: anyrun.v1.ExternalSnapshot.image_metadata:type_name -> anyrun.v1.ImageMetadata
+	0,   // 64: anyrun.v1.ExternalSnapshot.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
+	149, // 65: anyrun.v1.GetProcessStatusResponse.running:type_name -> anyrun.v1.GetProcessStatusResponse.Running
+	148, // 66: anyrun.v1.GetProcessStatusResponse.completed:type_name -> anyrun.v1.GetProcessStatusResponse.Completed
+	4,   // 67: anyrun.v1.GitCloneFailure.category:type_name -> anyrun.v1.GitCloneFailureCategory
+	150, // 68: anyrun.v1.HttpHealthCheck.headers:type_name -> anyrun.v1.HttpHealthCheck.HeadersEntry
+	151, // 69: anyrun.v1.ImageMetadata.env:type_name -> anyrun.v1.ImageMetadata.EnvEntry
+	115, // 70: anyrun.v1.ImagePullLayerUpdate.downloading:type_name -> anyrun.v1.ProgressDetail
+	115, // 71: anyrun.v1.ImagePullLayerUpdate.extracting:type_name -> anyrun.v1.ProgressDetail
+	43,  // 72: anyrun.v1.IsoDevContainerMetadata.persistent_state:type_name -> anyrun.v1.DockerDevContainerPersistentState
+	69,  // 73: anyrun.v1.IsoDevContainerMetadata.env_config:type_name -> anyrun.v1.IsoEnvConfig
+	70,  // 74: anyrun.v1.IsoEnvConfig.extra_drives:type_name -> anyrun.v1.IsoEnvExtraDriveConfig
+	68,  // 75: anyrun.v1.IsoEnvConfig.balloon:type_name -> anyrun.v1.IsoEnvBalloonConfig
+	5,   // 76: anyrun.v1.IsoEnvExtraDriveConfig.purpose:type_name -> anyrun.v1.IsoEnvExtraDrivePurpose
+	10,  // 77: anyrun.v1.LifecycleProcessRestarted.reason:type_name -> anyrun.v1.RestartReason
+	36,  // 78: anyrun.v1.ListDirectoryResponse.entries:type_name -> anyrun.v1.DirectoryEntry
+	77,  // 79: anyrun.v1.ListProcessesResponse.processes:type_name -> anyrun.v1.ListedProcess
+	52,  // 80: anyrun.v1.ListedProcess.status:type_name -> anyrun.v1.GetProcessStatusResponse
+	55,  // 81: anyrun.v1.MultiSourceEntry.git:type_name -> anyrun.v1.GitRepoSourceReference
+	137, // 82: anyrun.v1.MultiSourceEntry.tar:type_name -> anyrun.v1.TarRepoSourceReference
+	78,  // 83: anyrun.v1.MultiSourceEntry.local:type_name -> anyrun.v1.LocalDirectoryReference
+	136, // 84: anyrun.v1.MultiSourceEntry.tar_gzip_url:type_name -> anyrun.v1.TarGzipUrlSourceReference
+	82,  // 85: anyrun.v1.MultiSourceEntry.noop:type_name -> anyrun.v1.NoopSourceReference
+	79,  // 86: anyrun.v1.MultiSourceReference.sources:type_name -> anyrun.v1.MultiSourceEntry
+	34,  // 87: anyrun.v1.PersistedDevContainerConfig.prepare_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 88: anyrun.v1.PersistedDevContainerConfig.install_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 89: anyrun.v1.PersistedDevContainerConfig.verify_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	34,  // 90: anyrun.v1.PersistedDevContainerConfig.start_commands:type_name -> anyrun.v1.DevContainerExecCommand
+	84,  // 91: anyrun.v1.PersistedDevContainerConfig.env:type_name -> anyrun.v1.PersistedEnvVar
+	109, // 92: anyrun.v1.PersistedDevContainerConfig.ports:type_name -> anyrun.v1.PortDefinition
+	21,  // 93: anyrun.v1.PersistedDevContainerConfig.build:type_name -> anyrun.v1.Build
+	85,  // 94: anyrun.v1.PersistedDevContainerConfig.external_snapshot:type_name -> anyrun.v1.PersistedExternalSnapshot
+	12,  // 95: anyrun.v1.PersistedDevContainerConfig.registry_reference_alias:type_name -> anyrun.v1.DevContainerConfig.RegistryReferenceAlias
+	86,  // 96: anyrun.v1.PersistedDevContainerConfig.git:type_name -> anyrun.v1.PersistedGitRepoSource
+	92,  // 97: anyrun.v1.PersistedDevContainerConfig.tar:type_name -> anyrun.v1.PersistedTarRepoSource
+	87,  // 98: anyrun.v1.PersistedDevContainerConfig.local:type_name -> anyrun.v1.PersistedLocalRepoSource
+	91,  // 99: anyrun.v1.PersistedDevContainerConfig.tar_gzip_url:type_name -> anyrun.v1.PersistedTarGzipUrlSource
+	90,  // 100: anyrun.v1.PersistedDevContainerConfig.noop:type_name -> anyrun.v1.PersistedNoopSource
+	88,  // 101: anyrun.v1.PersistedDevContainerConfig.multi:type_name -> anyrun.v1.PersistedMultiSource
+	89,  // 102: anyrun.v1.PersistedMultiSource.sources:type_name -> anyrun.v1.PersistedMultiSourceEntry
+	86,  // 103: anyrun.v1.PersistedMultiSourceEntry.git:type_name -> anyrun.v1.PersistedGitRepoSource
+	92,  // 104: anyrun.v1.PersistedMultiSourceEntry.tar:type_name -> anyrun.v1.PersistedTarRepoSource
+	87,  // 105: anyrun.v1.PersistedMultiSourceEntry.local:type_name -> anyrun.v1.PersistedLocalRepoSource
+	91,  // 106: anyrun.v1.PersistedMultiSourceEntry.tar_gzip_url:type_name -> anyrun.v1.PersistedTarGzipUrlSource
+	90,  // 107: anyrun.v1.PersistedMultiSourceEntry.noop:type_name -> anyrun.v1.PersistedNoopSource
+	152, // 108: anyrun.v1.Pod.labels:type_name -> anyrun.v1.Pod.LabelsEntry
+	122, // 109: anyrun.v1.Pod.resource_requests:type_name -> anyrun.v1.ResourceRequests
+	122, // 110: anyrun.v1.Pod.hibernated_resource_requests:type_name -> anyrun.v1.ResourceRequests
+	121, // 111: anyrun.v1.Pod.resource_limits:type_name -> anyrun.v1.ResourceLimits
+	106, // 112: anyrun.v1.Pod.status:type_name -> anyrun.v1.PodStatus
+	104, // 113: anyrun.v1.Pod.ports:type_name -> anyrun.v1.PodPorts
+	83,  // 114: anyrun.v1.Pod.config:type_name -> anyrun.v1.PersistedDevContainerConfig
+	7,   // 115: anyrun.v1.Pod.started_from_cache_source:type_name -> anyrun.v1.PodStartCacheSource
+	93,  // 116: anyrun.v1.PodCollection.items:type_name -> anyrun.v1.Pod
+	6,   // 117: anyrun.v1.PodCreatingStatus.phase:type_name -> anyrun.v1.PodCreatingPhase
+	97,  // 118: anyrun.v1.PodEvent.error:type_name -> anyrun.v1.PodErrorEvent
+	156, // 119: anyrun.v1.PodEvent.hydration_started:type_name -> google.protobuf.Empty
+	57,  // 120: anyrun.v1.PodEvent.hydration_progress:type_name -> anyrun.v1.HydrationProgress
+	156, // 121: anyrun.v1.PodEvent.hydration_completed:type_name -> google.protobuf.Empty
+	156, // 122: anyrun.v1.PodEvent.clone_started:type_name -> google.protobuf.Empty
+	156, // 123: anyrun.v1.PodEvent.clone_completed:type_name -> google.protobuf.Empty
+	25,  // 124: anyrun.v1.PodEvent.clone_started_v2:type_name -> anyrun.v1.CloneStarted
+	24,  // 125: anyrun.v1.PodEvent.clone_completed_v2:type_name -> anyrun.v1.CloneCompleted
+	156, // 126: anyrun.v1.PodEvent.checkout_started:type_name -> google.protobuf.Empty
+	156, // 127: anyrun.v1.PodEvent.checkout_completed:type_name -> google.protobuf.Empty
+	23,  // 128: anyrun.v1.PodEvent.build_step_started:type_name -> anyrun.v1.BuildStepStarted
+	22,  // 129: anyrun.v1.PodEvent.build_status_line:type_name -> anyrun.v1.BuildStatusLine
+	66,  // 130: anyrun.v1.PodEvent.internal_build_message:type_name -> anyrun.v1.InternalBuildMessage
+	64,  // 131: anyrun.v1.PodEvent.install_command:type_name -> anyrun.v1.InstallCommand
+	50,  // 132: anyrun.v1.PodEvent.extension_install_stdout:type_name -> anyrun.v1.FeatureOutput
+	50,  // 133: anyrun.v1.PodEvent.extension_install_stderr:type_name -> anyrun.v1.FeatureOutput
+	49,  // 134: anyrun.v1.PodEvent.extension_install_exit_code:type_name -> anyrun.v1.FeatureExitCode
+	156, // 135: anyrun.v1.PodEvent.snapshot_started:type_name -> google.protobuf.Empty
+	156, // 136: anyrun.v1.PodEvent.snapshot_completed:type_name -> google.protobuf.Empty
+	156, // 137: anyrun.v1.PodEvent.creation_completed:type_name -> google.protobuf.Empty
+	50,  // 138: anyrun.v1.PodEvent.extension_start_stdout:type_name -> anyrun.v1.FeatureOutput
+	50,  // 139: anyrun.v1.PodEvent.extension_start_stderr:type_name -> anyrun.v1.FeatureOutput
+	49,  // 140: anyrun.v1.PodEvent.extension_start_exit_code:type_name -> anyrun.v1.FeatureExitCode
+	156, // 141: anyrun.v1.PodEvent.startup_completed:type_name -> google.protobuf.Empty
+	61,  // 142: anyrun.v1.PodEvent.image_pull_started:type_name -> anyrun.v1.ImagePullStarted
+	60,  // 143: anyrun.v1.PodEvent.image_pull_layer_update:type_name -> anyrun.v1.ImagePullLayerUpdate
+	62,  // 144: anyrun.v1.PodEvent.image_pull_status_update:type_name -> anyrun.v1.ImagePullStatusUpdate
+	59,  // 145: anyrun.v1.PodEvent.image_pull_completed:type_name -> anyrun.v1.ImagePullCompleted
+	102, // 146: anyrun.v1.PodEvent.blocked_repo_state:type_name -> anyrun.v1.PodIdentity
+	156, // 147: anyrun.v1.PodEvent.acquired_repo_state:type_name -> google.protobuf.Empty
+	156, // 148: anyrun.v1.PodEvent.private_worker_ready:type_name -> google.protobuf.Empty
+	138, // 149: anyrun.v1.PodEvent.waiting_for_worker:type_name -> anyrun.v1.WaitingForWorkerStatus
+	132, // 150: anyrun.v1.PodEvent.span_started:type_name -> anyrun.v1.SpanStarted
+	131, // 151: anyrun.v1.PodEvent.span_ended:type_name -> anyrun.v1.SpanEnded
+	72,  // 152: anyrun.v1.PodEvent.lifecycle_process_restarted:type_name -> anyrun.v1.LifecycleProcessRestarted
+	71,  // 153: anyrun.v1.PodEvent.lifecycle_process_exited:type_name -> anyrun.v1.LifecycleProcessExited
+	100, // 154: anyrun.v1.PodFailedStatus.failure_details:type_name -> anyrun.v1.PodFailureDetails
+	65,  // 155: anyrun.v1.PodFailureDetails.install_command_failure:type_name -> anyrun.v1.InstallCommandFailure
+	39,  // 156: anyrun.v1.PodFailureDetails.docker_build_failure:type_name -> anyrun.v1.DockerBuildFailure
+	54,  // 157: anyrun.v1.PodFailureDetails.git_clone_failure:type_name -> anyrun.v1.GitCloneFailure
+	53,  // 158: anyrun.v1.PodFailureDetails.git_checkout_failure:type_name -> anyrun.v1.GitCheckoutFailure
+	26,  // 159: anyrun.v1.PodFailureDetails.container_wait_failure:type_name -> anyrun.v1.ContainerWaitFailure
+	153, // 160: anyrun.v1.PodFilter.labels:type_name -> anyrun.v1.PodFilter.LabelsEntry
+	109, // 161: anyrun.v1.PodPorts.ports:type_name -> anyrun.v1.PortDefinition
+	31,  // 162: anyrun.v1.PodPorts.default_port_config:type_name -> anyrun.v1.DefaultPortConfig
+	96,  // 163: anyrun.v1.PodStatus.creating:type_name -> anyrun.v1.PodCreatingStatus
+	105, // 164: anyrun.v1.PodStatus.running:type_name -> anyrun.v1.PodRunningStatus
+	99,  // 165: anyrun.v1.PodStatus.failed:type_name -> anyrun.v1.PodFailedStatus
+	107, // 166: anyrun.v1.PodStatus.terminated:type_name -> anyrun.v1.PodTerminatedStatus
+	95,  // 167: anyrun.v1.PodUpdate.initial:type_name -> anyrun.v1.PodCollection
+	93,  // 168: anyrun.v1.PodUpdate.added:type_name -> anyrun.v1.Pod
+	93,  // 169: anyrun.v1.PodUpdate.updated:type_name -> anyrun.v1.Pod
+	93,  // 170: anyrun.v1.PodUpdate.removed:type_name -> anyrun.v1.Pod
+	156, // 171: anyrun.v1.PortDefinition.open:type_name -> google.protobuf.Empty
+	156, // 172: anyrun.v1.PortDefinition.token:type_name -> google.protobuf.Empty
+	156, // 173: anyrun.v1.PortDefinition.public:type_name -> google.protobuf.Empty
+	156, // 174: anyrun.v1.PortDefinition.private:type_name -> google.protobuf.Empty
+	156, // 175: anyrun.v1.PortState.open:type_name -> google.protobuf.Empty
+	156, // 176: anyrun.v1.PortState.token:type_name -> google.protobuf.Empty
+	156, // 177: anyrun.v1.PortState.public:type_name -> google.protobuf.Empty
+	156, // 178: anyrun.v1.PortState.private:type_name -> google.protobuf.Empty
+	134, // 179: anyrun.v1.ProcessEvent.stdout:type_name -> anyrun.v1.StdoutData
+	133, // 180: anyrun.v1.ProcessEvent.stderr:type_name -> anyrun.v1.StderrData
+	112, // 181: anyrun.v1.ProcessEvent.exited:type_name -> anyrun.v1.ProcessExited
+	113, // 182: anyrun.v1.ProcessEvent.restarted:type_name -> anyrun.v1.ProcessRestarted
+	10,  // 183: anyrun.v1.ProcessRestarted.reason:type_name -> anyrun.v1.RestartReason
+	9,   // 184: anyrun.v1.ProcessSupervision.restart_policy:type_name -> anyrun.v1.RestartPolicy
+	123, // 185: anyrun.v1.ProcessSupervision.backoff:type_name -> anyrun.v1.RestartBackoff
+	56,  // 186: anyrun.v1.ProcessSupervision.health_check:type_name -> anyrun.v1.HttpHealthCheck
+	154, // 187: anyrun.v1.RuntimeStatePersistentState.command_handlers:type_name -> anyrun.v1.RuntimeStatePersistentState.CommandHandlersEntry
+	13,  // 188: anyrun.v1.ScmConfig.auth_method:type_name -> anyrun.v1.ScmConfig.AuthMethod
+	155, // 189: anyrun.v1.Snapshot.labels:type_name -> anyrun.v1.Snapshot.LabelsEntry
+	83,  // 190: anyrun.v1.Snapshot.pod_config:type_name -> anyrun.v1.PersistedDevContainerConfig
+	11,  // 191: anyrun.v1.Snapshot.state:type_name -> anyrun.v1.SnapshotState
+	58,  // 192: anyrun.v1.Snapshot.image_metadata:type_name -> anyrun.v1.ImageMetadata
+	0,   // 193: anyrun.v1.Snapshot.blob_storage_format:type_name -> anyrun.v1.BlobStorageFormat
+	122, // 194: anyrun.v1.Snapshot.resource_requests:type_name -> anyrun.v1.ResourceRequests
+	121, // 195: anyrun.v1.Snapshot.resource_limits:type_name -> anyrun.v1.ResourceLimits
+	126, // 196: anyrun.v1.SnapshotCollection.items:type_name -> anyrun.v1.Snapshot
+	129, // 197: anyrun.v1.SnapshotExtraDriveFile.file_chunks:type_name -> anyrun.v1.SnapshotFileChunk
+	129, // 198: anyrun.v1.SnapshotVmSnapshotV1Metadata.rootfs_file_chunks:type_name -> anyrun.v1.SnapshotFileChunk
+	129, // 199: anyrun.v1.SnapshotVmSnapshotV1Metadata.memory_file_chunk:type_name -> anyrun.v1.SnapshotFileChunk
+	129, // 200: anyrun.v1.SnapshotVmSnapshotV1Metadata.state_file_chunk:type_name -> anyrun.v1.SnapshotFileChunk
+	129, // 201: anyrun.v1.SnapshotVmSnapshotV1Metadata.kernel_file_chunk:type_name -> anyrun.v1.SnapshotFileChunk
+	67,  // 202: anyrun.v1.SnapshotVmSnapshotV1Metadata.dev_container_metadata:type_name -> anyrun.v1.IsoDevContainerMetadata
+	128, // 203: anyrun.v1.SnapshotVmSnapshotV1Metadata.extra_drive_files:type_name -> anyrun.v1.SnapshotExtraDriveFile
+	8,   // 204: anyrun.v1.WaitingForWorkerStatus.wait_reason:type_name -> anyrun.v1.PrivateWorkerWaitReason
+	19,  // 205: anyrun.v1.AnygressPerPodDenyRules.DeniesEntry.value:type_name -> anyrun.v1.AnygressPodDenyRuleList
+	29,  // 206: anyrun.v1.RuntimeStatePersistentState.CommandHandlersEntry.value:type_name -> anyrun.v1.DaemonCommandHandlerPersistentState
+	207, // [207:207] is the sub-list for method output_type
+	207, // [207:207] is the sub-list for method input_type
+	207, // [207:207] is the sub-list for extension type_name
+	207, // [207:207] is the sub-list for extension extendee
+	0,   // [0:207] is the sub-list for field type_name
 }
 
 func init() { file_anyrun_v1_proto_init() }
@@ -6485,34 +13007,71 @@ func file_anyrun_v1_proto_init() {
 	if File_anyrun_v1_proto != nil {
 		return
 	}
-	file_anyrun_v1_proto_msgTypes[5].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[6].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[6].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[13].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[14].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[15].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[16].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[17].OneofWrappers = []any{
 		(*DefaultPortConfig_Open)(nil),
 		(*DefaultPortConfig_Token)(nil),
 		(*DefaultPortConfig_Public)(nil),
 		(*DefaultPortConfig_Private)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[7].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[18].OneofWrappers = []any{
 		(*DevContainerConfig_RegistryReference)(nil),
 		(*DevContainerConfig_SnapshotId)(nil),
 		(*DevContainerConfig_Build)(nil),
 		(*DevContainerConfig_ExternalSnapshot)(nil),
+		(*DevContainerConfig_CheckpointGroupId)(nil),
+		(*DevContainerConfig_RegistryReferenceAlias_)(nil),
+		(*DevContainerConfig_InlineBuild)(nil),
 		(*DevContainerConfig_Git)(nil),
 		(*DevContainerConfig_Tar)(nil),
 		(*DevContainerConfig_Local)(nil),
 		(*DevContainerConfig_TarGzipUrl)(nil),
 		(*DevContainerConfig_Noop)(nil),
+		(*DevContainerConfig_Multi)(nil),
 		(*DevContainerConfig_WorkspacePath)(nil),
 		(*DevContainerConfig_WorkdirRelativePath)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[8].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[19].OneofWrappers = []any{
 		(*DevContainerEnv_Inline)(nil),
 		(*DevContainerEnv_Encrypted)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[9].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[10].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[17].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[19].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[20].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[21].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[23].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[27].OneofWrappers = []any{
+		(*DockerBuildSecretEntry_Inline)(nil),
+		(*DockerBuildSecretEntry_Encrypted)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[28].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[29].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[30].OneofWrappers = []any{
+		(*DockerImageBuildEvent_Queued)(nil),
+		(*DockerImageBuildEvent_Started)(nil),
+		(*DockerImageBuildEvent_BuildStatusMessage)(nil),
+		(*DockerImageBuildEvent_BuildStepStarted)(nil),
+		(*DockerImageBuildEvent_BuildStatusLine)(nil),
+		(*DockerImageBuildEvent_InternalBuildMessage)(nil),
+		(*DockerImageBuildEvent_Error)(nil),
+		(*DockerImageBuildEvent_Completed)(nil),
+		(*DockerImageBuildEvent_BuildExitCode)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[32].OneofWrappers = []any{
+		(*EgressPolicy_AllowAll)(nil),
+		(*EgressPolicy_Restricted)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[34].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[38].OneofWrappers = []any{
+		(*GetProcessStatusResponse_Running_)(nil),
+		(*GetProcessStatusResponse_Completed_)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[40].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[41].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[44].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[46].OneofWrappers = []any{
 		(*ImagePullLayerUpdate_PullingFsLayer)(nil),
 		(*ImagePullLayerUpdate_Waiting)(nil),
 		(*ImagePullLayerUpdate_VerifyingChecksum)(nil),
@@ -6522,23 +13081,42 @@ func file_anyrun_v1_proto_init() {
 		(*ImagePullLayerUpdate_Extracting)(nil),
 		(*ImagePullLayerUpdate_Other)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[22].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[26].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[50].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[54].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[55].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[65].OneofWrappers = []any{
+		(*MultiSourceEntry_Git)(nil),
+		(*MultiSourceEntry_Tar)(nil),
+		(*MultiSourceEntry_Local)(nil),
+		(*MultiSourceEntry_TarGzipUrl)(nil),
+		(*MultiSourceEntry_Noop)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[69].OneofWrappers = []any{
 		(*PersistedDevContainerConfig_RegistryReference)(nil),
 		(*PersistedDevContainerConfig_Build)(nil),
 		(*PersistedDevContainerConfig_SnapshotId)(nil),
 		(*PersistedDevContainerConfig_ExternalSnapshot)(nil),
+		(*PersistedDevContainerConfig_CheckpointGroupId)(nil),
+		(*PersistedDevContainerConfig_RegistryReferenceAlias)(nil),
 		(*PersistedDevContainerConfig_Git)(nil),
 		(*PersistedDevContainerConfig_Tar)(nil),
 		(*PersistedDevContainerConfig_Local)(nil),
 		(*PersistedDevContainerConfig_TarGzipUrl)(nil),
 		(*PersistedDevContainerConfig_Noop)(nil),
+		(*PersistedDevContainerConfig_Multi)(nil),
 		(*PersistedDevContainerConfig_WorkspacePath)(nil),
 		(*PersistedDevContainerConfig_WorkdirRelativePath)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[34].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[35].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[38].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[75].OneofWrappers = []any{
+		(*PersistedMultiSourceEntry_Git)(nil),
+		(*PersistedMultiSourceEntry_Tar)(nil),
+		(*PersistedMultiSourceEntry_Local)(nil),
+		(*PersistedMultiSourceEntry_TarGzipUrl)(nil),
+		(*PersistedMultiSourceEntry_Noop)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[79].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[81].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[84].OneofWrappers = []any{
 		(*PodEvent_Error)(nil),
 		(*PodEvent_DebugEvent)(nil),
 		(*PodEvent_HydrationStarted)(nil),
@@ -6590,45 +13168,69 @@ func file_anyrun_v1_proto_init() {
 		(*PodEvent_AcquiredRepoState)(nil),
 		(*PodEvent_PrivateWorkerReady)(nil),
 		(*PodEvent_WaitingForWorker)(nil),
+		(*PodEvent_SpanStarted)(nil),
+		(*PodEvent_SpanEnded)(nil),
+		(*PodEvent_LifecycleProcessRestarted)(nil),
+		(*PodEvent_LifecycleProcessExited)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[40].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[43].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[44].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[45].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[85].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[86].OneofWrappers = []any{
+		(*PodFailureDetails_InstallCommandFailure)(nil),
+		(*PodFailureDetails_DockerBuildFailure)(nil),
+		(*PodFailureDetails_GitCloneFailure)(nil),
+		(*PodFailureDetails_GitCheckoutFailure)(nil),
+		(*PodFailureDetails_ContainerWaitFailure)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[87].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[90].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[91].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[92].OneofWrappers = []any{
 		(*PodStatus_Creating)(nil),
 		(*PodStatus_Running)(nil),
 		(*PodStatus_Failed)(nil),
 		(*PodStatus_Terminated)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[46].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[47].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[93].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[94].OneofWrappers = []any{
 		(*PodUpdate_Initial)(nil),
 		(*PodUpdate_Added)(nil),
 		(*PodUpdate_Updated)(nil),
 		(*PodUpdate_Removed)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[48].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[95].OneofWrappers = []any{
 		(*PortDefinition_Open)(nil),
 		(*PortDefinition_Token)(nil),
 		(*PortDefinition_Public)(nil),
 		(*PortDefinition_Private)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[49].OneofWrappers = []any{
+	file_anyrun_v1_proto_msgTypes[96].OneofWrappers = []any{
 		(*PortState_Open)(nil),
 		(*PortState_Token)(nil),
 		(*PortState_Public)(nil),
 		(*PortState_Private)(nil),
 	}
-	file_anyrun_v1_proto_msgTypes[51].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[53].OneofWrappers = []any{}
-	file_anyrun_v1_proto_msgTypes[54].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[97].OneofWrappers = []any{
+		(*ProcessEvent_Stdout)(nil),
+		(*ProcessEvent_Stderr)(nil),
+		(*ProcessEvent_Exited)(nil),
+		(*ProcessEvent_Restarted)(nil),
+	}
+	file_anyrun_v1_proto_msgTypes[100].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[107].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[112].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[113].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[118].OneofWrappers = []any{}
+	file_anyrun_v1_proto_msgTypes[125].OneofWrappers = []any{
+		(*WorkspaceConfig_Absolute)(nil),
+		(*WorkspaceConfig_WorkdirRelative)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_anyrun_v1_proto_rawDesc), len(file_anyrun_v1_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   64,
+			NumEnums:      14,
+			NumMessages:   142,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

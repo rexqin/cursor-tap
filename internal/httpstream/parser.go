@@ -346,11 +346,7 @@ func (p *Parser) parseGRPCBody(bodyReader *BodyReader, urlPath string, isRequest
 		return
 	}
 
-	if len(data) == 0 {
-		return
-	}
-
-	// Parse as raw protobuf
+	// Empty body is valid for Connect unary RPCs (e.g. GetTeams with empty request/response).
 	messages := ParseGRPCBody(data, service, method, isRequest, p.grpcRegistry, contentType)
 	for _, msg := range messages {
 		p.logger.LogGRPC(msg)

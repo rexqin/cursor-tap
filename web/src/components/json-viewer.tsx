@@ -9,19 +9,33 @@ interface JsonViewerProps {
   maxHeight?: string;
 }
 
+const MAX_DISPLAY_CHARS = 100_000;
+const MAX_HIGHLIGHT_CHARS = 20_000;
+
 export function JsonViewer({ data, maxHeight = '400px' }: JsonViewerProps) {
   const [copied, setCopied] = useState(false);
 
-  const formatted = useMemo(() => {
+  const { formatted, truncated } = useMemo(() => {
+    let text = data;
+    let truncated = false;
+
+    if (text.length > MAX_DISPLAY_CHARS) {
+      text = text.slice(0, MAX_DISPLAY_CHARS);
+      truncated = true;
+    }
+
     try {
-      const parsed = JSON.parse(data);
-      return JSON.stringify(parsed, null, 2);
+      const parsed = JSON.parse(text);
+      return { formatted: JSON.stringify(parsed, null, 2), truncated };
     } catch {
-      return data;
+      return { formatted: text, truncated };
     }
   }, [data]);
 
   const highlighted = useMemo(() => {
+    if (formatted.length > MAX_HIGHLIGHT_CHARS) {
+      return null;
+    }
     return formatted
       .replace(/"([^"]+)":/g, '<span class="text-purple-600 dark:text-purple-400">"$1"</span>:')
       .replace(/: "([^"]*)"/g, ': <span class="text-green-600 dark:text-green-400">"$1"</span>')
@@ -32,7 +46,7 @@ export function JsonViewer({ data, maxHeight = '400px' }: JsonViewerProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(formatted);
+      await navigator.clipboard.writeText(data);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -55,12 +69,26 @@ export function JsonViewer({ data, maxHeight = '400px' }: JsonViewerProps) {
           <Copy className="w-4 h-4" />
         )}
       </Button>
+      {truncated && (
+        <div className="mb-1 text-xs text-amber-600 dark:text-amber-400">
+          内容过大，仅显示前 {MAX_DISPLAY_CHARS.toLocaleString()} 字符（复制仍可获取完整内容）
+        </div>
+      )}
       <div className="w-full overflow-x-auto">
-        <pre
-          className="p-3 bg-muted rounded text-xs font-mono whitespace-pre"
-          style={{ maxHeight, minWidth: 'min-content' }}
-          dangerouslySetInnerHTML={{ __html: highlighted }}
-        />
+        {highlighted ? (
+          <pre
+            className="p-3 bg-muted rounded text-xs font-mono whitespace-pre"
+            style={{ maxHeight, minWidth: 'min-content' }}
+            dangerouslySetInnerHTML={{ __html: highlighted }}
+          />
+        ) : (
+          <pre
+            className="p-3 bg-muted rounded text-xs font-mono whitespace-pre overflow-auto"
+            style={{ maxHeight, minWidth: 'min-content' }}
+          >
+            {formatted}
+          </pre>
+        )}
       </div>
     </div>
   );

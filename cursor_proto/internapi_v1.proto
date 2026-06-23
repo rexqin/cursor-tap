@@ -4,7 +4,7 @@ package internapi.v1;
 
 option go_package = "github.com/burpheart/cursor-tap/cursor_proto/gen/internapi/v1;internapiv1";
 
-// Copied from: local:internapi.v1.BlobData (var: Ves, class: Ile)
+// Copied from: local:internapi.v1.BlobData (var: xYt)
 message BlobData {
   BlobType blob_type = 1;
   bytes blob_id = 2;
@@ -14,12 +14,12 @@ message BlobData {
   }
 }
 
-// Copied from: local:internapi.v1.BlobDataPerMessage (var: zes, class: Jle)
+// Copied from: local:internapi.v1.BlobDataPerMessage (var: NYt)
 message BlobDataPerMessage {
   repeated BlobData blob_data = 1;
 }
 
-// Copied from: local:internapi.v1.BlobType (var: iw)
+// Copied from: local:internapi.v1.BlobType (var: fJr)
 enum BlobType {
   BLOB_TYPE_UNSPECIFIED = 0;
   BLOB_TYPE_IMAGE = 1;
@@ -29,9 +29,12 @@ enum BlobType {
   BLOB_TYPE_SELECTED_PULL_REQUEST = 5;
   BLOB_TYPE_TEXT = 6;
   BLOB_TYPE_RICH_TEXT = 7;
+  BLOB_TYPE_EXTERNAL_LINK_PDF = 8;
+  BLOB_TYPE_DOCUMENT = 9;
+  BLOB_TYPE_VIDEO = 10;
 }
 
-// Copied from: local:internapi.v1.ImageBlobData (var: Wes, class: Cle)
+// Copied from: local:internapi.v1.ImageBlobData (var: qYt)
 message ImageBlobData {
   string mime_type = 1;
 }

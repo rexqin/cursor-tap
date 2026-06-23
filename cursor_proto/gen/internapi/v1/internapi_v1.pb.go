@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Copied from: local:internapi.v1.BlobType (var: iw)
+// Copied from: local:internapi.v1.BlobType (var: fJr)
 type BlobType int32
 
 const (
@@ -33,19 +33,25 @@ const (
 	BlobType_BLOB_TYPE_SELECTED_PULL_REQUEST BlobType = 5
 	BlobType_BLOB_TYPE_TEXT                  BlobType = 6
 	BlobType_BLOB_TYPE_RICH_TEXT             BlobType = 7
+	BlobType_BLOB_TYPE_EXTERNAL_LINK_PDF     BlobType = 8
+	BlobType_BLOB_TYPE_DOCUMENT              BlobType = 9
+	BlobType_BLOB_TYPE_VIDEO                 BlobType = 10
 )
 
 // Enum value maps for BlobType.
 var (
 	BlobType_name = map[int32]string{
-		0: "BLOB_TYPE_UNSPECIFIED",
-		1: "BLOB_TYPE_IMAGE",
-		2: "BLOB_TYPE_INVOCATION_CONTEXT",
-		3: "BLOB_TYPE_EXTRA_CONTEXT",
-		4: "BLOB_TYPE_GIT_PR_DIFF_SELECTION",
-		5: "BLOB_TYPE_SELECTED_PULL_REQUEST",
-		6: "BLOB_TYPE_TEXT",
-		7: "BLOB_TYPE_RICH_TEXT",
+		0:  "BLOB_TYPE_UNSPECIFIED",
+		1:  "BLOB_TYPE_IMAGE",
+		2:  "BLOB_TYPE_INVOCATION_CONTEXT",
+		3:  "BLOB_TYPE_EXTRA_CONTEXT",
+		4:  "BLOB_TYPE_GIT_PR_DIFF_SELECTION",
+		5:  "BLOB_TYPE_SELECTED_PULL_REQUEST",
+		6:  "BLOB_TYPE_TEXT",
+		7:  "BLOB_TYPE_RICH_TEXT",
+		8:  "BLOB_TYPE_EXTERNAL_LINK_PDF",
+		9:  "BLOB_TYPE_DOCUMENT",
+		10: "BLOB_TYPE_VIDEO",
 	}
 	BlobType_value = map[string]int32{
 		"BLOB_TYPE_UNSPECIFIED":           0,
@@ -56,6 +62,9 @@ var (
 		"BLOB_TYPE_SELECTED_PULL_REQUEST": 5,
 		"BLOB_TYPE_TEXT":                  6,
 		"BLOB_TYPE_RICH_TEXT":             7,
+		"BLOB_TYPE_EXTERNAL_LINK_PDF":     8,
+		"BLOB_TYPE_DOCUMENT":              9,
+		"BLOB_TYPE_VIDEO":                 10,
 	}
 )
 
@@ -86,7 +95,7 @@ func (BlobType) EnumDescriptor() ([]byte, []int) {
 	return file_internapi_v1_proto_rawDescGZIP(), []int{0}
 }
 
-// Copied from: local:internapi.v1.BlobData (var: Ves, class: Ile)
+// Copied from: local:internapi.v1.BlobData (var: xYt)
 type BlobData struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	BlobType BlobType               `protobuf:"varint,1,opt,name=blob_type,json=blobType,proto3,enum=internapi.v1.BlobType" json:"blob_type,omitempty"`
@@ -177,7 +186,7 @@ type BlobData_ImageData struct {
 
 func (*BlobData_ImageData) isBlobData_TypeSpecificData() {}
 
-// Copied from: local:internapi.v1.BlobDataPerMessage (var: zes, class: Jle)
+// Copied from: local:internapi.v1.BlobDataPerMessage (var: NYt)
 type BlobDataPerMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	BlobData      []*BlobData            `protobuf:"bytes,1,rep,name=blob_data,json=blobData,proto3" json:"blob_data,omitempty"`
@@ -222,7 +231,7 @@ func (x *BlobDataPerMessage) GetBlobData() []*BlobData {
 	return nil
 }
 
-// Copied from: local:internapi.v1.ImageBlobData (var: Wes, class: Cle)
+// Copied from: local:internapi.v1.ImageBlobData (var: qYt)
 type ImageBlobData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MimeType      string                 `protobuf:"bytes,1,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
@@ -282,7 +291,7 @@ const file_internapi_v1_proto_rawDesc = "" +
 	"\x12BlobDataPerMessage\x123\n" +
 	"\tblob_data\x18\x01 \x03(\v2\x16.internapi.v1.BlobDataR\bblobData\",\n" +
 	"\rImageBlobData\x12\x1b\n" +
-	"\tmime_type\x18\x01 \x01(\tR\bmimeType*\xf0\x01\n" +
+	"\tmime_type\x18\x01 \x01(\tR\bmimeType*\xbe\x02\n" +
 	"\bBlobType\x12\x19\n" +
 	"\x15BLOB_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fBLOB_TYPE_IMAGE\x10\x01\x12 \n" +
@@ -291,7 +300,11 @@ const file_internapi_v1_proto_rawDesc = "" +
 	"\x1fBLOB_TYPE_GIT_PR_DIFF_SELECTION\x10\x04\x12#\n" +
 	"\x1fBLOB_TYPE_SELECTED_PULL_REQUEST\x10\x05\x12\x12\n" +
 	"\x0eBLOB_TYPE_TEXT\x10\x06\x12\x17\n" +
-	"\x13BLOB_TYPE_RICH_TEXT\x10\aBKZIgithub.com/burpheart/cursor-tap/cursor_proto/gen/internapi/v1;internapiv1b\x06proto3"
+	"\x13BLOB_TYPE_RICH_TEXT\x10\a\x12\x1f\n" +
+	"\x1bBLOB_TYPE_EXTERNAL_LINK_PDF\x10\b\x12\x16\n" +
+	"\x12BLOB_TYPE_DOCUMENT\x10\t\x12\x13\n" +
+	"\x0fBLOB_TYPE_VIDEO\x10\n" +
+	"BKZIgithub.com/burpheart/cursor-tap/cursor_proto/gen/internapi/v1;internapiv1b\x06proto3"
 
 var (
 	file_internapi_v1_proto_rawDescOnce sync.Once

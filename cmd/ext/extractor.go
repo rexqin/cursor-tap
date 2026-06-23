@@ -10,6 +10,18 @@ import (
 	"strings"
 )
 
+// sanitizeProtoIdent converts JS variable names to valid protobuf identifiers.
+func sanitizeProtoIdent(name string) string {
+	name = strings.ReplaceAll(name, "$", "_")
+	if name == "" {
+		return "_"
+	}
+	if name[0] >= '0' && name[0] <= '9' {
+		name = "_" + name
+	}
+	return name
+}
+
 // isGooglePkg checks if a package is a Google standard package that should not be generated
 func isGooglePkg(pkg string) bool {
 	return pkg == "google.protobuf" || pkg == "google.rpc"
@@ -99,7 +111,7 @@ func ExtractProtos(inputFile, outputDir string) {
 	enums := extractEnums(text)
 	services := extractServices(text)
 
-	// Build var -> typeName mapping (both external var name and internal class name)
+	// Build var -> typeName mapping (external var, internal class name, and aliases)
 	varToType := make(map[string]string)
 	for _, msg := range messages {
 		if msg.VarName != "" {
@@ -114,6 +126,7 @@ func ExtractProtos(inputFile, outputDir string) {
 			varToType[enum.VarName] = enum.TypeName
 		}
 	}
+	expandVarAliases(text, varToType)
 
 	// Generate proto files
 	generateProtos(messages, enums, services, varToType, outputDir)
@@ -122,19 +135,35 @@ func ExtractProtos(inputFile, outputDir string) {
 }
 
 func extractMessages(text string) []Message {
+	byType := make(map[string]Message)
+
+	for _, msg := range extractMessagesFromClass(text) {
+		if _, exists := byType[msg.TypeName]; !exists {
+			byType[msg.TypeName] = msg
+		}
+	}
+	for _, msg := range extractMessagesFromStaticProps(text) {
+		if _, exists := byType[msg.TypeName]; !exists {
+			byType[msg.TypeName] = msg
+		}
+	}
+
+	messages := make([]Message, 0, len(byType))
+	for _, msg := range byType {
+		messages = append(messages, msg)
+	}
+	return messages
+}
+
+// extractMessagesFromClass handles legacy Pattern 1:
+// VarName = class InternalName extends Base { ... this.typeName = "..." ... this.fields = ... }
+func extractMessagesFromClass(text string) []Message {
 	var messages []Message
 
-	// Pattern 1: VarName = class InternalName extends l { ... this.typeName = "..." ... this.fields = ... }
-	// 先找所有 "变量名 = class 内部类名" 定义
-	// JS 变量名可以包含 $ 符号，如 B$e, qg 等
-	// 需要同时捕获外部变量名和内部类名，因为字段引用可能用任一个
 	classDefRe := regexp.MustCompile(`([\w$]+)\s*=\s*class\s+([\w$]+)\s+extends\s+[\w$]+\s*\{`)
 	classMatches := classDefRe.FindAllStringSubmatchIndex(text, -1)
 
-	// Pattern: this.typeName = "xxx.v1.YYY" (any package)
 	typeNameRe := regexp.MustCompile(`this\.typeName\s*=\s*"([\w.]+)"`)
-
-	// Pattern: this.fields = n.util.newFieldList(() => [...])
 	fieldsRe := regexp.MustCompile(`this\.fields\s*=\s*\w+(?:\.proto3)?\.util\.newFieldList\s*\(\s*\(\s*\)\s*=>\s*\[`)
 
 	for _, classMatch := range classMatches {
@@ -142,7 +171,6 @@ func extractMessages(text string) []Message {
 		internalName := text[classMatch[4]:classMatch[5]]
 		classStart := classMatch[0]
 
-		// 找到类的结束位置（匹配大括号）
 		classEnd := findClassEnd(text, classMatch[1]-1)
 		if classEnd == -1 {
 			continue
@@ -150,36 +178,101 @@ func extractMessages(text string) []Message {
 
 		classBody := text[classStart:classEnd]
 
-		// 在类体内查找 typeName
 		typeMatch := typeNameRe.FindStringSubmatch(classBody)
 		if typeMatch == nil {
 			continue
 		}
 		typeName := typeMatch[1]
 
-		// 在类体内查找 fields
 		fieldsMatch := fieldsRe.FindStringIndex(classBody)
 		if fieldsMatch == nil {
 			continue
 		}
 
-		// 找到 fields 数组的开始位置
 		bracketPos := classStart + fieldsMatch[1] - 1
 		fields := extractFieldArray(text, bracketPos)
 
 		pkg, shortName := parseTypeName(typeName)
-		msg := Message{
+		messages = append(messages, Message{
 			TypeName:     typeName,
 			VarName:      varName,
 			InternalName: internalName,
 			Fields:       fields,
 			Package:      pkg,
 			ShortName:    shortName,
-		}
-		messages = append(messages, msg)
+		})
 	}
 
 	return messages
+}
+
+// extractMessagesFromStaticProps handles Pattern 2 (current Cursor builds):
+// VarName.typeName = "pkg.Message", VarName.fields = n.util.newFieldList(() => [...])
+func extractMessagesFromStaticProps(text string) []Message {
+	var messages []Message
+
+	typeNameAssignRe := regexp.MustCompile(`([\w$]+)\.typeName\s*=\s*"([\w.]+)"`)
+	fieldsAssignRe := regexp.MustCompile(`([\w$]+)\.fields\s*=\s*\w+(?:\.proto3)?\.util\.newFieldList\s*\(\s*\(\s*\)\s*=>\s*\[`)
+
+	const searchWindow = 2000
+
+	for _, match := range typeNameAssignRe.FindAllStringSubmatchIndex(text, -1) {
+		varName := text[match[2]:match[3]]
+		typeName := text[match[4]:match[5]]
+
+		searchStart := match[0]
+		searchEnd := searchStart + searchWindow
+		if searchEnd > len(text) {
+			searchEnd = len(text)
+		}
+		window := text[searchStart:searchEnd]
+
+		var fieldsMatch []int
+		for _, fm := range fieldsAssignRe.FindAllStringSubmatchIndex(window, -1) {
+			if window[fm[2]:fm[3]] == varName {
+				fieldsMatch = fm
+				break
+			}
+		}
+		if fieldsMatch == nil {
+			continue
+		}
+
+		bracketPos := searchStart + fieldsMatch[1] - 1
+		fields := extractFieldArray(text, bracketPos)
+
+		pkg, shortName := parseTypeName(typeName)
+		messages = append(messages, Message{
+			TypeName: typeName,
+			VarName:  varName,
+			Fields:   fields,
+			Package:  pkg,
+			ShortName: shortName,
+		})
+	}
+
+	return messages
+}
+
+// expandVarAliases resolves JS alias assignments like "var Vqn=zst," where zst is a
+// known protobuf type var, so field references using Vqn can be resolved.
+func expandVarAliases(text string, varToType map[string]string) {
+	aliasRe := regexp.MustCompile(`(?:var\s+)?([\w$]+)\s*=\s*([\w$]+)\s*,`)
+	for {
+		changed := false
+		for _, match := range aliasRe.FindAllStringSubmatch(text, -1) {
+			lhs, rhs := match[1], match[2]
+			if typeName, ok := varToType[rhs]; ok {
+				if _, exists := varToType[lhs]; !exists {
+					varToType[lhs] = typeName
+					changed = true
+				}
+			}
+		}
+		if !changed {
+			break
+		}
+	}
 }
 
 // findClassEnd finds the matching closing brace for a class definition
@@ -909,7 +1002,7 @@ func resolveMethodType(varName string, varToType map[string]string, currentPkg s
 		}
 		return shortName
 	}
-	return varName // unresolved
+	return sanitizeProtoIdent(varName) // unresolved JS var name
 }
 
 func insertMessage(node *TypeNode, path []string, msg *Message) {
@@ -1168,7 +1261,7 @@ func resolveFieldTypeWithPkg(f Field, varToType map[string]string, parentPath st
 
 				return shortName
 			}
-			return varName // fallback to var name (unresolved)
+			return sanitizeProtoIdent(varName) // fallback to var name (unresolved)
 		}
 	}
 
@@ -1207,7 +1300,7 @@ func resolveFieldTypeWithPkg(f Field, varToType map[string]string, parentPath st
 						valueType = shortName
 					}
 				} else {
-					valueType = varName
+					valueType = sanitizeProtoIdent(varName)
 				}
 			}
 		}

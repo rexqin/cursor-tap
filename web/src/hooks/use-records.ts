@@ -4,6 +4,39 @@ import { useState, useCallback, useMemo, useRef } from 'react';
 import { Record, SessionInfo } from '@/lib/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9090';
+const MAX_RECORDS = 2000;
+const PREVIEW_MAX_CHARS = 200;
+
+function truncatePreview(data?: string): string | undefined {
+  if (!data) return undefined;
+  return data.length > PREVIEW_MAX_CHARS ? data.slice(0, PREVIEW_MAX_CHARS) : data;
+}
+
+/** Parse /aiserver.v1.Foo/Bar → { service, method } */
+function parseGrpcFromUrl(url?: string): { service: string; method: string } | null {
+  if (!url) return null;
+  const path = url.startsWith('/') ? url.slice(1) : url;
+  const idx = path.lastIndexOf('/');
+  if (idx <= 0) return null;
+  return { service: path.slice(0, idx), method: path.slice(idx + 1) };
+}
+
+function applyGrpcFromRecord(session: SessionInfo, record: Record) {
+  if (record.grpc_service) {
+    if (!session.grpc_service) {
+      session.grpc_service = record.grpc_service;
+      session.grpc_method = record.grpc_method;
+    }
+    return;
+  }
+  if (record.type === 'request' && record.url && !session.grpc_service) {
+    const parsed = parseGrpcFromUrl(record.url);
+    if (parsed) {
+      session.grpc_service = parsed.service;
+      session.grpc_method = parsed.method;
+    }
+  }
+}
 
 export function useRecords() {
   const [records, setRecords] = useState<Record[]>([]);
@@ -17,7 +50,7 @@ export function useRecords() {
   // Filter state - multi-select
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
   const [selectedMethods, setSelectedMethods] = useState<Set<string>>(new Set());
-  
+
   // Cache for quick record lookup
   const recordsMap = useRef(new Map<string, Record>());
 
@@ -26,7 +59,7 @@ export function useRecords() {
     if (isPaused) return;
 
     const key = `${record.session}-${record.index}`;
-    
+
     // Update cache
     recordsMap.current.set(key, record);
 
@@ -38,14 +71,14 @@ export function useRecords() {
       }
 
       const newRecords = [...prev, record];
-      // Keep only last 10000 records in browser
-      if (newRecords.length > 10000) {
+      // Keep only last MAX_RECORDS in browser
+      if (newRecords.length > MAX_RECORDS) {
         // Clean up old entries from cache
-        const removed = newRecords.slice(0, newRecords.length - 10000);
+        const removed = newRecords.slice(0, newRecords.length - MAX_RECORDS);
         for (const r of removed) {
           recordsMap.current.delete(`${r.session}-${r.index}`);
         }
-        return newRecords.slice(-10000);
+        return newRecords.slice(-MAX_RECORDS);
       }
       return newRecords;
     });
@@ -72,7 +105,7 @@ export function useRecords() {
   // Compute sessions (RPC calls) from records (browser-side)
   const sessions = useMemo(() => {
     const sessionMap = new Map<string, SessionInfo>();
-    
+
     for (const record of records) {
       const existing = sessionMap.get(record.session);
       if (existing) {
@@ -83,11 +116,8 @@ export function useRecords() {
         if (record.ts < existing.first_ts) {
           existing.first_ts = record.ts;
         }
-        // Update gRPC info from grpc records
-        if (record.grpc_service && !existing.grpc_service) {
-          existing.grpc_service = record.grpc_service;
-          existing.grpc_method = record.grpc_method;
-        }
+        // Update gRPC info from grpc records or request URL
+        applyGrpcFromRecord(existing, record);
         // Update URL from request
         if (record.type === 'request' && record.url && !existing.url) {
           existing.url = record.url;
@@ -101,23 +131,25 @@ export function useRecords() {
         }
         // Capture first C2S gRPC data as preview
         if (record.type === 'grpc' && record.direction === 'C2S' && record.grpc_data && !existing.grpc_preview) {
-          existing.grpc_preview = record.grpc_data;
+          existing.grpc_preview = truncatePreview(record.grpc_data);
         }
       } else {
-        sessionMap.set(record.session, {
+        const session: SessionInfo = {
           id: record.session,
           seq: record.seq,
           host: record.host || '',
           record_count: 1,
           first_ts: record.ts,
           last_ts: record.ts,
-          grpc_service: record.grpc_service,
-          grpc_method: record.grpc_method,
           url: record.type === 'request' ? record.url : undefined,
           request_size: record.direction === 'C2S' ? (record.size || 0) : 0,
           response_size: record.direction === 'S2C' ? (record.size || 0) : 0,
-          grpc_preview: record.type === 'grpc' && record.direction === 'C2S' ? record.grpc_data : undefined,
-        });
+          grpc_preview: record.type === 'grpc' && record.direction === 'C2S'
+            ? truncatePreview(record.grpc_data)
+            : undefined,
+        };
+        applyGrpcFromRecord(session, record);
+        sessionMap.set(record.session, session);
       }
     }
 
@@ -128,7 +160,7 @@ export function useRecords() {
   // Extract available services and methods for filter
   const availableFilters = useMemo(() => {
     const services = new Map<string, Set<string>>();
-    
+
     for (const session of sessions) {
       if (session.grpc_service) {
         if (!services.has(session.grpc_service)) {
@@ -139,21 +171,21 @@ export function useRecords() {
         }
       }
     }
-    
+
     return services;
   }, [sessions]);
 
   // Count sessions per method
   const methodCounts = useMemo(() => {
     const counts = new Map<string, number>();
-    
+
     for (const session of sessions) {
       if (session.grpc_service && session.grpc_method) {
         const key = `${session.grpc_service}.${session.grpc_method}`;
         counts.set(key, (counts.get(key) || 0) + 1);
       }
     }
-    
+
     return counts;
   }, [sessions]);
 
@@ -162,21 +194,21 @@ export function useRecords() {
     if (selectedServices.size === 0 && selectedMethods.size === 0) {
       return sessions;
     }
-    
+
     return sessions.filter((s) => {
       if (!s.grpc_service) return false;
-      
+
       // If specific methods selected, check service.method
       if (selectedMethods.size > 0) {
         const fullMethod = `${s.grpc_service}.${s.grpc_method}`;
         return selectedMethods.has(fullMethod);
       }
-      
+
       // Otherwise check service
       if (selectedServices.size > 0) {
         return selectedServices.has(s.grpc_service);
       }
-      
+
       return true;
     });
   }, [sessions, selectedServices, selectedMethods]);
@@ -184,11 +216,11 @@ export function useRecords() {
   // Filter records by selected session and search query
   const filteredRecords = useMemo(() => {
     let result = records;
-    
+
     if (selectedSession) {
       result = result.filter((r) => r.session === selectedSession);
     }
-    
+
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter((r) => {
@@ -202,7 +234,7 @@ export function useRecords() {
         );
       });
     }
-    
+
     return result;
   }, [records, selectedSession, searchQuery]);
 
@@ -216,7 +248,7 @@ export function useRecords() {
         for (const r of data as Record[]) {
           recordsMap.current.set(`${r.session}-${r.index}`, r);
         }
-        
+
         setRecords((prev) => {
           // Merge and deduplicate
           const existingKeys = new Set(prev.map((r) => `${r.session}-${r.index}`));

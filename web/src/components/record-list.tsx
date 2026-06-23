@@ -16,6 +16,8 @@ import {
   Circle
 } from 'lucide-react';
 
+const MAX_RENDERED_RECORDS = 500;
+
 // Get icon component for record type
 function RecordIcon({ record }: { record: Record }) {
   const className = cn('w-4 h-4', getRecordColor(record));
@@ -66,32 +68,35 @@ export const RecordList = memo(function RecordList({
   const scrollRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-  // Filter records by local search
-  const { filteredRecords, matchedIndices } = useMemo(() => {
-    if (!localSearch.trim()) {
-      return { filteredRecords: records, matchedIndices: [] };
-    }
-    
-    const query = localSearch.toLowerCase();
+  // Filter records by local search; cap rendered DOM nodes for performance
+  const { filteredRecords, matchedIndices, hiddenCount } = useMemo(() => {
+    const query = localSearch.trim().toLowerCase();
     const matched: number[] = [];
-    
-    records.forEach((r, idx) => {
-      const searchText = [
-        r.url,
-        r.grpc_service,
-        r.grpc_method,
-        r.grpc_data,
-        r.body,
-        r.host,
-        r.error,
-      ].filter(Boolean).join(' ').toLowerCase();
-      
-      if (searchText.includes(query)) {
-        matched.push(idx);
-      }
-    });
-    
-    return { filteredRecords: records, matchedIndices: matched };
+
+    if (query) {
+      records.forEach((r, idx) => {
+        const searchText = [
+          r.url,
+          r.grpc_service,
+          r.grpc_method,
+          r.host,
+          r.error,
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        if (searchText.includes(query)) {
+          matched.push(idx);
+        }
+      });
+    }
+
+    const hiddenCount = records.length > MAX_RENDERED_RECORDS
+      ? records.length - MAX_RENDERED_RECORDS
+      : 0;
+    const visibleRecords = hiddenCount > 0
+      ? records.slice(-MAX_RENDERED_RECORDS)
+      : records;
+
+    return { filteredRecords: visibleRecords, matchedIndices: matched, hiddenCount };
   }, [records, localSearch]);
 
   // Scroll to matched item
@@ -143,6 +148,11 @@ export const RecordList = memo(function RecordList({
 
       <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
         <div className="divide-y">
+          {hiddenCount > 0 && (
+            <div className="px-3 py-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20">
+              已隐藏较早的 {hiddenCount} 条记录以提升性能
+            </div>
+          )}
           {filteredRecords.map((record, idx) => {
             const isSelected =
               selectedRecord?.session === record.session &&

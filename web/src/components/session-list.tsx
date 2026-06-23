@@ -23,9 +23,11 @@ function formatBytes(bytes: number): string {
 // Extract preview text from gRPC JSON data
 function getPreviewText(grpcData: string | undefined, maxLen: number = 80): string | null {
   if (!grpcData) return null;
+
+  const snippet = grpcData.length > 512 ? grpcData.slice(0, 512) : grpcData;
   
   try {
-    const data = JSON.parse(grpcData);
+    const data = JSON.parse(snippet);
     // Try to find meaningful fields for preview
     const previewFields: string[] = [];
     
