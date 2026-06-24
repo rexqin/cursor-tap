@@ -103,7 +103,7 @@ Open `http://localhost:3000`.
 └── docs/               # Architecture docs & reverse notes
 ```
 
-See [Architecture](./docs/architecture.md) for details.
+See [Architecture](./docs/architecture/index.md) for details.
 
 ## What You Can See
 
@@ -120,5 +120,5 @@ For educational and research purposes only.
 
 ## Documentation
 
-- [Architecture](./docs/architecture.md) — monorepo structure, modules, data flow, and API (Chinese)
+- [Architecture](./docs/architecture/index.md) — monorepo structure, modules, data flow, and API (Chinese)
 - [Reverse Engineering Notes 1](./docs/cursor-reverse-notes-1.md) — detailed MITM and proto extraction process (Chinese)
