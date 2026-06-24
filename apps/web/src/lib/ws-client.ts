@@ -15,6 +15,7 @@ export class WSClient {
   private maxReconnectDelay = 30000;
   private wasConnected = false;
   private reconnectAttempts = 0;
+  private intentionalDisconnect = false;
 
   constructor(
     url: string, 
@@ -32,6 +33,8 @@ export class WSClient {
     if (this.ws?.readyState === WebSocket.OPEN) {
       return;
     }
+
+    this.intentionalDisconnect = false;
 
     try {
       this.ws = new WebSocket(this.url);
@@ -76,6 +79,10 @@ export class WSClient {
   }
 
   private scheduleReconnect() {
+    if (this.intentionalDisconnect) {
+      return;
+    }
+
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
     }
@@ -93,6 +100,7 @@ export class WSClient {
   }
 
   disconnect() {
+    this.intentionalDisconnect = true;
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;

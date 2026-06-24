@@ -1,6 +1,10 @@
 *.log
+.mcp-sqlite.json
 node_modules/
 dist/
 .nx/
 .idea/
 pnpm-debug.log*
+coverage/
+**/test-results/
+**/playwright-report/

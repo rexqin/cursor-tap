@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cursor-tap-records": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@graduenz/mcp-sqlite-server",
+        "--config",
+        ".mcp-sqlite.json"
+      ]
+    }
+  }
+}

@@ -52,6 +52,13 @@
         "devTargetName": "dev",
         "serveStaticTargetName": "serve-static"
       }
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "test",
+        "testMode": "run"
+      }
     }
   ],
   "defaultBase": "main",

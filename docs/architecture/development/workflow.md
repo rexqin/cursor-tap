@@ -30,6 +30,8 @@ pnpm exec nx run proto:generate
 # 测试
 pnpm exec nx test tap
 pnpm exec nx test api
+pnpm exec nx test web
+pnpm exec nx e2e web   # 首次需 playwright install chromium
 ```
 
 ## 相关
