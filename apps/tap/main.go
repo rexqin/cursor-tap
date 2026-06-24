@@ -11,8 +11,8 @@ import (
 	"syscall"
 
 	"github.com/burpheart/cursor-tap/internal/ca"
+	appconfig "github.com/burpheart/cursor-tap/internal/config"
 	"github.com/burpheart/cursor-tap/internal/proxy"
-	"github.com/burpheart/cursor-tap/pkg/types"
 	"github.com/spf13/cobra"
 )
 
@@ -132,7 +132,7 @@ func runStart(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create config
-	config := types.Config{
+	config := appconfig.Config{
 		HTTPPort:          httpPort,
 		SOCKS5Port:        socks5Port,
 		APIPort:           apiPort,
@@ -140,7 +140,7 @@ func runStart(cmd *cobra.Command, args []string) error {
 		DataDir:           dataDir,
 		UpstreamProxy:     upstreamProxy,
 		EnableHTTPParsing: enableHTTPParsing,
-		HTTPLogLevel:      types.LogLevel(httpLogLevel),
+		HTTPLogLevel:      appconfig.LogLevel(httpLogLevel),
 		HTTPRecordFile:    httpRecordFile,
 	}
 

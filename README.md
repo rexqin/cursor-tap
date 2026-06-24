@@ -75,8 +75,8 @@ CA 证书在首次启动时自动生成，位置是 `~/.cursor-tap/ca/ca.crt`。
 #### 3. 启动 WebUI
 
 ```bash
-cd web
-pnpm dev
+pnpm dev:web
+# 或 cd apps/web && pnpm dev
 ```
 
 打开 `http://localhost:3000` 就能看到流量了。
@@ -90,6 +90,7 @@ pnpm dev
 ├── tools/              # 开发调试工具（ext / restore 等）
 ├── internal/
 │   ├── ca/             # CA 证书管理，动态签发
+│   ├── config/         # 应用配置
 │   ├── proxy/          # HTTP CONNECT 代理
 │   └── httpstream/     # gRPC 解析核心
 ├── packages/proto/     # proto 定义（Nx: proto）

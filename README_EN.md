@@ -67,8 +67,8 @@ CA certificate is auto-generated at `~/.cursor-tap/ca/ca.crt` on first run.
 #### 3. Start WebUI
 
 ```bash
-cd web
-pnpm dev
+pnpm dev:web
+# or: cd apps/web && pnpm dev
 ```
 
 Open `http://localhost:3000`.
@@ -82,6 +82,7 @@ Open `http://localhost:3000`.
 ├── tools/              # Dev utilities
 ├── internal/
 │   ├── ca/
+│   ├── config/
 │   ├── proxy/
 │   └── httpstream/
 ├── packages/proto/     # Proto definitions (Nx: proto)
@@ -103,4 +104,4 @@ For educational and research purposes only.
 
 ## Related
 
-Detailed reverse engineering notes: [cursor-true-reverse-notes-1.md](./cursor-true-reverse-notes-1.md) (Chinese)
+Detailed reverse engineering notes: [cursor-reverse-notes-1.md](./docs/cursor-reverse-notes-1.md) (Chinese)

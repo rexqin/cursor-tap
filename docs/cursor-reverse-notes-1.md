@@ -595,10 +595,10 @@ Go 的 protobuf 库有一个全局注册表机制。编译生成的 pb 包在被
 ```go
 // grpc_registry.go
 import (
-    _ "github.com/burpheart/cursor-tap/cursor_proto/gen/agent/v1"
-    _ "github.com/burpheart/cursor-tap/cursor_proto/gen/aiserver/v1"
-    _ "github.com/burpheart/cursor-tap/cursor_proto/gen/anyrun/v1"
-    _ "github.com/burpheart/cursor-tap/cursor_proto/gen/internapi/v1"
+    _ "github.com/burpheart/cursor-tap/packages/proto/gen/agent/v1"
+    _ "github.com/burpheart/cursor-tap/packages/proto/gen/aiserver/v1"
+    _ "github.com/burpheart/cursor-tap/packages/proto/gen/anyrun/v1"
+    _ "github.com/burpheart/cursor-tap/packages/proto/gen/internapi/v1"
 )
 ```
 
@@ -1540,15 +1540,15 @@ lsToolCall:             6  (列目录)
 ```json
 {
   "args": {
-    "command": "go build ./cmd/cursor-tap/",
+    "command": "go build ./apps/tap/",
     "workingDirectory": "d:\\cursor-tap",
     "timeout": 30000,
     "simpleCommands": ["go"],
     "parsingResult": {
       "executableCommands": [{
         "name": "go",
-        "args": [{"type": "word", "value": "build"}, {"type": "word", "value": "./cmd/cursor-tap/"}],
-        "fullText": "go build ./cmd/cursor-tap/"
+        "args": [{"type": "word", "value": "build"}, {"type": "word", "value": "./apps/tap/"}],
+        "fullText": "go build ./apps/tap/"
       }]
     },
     "requestedSandboxPolicy": {
@@ -1634,7 +1634,7 @@ lsToolCall:             6  (列目录)
   "result": {
     "isBackground": false,
     "success": {
-      "command": "go build ./cmd/cursor-tap/",
+      "command": "go build ./apps/tap/",
       "workingDirectory": "d:\\cursor-tap",
       "executionTime": 3854,
       "interleavedOutput": ""
@@ -1749,7 +1749,7 @@ lsArgs:               2  (列目录)
 {
   "execId": "xxx",
   "shellStreamArgs": {
-    "command": "go build ./cmd/cursor-tap/",
+    "command": "go build ./apps/tap/",
     "workingDirectory": "d:\\cursor-tap",
     "timeout": 30000,
     "requestedSandboxPolicy": {
@@ -1939,7 +1939,7 @@ message GetBlobResult {
       "type": "tool-call",
       "toolCallId": "toolu_012k7YoRScc3E8Gwk2ZdWzzr",
       "toolName": "Shell",
-      "args": {"command": "go build ./cmd/cursor-tap/"}
+      "args": {"command": "go build ./apps/tap/"}
     }
   ]
 }
@@ -2028,8 +2028,8 @@ message GetBlobForAgentKVResponse {
           "ideState":  {
             "recentlyViewedFiles":  [
               {
-                "path":  "d:\\cursor-tap\\cursor_proto\\gen\\aiserver\\v1\\aiserver_v1.pb.go",
-                "relativePath":  "cursor_proto/gen/aiserver/v1/aiserver_v1.pb.go",
+                "path":  "d:\\cursor-tap\\packages/proto\\gen\\aiserver\\v1\\aiserver_v1.pb.go",
+                "relativePath":  "packages/proto/gen/aiserver/v1/aiserver_v1.pb.go",
                 "totalLines":  256894
               }//.........
             ]
@@ -2254,7 +2254,7 @@ ConversationState:
     "c:\\Users\\Administrator\\.cursor\\plans\\http_stream_parser_5192a30b.plan.md",
     "d:\\cursor-tap\\internal\\httpstream\\parser.go",
     "d:\\cursor-tap\\internal\\httpstream\\recorder.go",
-    "d:\\cursor-tap\\cursor_proto\\gen\\aiserver\\v1\\aiserver_v1.pb.go",
+    "d:\\cursor-tap\\packages/proto\\gen\\aiserver\\v1\\aiserver_v1.pb.go",
     "d:\\cursor-tap\\internal\\httpstream\\types.go",
     "d:\\cursor-tap\\internal\\httpstream\\logger.go",
     "d:\\cursor-tap\\internal\\httpstream\\grpc.go"

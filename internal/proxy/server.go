@@ -18,14 +18,14 @@ import (
 
 	"github.com/burpheart/cursor-tap/internal/api"
 	"github.com/burpheart/cursor-tap/internal/ca"
+	appconfig "github.com/burpheart/cursor-tap/internal/config"
 	"github.com/burpheart/cursor-tap/internal/httpstream"
 	"github.com/burpheart/cursor-tap/internal/mitm"
-	"github.com/burpheart/cursor-tap/pkg/types"
 )
 
 // Server is the main proxy server that handles both HTTP and SOCKS5.
 type Server struct {
-	config      types.Config
+	config      appconfig.Config
 	ca          *ca.CA
 	interceptor *mitm.Interceptor
 	keyLog      *mitm.KeyLogWriter
@@ -44,7 +44,7 @@ type Server struct {
 }
 
 // NewServer creates a new proxy server.
-func NewServer(config types.Config) (*Server, error) {
+func NewServer(config appconfig.Config) (*Server, error) {
 	// Ensure directories exist
 	if err := os.MkdirAll(config.CertDir, 0755); err != nil {
 		return nil, fmt.Errorf("create cert dir: %w", err)
