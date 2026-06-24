@@ -57,7 +57,7 @@ func WithOnSSE(fn func(*httpstream.SSEEvent)) InterceptorOption {
 	return func(i *Interceptor) { i.onSSE = fn }
 }
 
-// WithRecorder sets the JSONL recorder.
+// WithRecorder sets the SQLite-backed recorder.
 func WithRecorder(recorder *httpstream.Recorder) InterceptorOption {
 	return func(i *Interceptor) { i.recorder = recorder }
 }

@@ -8,12 +8,13 @@ timestamp: 2026-06-24T00:00:00Z
 
 # Schema
 
-## Go（go 1.24）
+## Go（go 1.25）
 
 | 依赖 | 用途 |
 |------|------|
-| `spf13/cobra` | CLI |
-| `gorilla/websocket` | WebSocket Hub |
+| `spf13/cobra` | tap / tap-api CLI |
+| `modernc.org/sqlite` | record 持久化（纯 Go SQLite，WAL 模式） |
+| `gorilla/websocket` | WebSocket Hub（tap-api） |
 | `google.golang.org/protobuf` + `grpc` | protobuf 反序列化 |
 | `bufbuild/protocompile` | tools/inline proto 编译 |
 | `andybalholm/brotli` | Brotli 解压 |

@@ -1,11 +1,13 @@
 ---
 type: Module
 title: Web Inspector
-description: Next.js 四栏 Inspector UI，通过 WebSocket 实时展示 gRPC 流量。
+description: Next.js 四栏 Inspector UI，通过 tap-api WebSocket 实时展示 gRPC 流量。
 tags: [nextjs, react, frontend, inspector]
 timestamp: 2026-06-24T00:00:00Z
 resource: file://apps/web/
 ---
+
+Web UI 连接 **tap-api**（:9090），不直接与 tap 代理通信。
 
 # Schema
 
@@ -61,23 +63,24 @@ apps/web/src/
 
 - 浏览器端最多保留 2000 条 records
 - 从 records 客户端聚合 `SessionInfo`
-- 初始加载：`GET /api/records?limit=100`
+- 初始加载：`GET http://localhost:9090/api/records?limit=100`（tap-api 从 SQLite 读取）
 - 重连后 `fetchAndMergeRecords()` 去重合并
 
 **`ws-client.ts`：**
 
-- 默认 `ws://localhost:9090/ws/records`
+- 默认 `ws://localhost:9090/ws/records`（tap-api 广播）
 - 断线自动重连（1s → 30s 指数退避）
 
 ## 环境变量
 
 | 变量 | 默认值 | 用途 |
 |------|--------|------|
-| `NEXT_PUBLIC_WS_URL` | `ws://localhost:9090/ws/records` | WebSocket |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:9090` | REST API |
+| `NEXT_PUBLIC_WS_URL` | `ws://localhost:9090/ws/records` | WebSocket（tap-api） |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:9090` | REST API（tap-api） |
 
 ## 相关
 
+- [API 服务](/modules/api-server.md) — 数据源进程
 - [Record 类型契约](/record-types.md)
 - [管理 API](/api/management-api.md)
 - [开发工作流](/development/workflow.md)

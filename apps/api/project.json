@@ -1,56 +1,46 @@
 {
-  "name": "tap",
+  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/tap",
+  "sourceRoot": "apps/api",
   "tags": ["type:app", "lang:go"],
   "targets": {
     "build": {
       "executor": "@naxodev/gonx:build",
-      "outputs": ["{workspaceRoot}/dist/tap"],
-      "dependsOn": ["proto:build"],
+      "outputs": ["{workspaceRoot}/dist/tap-api"],
       "options": {
         "main": "main.go",
-        "outputPath": "dist/tap"
+        "outputPath": "dist/tap-api"
       },
       "cache": true,
       "inputs": [
         "{workspaceRoot}/go.mod",
         "{workspaceRoot}/go.sum",
         "{workspaceRoot}/internal/**/*.go",
-        "{projectRoot}/**/*.go",
-        "!{workspaceRoot}/packages/proto/**"
+        "{projectRoot}/**/*.go"
       ]
-    },
-    "serve": {
-      "executor": "@naxodev/gonx:serve",
-      "continuous": true,
-      "options": {
-        "main": "main.go",
-        "args": [
-          "start",
-          "--http-parse"
-        ]
-      }
     },
     "dev": {
       "executor": "@naxodev/gonx:serve",
       "continuous": true,
       "options": {
         "main": "main.go",
-        "args": [
-          "start",
-          "--http-parse",
-          "--http-log",
-          "4"
-        ]
+        "args": ["start"]
+      }
+    },
+    "serve": {
+      "executor": "@naxodev/gonx:serve",
+      "continuous": true,
+      "options": {
+        "main": "main.go",
+        "args": ["start"]
       }
     },
     "test": {
       "executor": "nx:run-commands",
       "cache": true,
       "options": {
-        "command": "go test ./tests/... ./apps/tap/... ./tools/...",
+        "command": "go test ./tests/apiserver/... ./tests/recordstore/... ./tests/notify/...",
         "cwd": "{workspaceRoot}"
       }
     },
@@ -59,13 +49,6 @@
       "cache": true,
       "options": {
         "main": "main.go"
-      }
-    },
-    "tidy": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "go mod tidy",
-        "cwd": "{workspaceRoot}"
       }
     }
   }

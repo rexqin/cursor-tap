@@ -27,11 +27,13 @@ resource: file://tests/
 
 | 路径 | 覆盖 |
 |------|------|
-| `tests/config/config_test.go` | 配置默认值 |
-| `tests/httpstream/decoder_test.go` | Content-Encoding 解码 |
-| `tests/httpstream/grpc_test.go` | gRPC 帧解析 |
-| `tests/httpstream/sse_test.go` | SSE 解析 |
-| `tests/httpstream/types_test.go` | 类型 |
+| `tests/config/config_test.go` | ProxyConfig / APIConfig 默认值 |
+| `tests/recordstore/store_test.go` | SQLite 读写 |
+| `tests/notify/client_test.go` | API 通知客户端 |
+| `tests/apiserver/server_test.go` | 独立 API 路由与 notify |
+| `tests/proxy/proxy_test.go` | Proxy 初始化 |
+| `tests/api/handlers_test.go` | REST/WS handler |
+| `tests/httpstream/*` | 流解析 |
 
 # Examples
 

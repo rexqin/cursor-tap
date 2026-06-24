@@ -4,11 +4,13 @@
   "private": true,
   "packageManager": "pnpm@10.28.0",
   "scripts": {
-    "dev": "nx run-many -t dev --projects=tap,web --parallel",
+    "dev": "nx run-many -t dev --projects=tap,api,web --parallel",
     "dev:tap": "nx dev tap",
+    "dev:api": "nx dev api",
     "dev:web": "nx dev web",
     "build": "nx run-many -t build --all",
     "build:tap": "nx build tap",
+    "build:api": "nx build api",
     "build:web": "nx build web",
     "test": "nx run-many -t test --all",
     "lint": "nx run-many -t lint --all"

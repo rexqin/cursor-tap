@@ -24,29 +24,36 @@ This tool decrypts traffic into readable JSON and shows each streaming frame in 
 ```bash
 pnpm install
 
-# Start proxy + WebUI together
+# Start proxy + API + WebUI together
 pnpm dev
 
 # Or start separately
+pnpm dev:api
 pnpm dev:tap
 pnpm dev:web
 
 # Other commands
 pnpm build:tap
+pnpm build:api
 pnpm build:web
 pnpm exec nx run proto:generate
 pnpm exec nx test tap
+pnpm exec nx test api
 ```
 
 ### Manual Setup
 
-#### 1. Start the Proxy
+#### 1. Start API and Proxy
 
 ```bash
-go run ./apps/tap start --http-parse --http-record ./access.log
+# Terminal 1: API server (REST + WebSocket)
+go run ./apps/api start
+
+# Terminal 2: MITM proxy (writes SQLite, notifies API)
+go run ./apps/tap start --http-parse
 ```
 
-Listens on `localhost:8080` (HTTP proxy), `localhost:1080` (SOCKS5), and `localhost:9090` (API + WebSocket).
+Proxy listens on `localhost:8080` (HTTP) and `localhost:1080` (SOCKS5). API listens on `localhost:9090`.
 
 #### 2. Configure Cursor
 
@@ -77,15 +84,19 @@ Open `http://localhost:3000`.
 
 ```
 ├── apps/
-│   ├── tap/            # Go CLI proxy (Nx: tap)
+│   ├── tap/            # Go MITM proxy (Nx: tap)
+│   ├── api/            # Management API server (Nx: api)
 │   └── web/            # Next.js Web Inspector (Nx: web)
 ├── internal/
+│   ├── apiserver/      # Standalone API HTTP server
+│   ├── recordstore/    # SQLite record persistence
+│   ├── notify/         # Proxy → API update notifications
 │   ├── ca/             # Self-signed CA, dynamic certs
-│   ├── config/         # Application config
-│   ├── proxy/          # HTTP/SOCKS5/API orchestration
+│   ├── config/         # ProxyConfig / APIConfig
+│   ├── proxy/          # HTTP/SOCKS5 proxy
 │   ├── mitm/           # TLS MITM, HTTP/2 bridge
-│   ├── httpstream/     # HTTP/gRPC/SSE parsing & recording
-│   └── api/            # REST + WebSocket hub
+│   ├── httpstream/     # HTTP/gRPC/SSE parsing
+│   └── api/            # REST + WebSocket routes
 ├── packages/proto/     # Protobuf definitions (Nx: proto)
 ├── tests/              # Go unit tests
 ├── tools/              # Dev utilities (ext / restore / inline)

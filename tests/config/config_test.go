@@ -1,6 +1,7 @@
 package config_test
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/burpheart/cursor-tap/internal/config"
@@ -9,21 +10,36 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDefaultConfig(t *testing.T) {
-	want := &config.Config{
-		HTTPPort:   8080,
-		SOCKS5Port: 1080,
-		APIPort:    9090,
-		CertDir:    "~/.cursor-tap",
-		DataDir:    "~/.cursor-tap/data",
+func TestDefaultProxyConfig(t *testing.T) {
+	certDir := "~/.cursor-tap"
+	want := &config.ProxyConfig{
+		HTTPPort:     8080,
+		SOCKS5Port:   1080,
+		CertDir:      certDir,
+		DataDir:      filepath.Join(certDir, "data"),
+		RecordDB:     filepath.Join(certDir, "data", "records.db"),
+		APINotifyURL: "http://127.0.0.1:9090/internal/notify",
 	}
 
-	got := config.DefaultConfig()
+	got := config.DefaultProxyConfig()
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Fatalf("DefaultConfig() mismatch (-want +got):\n%s", diff)
+		t.Fatalf("DefaultProxyConfig() mismatch (-want +got):\n%s", diff)
 	}
 
 	require.Equal(t, httpstream.LogLevel(0), got.HTTPLogLevel)
-	require.Empty(t, got.HTTPRecordFile)
 	require.False(t, got.EnableHTTPParsing)
+}
+
+func TestDefaultAPIConfig(t *testing.T) {
+	certDir := "~/.cursor-tap"
+	want := &config.APIConfig{
+		Port:     9090,
+		CertDir:  certDir,
+		RecordDB: filepath.Join(certDir, "data", "records.db"),
+	}
+
+	got := config.DefaultAPIConfig()
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Fatalf("DefaultAPIConfig() mismatch (-want +got):\n%s", diff)
+	}
 }

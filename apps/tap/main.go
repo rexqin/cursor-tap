@@ -20,15 +20,14 @@ import (
 var (
 	httpPort      int
 	socks5Port    int
-	apiPort       int
 	certDir       string
 	dataDir       string
+	recordDB      string
+	apiNotifyURL  string
 	upstreamProxy string
 
-	// HTTP parsing flags
 	enableHTTPParsing bool
 	httpLogLevel      int
-	httpRecordFile    string
 )
 
 func main() {
@@ -38,7 +37,6 @@ func main() {
 		Long:  `A high-performance HTTP/SOCKS5 MITM proxy with TLS decryption and KeyLog export.`,
 	}
 
-	// start command
 	startCmd := &cobra.Command{
 		Use:   "start",
 		Short: "Start the proxy server",
@@ -46,15 +44,14 @@ func main() {
 	}
 	startCmd.Flags().IntVar(&httpPort, "http-port", 8080, "HTTP proxy port")
 	startCmd.Flags().IntVar(&socks5Port, "socks5-port", 1080, "SOCKS5 proxy port")
-	startCmd.Flags().IntVar(&apiPort, "api-port", 9090, "Management API port")
 	startCmd.Flags().StringVar(&certDir, "cert-dir", "~/.cursor-tap", "Certificate storage directory")
 	startCmd.Flags().StringVar(&dataDir, "data-dir", "", "Data storage directory (default: cert-dir/data)")
+	startCmd.Flags().StringVar(&recordDB, "record-db", "", "SQLite record database (default: data-dir/records.db)")
+	startCmd.Flags().StringVar(&apiNotifyURL, "api-notify-url", "http://127.0.0.1:9090/internal/notify", "API notify URL for record updates")
 	startCmd.Flags().StringVar(&upstreamProxy, "upstream", "", "Upstream proxy URL (e.g., socks5://127.0.0.1:7890)")
-	startCmd.Flags().BoolVar(&enableHTTPParsing, "http-parse", false, "Enable HTTP stream parsing and logging")
+	startCmd.Flags().BoolVar(&enableHTTPParsing, "http-parse", false, "Enable HTTP stream parsing and SQLite recording")
 	startCmd.Flags().IntVar(&httpLogLevel, "http-log", 1, "HTTP log level (0=none, 1=basic, 2=headers, 3=body, 4=debug)")
-	startCmd.Flags().StringVar(&httpRecordFile, "http-record", "", "JSONL file for HTTP traffic recording (enables --http-parse)")
 
-	// ca command
 	caCmd := &cobra.Command{
 		Use:   "ca",
 		Short: "CA certificate management",
@@ -94,7 +91,6 @@ func main() {
 
 	caCmd.AddCommand(caInfoCmd, caExportCmd, caRegenerateCmd, caCleanCertsCmd)
 
-	// sessions command
 	sessionsCmd := &cobra.Command{
 		Use:   "sessions",
 		Short: "List active sessions",
@@ -102,7 +98,6 @@ func main() {
 	}
 	sessionsCmd.Flags().StringVar(&certDir, "cert-dir", "~/.cursor-tap", "Certificate storage directory")
 
-	// stats command
 	statsCmd := &cobra.Command{
 		Use:   "stats",
 		Short: "Show statistics",
@@ -118,40 +113,35 @@ func main() {
 }
 
 func runStart(cmd *cobra.Command, args []string) error {
-	// Expand paths
 	certDir = expandPath(certDir)
 	if dataDir == "" {
 		dataDir = filepath.Join(certDir, "data")
 	} else {
 		dataDir = expandPath(dataDir)
 	}
-
-	// If http-record is set, enable http-parse automatically
-	if httpRecordFile != "" {
-		enableHTTPParsing = true
-		httpRecordFile = expandPath(httpRecordFile)
+	if recordDB == "" {
+		recordDB = filepath.Join(dataDir, "records.db")
+	} else {
+		recordDB = expandPath(recordDB)
 	}
 
-	// Create config
-	config := appconfig.Config{
+	config := appconfig.ProxyConfig{
 		HTTPPort:          httpPort,
 		SOCKS5Port:        socks5Port,
-		APIPort:           apiPort,
 		CertDir:           certDir,
 		DataDir:           dataDir,
+		RecordDB:          recordDB,
+		APINotifyURL:      apiNotifyURL,
 		UpstreamProxy:     upstreamProxy,
 		EnableHTTPParsing: enableHTTPParsing,
 		HTTPLogLevel:      httpstream.LogLevel(httpLogLevel),
-		HTTPRecordFile:    httpRecordFile,
 	}
 
-	// Print startup info
 	fmt.Println("╔══════════════════════════════════════════╗")
 	fmt.Println("║           cursor-tap Proxy Starting           ║")
 	fmt.Println("╠══════════════════════════════════════════╣")
 	fmt.Printf("║  HTTP Proxy:    127.0.0.1:%-15d║\n", config.HTTPPort)
 	fmt.Printf("║  SOCKS5 Proxy:  127.0.0.1:%-15d║\n", config.SOCKS5Port)
-	fmt.Printf("║  API Server:    127.0.0.1:%-15d║\n", config.APIPort)
 	fmt.Printf("║  Cert Dir:      %-25s║\n", truncateString(config.CertDir, 25))
 	fmt.Printf("║  Data Dir:      %-25s║\n", truncateString(config.DataDir, 25))
 	if config.UpstreamProxy != "" {
@@ -159,9 +149,8 @@ func runStart(cmd *cobra.Command, args []string) error {
 	}
 	if config.EnableHTTPParsing {
 		fmt.Printf("║  HTTP Parse:    %-25s║\n", fmt.Sprintf("enabled (level %d)", config.HTTPLogLevel))
-	}
-	if config.HTTPRecordFile != "" {
-		fmt.Printf("║  HTTP Record:   %-25s║\n", truncateString(config.HTTPRecordFile, 25))
+		fmt.Printf("║  Record DB:     %-25s║\n", truncateString(config.RecordDB, 25))
+		fmt.Printf("║  API Notify:    %-25s║\n", truncateString(config.APINotifyURL, 25))
 	}
 	fmt.Println("║                                          ║")
 	fmt.Println("║  KeyLog: <data-dir>/sslkeys.log          ║")
@@ -170,13 +159,11 @@ func runStart(cmd *cobra.Command, args []string) error {
 	fmt.Println("Press Ctrl+C to stop...")
 	fmt.Println()
 
-	// Create and start server
 	server, err := proxy.NewServer(config)
 	if err != nil {
 		return fmt.Errorf("create server: %w", err)
 	}
 
-	// Handle signals
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
 
@@ -217,7 +204,6 @@ func runCAExport(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("load CA: %w", err)
 	}
 
-	// Copy CA certificate to output path
 	srcPath := caInstance.CertPath()
 	src, err := os.Open(srcPath)
 	if err != nil {
@@ -292,7 +278,7 @@ func runSessions(cmd *cobra.Command, args []string) error {
 	certDir = expandPath(certDir)
 	apiAddr, err := readAPIAddr(certDir)
 	if err != nil {
-		return fmt.Errorf("proxy not running or API address not found: %w", err)
+		return fmt.Errorf("API server not running or address not found: %w", err)
 	}
 
 	resp, err := http.Get(fmt.Sprintf("http://%s/api/sessions", apiAddr))
@@ -328,7 +314,7 @@ func runStats(cmd *cobra.Command, args []string) error {
 	certDir = expandPath(certDir)
 	apiAddr, err := readAPIAddr(certDir)
 	if err != nil {
-		return fmt.Errorf("proxy not running or API address not found: %w", err)
+		return fmt.Errorf("API server not running or address not found: %w", err)
 	}
 
 	resp, err := http.Get(fmt.Sprintf("http://%s/api/stats", apiAddr))
@@ -347,11 +333,10 @@ func runStats(cmd *cobra.Command, args []string) error {
 	fmt.Printf("  Total Sessions:     %v\n", stats["total_sessions"])
 	fmt.Printf("  Total Bytes Sent:   %v\n", stats["total_bytes_sent"])
 	fmt.Printf("  Total Bytes Recv:   %v\n", stats["total_bytes_received"])
+	fmt.Printf("  Record Count:       %v\n", stats["record_count"])
 
 	return nil
 }
-
-// Helper functions
 
 func expandPath(path string) string {
 	if len(path) > 0 && path[0] == '~' {
