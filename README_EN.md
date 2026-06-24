@@ -77,18 +77,22 @@ Open `http://localhost:3000`.
 
 ```
 ├── apps/
-│   ├── tap/            # Proxy entry (Nx: tap)
-│   └── web/            # Next.js WebUI (Nx: web)
-├── tests/              # Unit tests (config, httpstream)
-├── tools/              # Dev utilities
+│   ├── tap/            # Go CLI proxy (Nx: tap)
+│   └── web/            # Next.js Web Inspector (Nx: web)
 ├── internal/
-│   ├── ca/
-│   ├── config/
-│   ├── proxy/
-│   └── httpstream/
-├── packages/proto/     # Proto definitions (Nx: proto)
-└── docs/
+│   ├── ca/             # Self-signed CA, dynamic certs
+│   ├── config/         # Application config
+│   ├── proxy/          # HTTP/SOCKS5/API orchestration
+│   ├── mitm/           # TLS MITM, HTTP/2 bridge
+│   ├── httpstream/     # HTTP/gRPC/SSE parsing & recording
+│   └── api/            # REST + WebSocket hub
+├── packages/proto/     # Protobuf definitions (Nx: proto)
+├── tests/              # Go unit tests
+├── tools/              # Dev utilities (ext / restore / inline)
+└── docs/               # Architecture docs & reverse notes
 ```
+
+See [Architecture](./docs/architecture.md) for details.
 
 ## What You Can See
 
@@ -103,6 +107,7 @@ Open `http://localhost:3000`.
 
 For educational and research purposes only.
 
-## Related
+## Documentation
 
-Detailed reverse engineering notes: [cursor-reverse-notes-1.md](./docs/cursor-reverse-notes-1.md) (Chinese)
+- [Architecture](./docs/architecture.md) — monorepo structure, modules, data flow, and API (Chinese)
+- [Reverse Engineering Notes 1](./docs/cursor-reverse-notes-1.md) — detailed MITM and proto extraction process (Chinese)

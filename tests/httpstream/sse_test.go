@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/burpheart/cursor-tap/internal/httpstream"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSSEParserNext(t *testing.T) {
@@ -20,35 +21,20 @@ func TestSSEParserNext(t *testing.T) {
 
 	parser := httpstream.NewSSEParser(strings.NewReader(input))
 	event, err := parser.Next()
-	if err != nil {
-		t.Fatalf("Next: %v", err)
-	}
-	if event.Event != "message" {
-		t.Errorf("Event = %q, want message", event.Event)
-	}
-	if event.Data != "hello\nworld" {
-		t.Errorf("Data = %q, want hello\\nworld", event.Data)
-	}
+	require.NoError(t, err)
+	require.Equal(t, "message", event.Event)
+	require.Equal(t, "hello\nworld", event.Data)
 
 	event, err = parser.Next()
-	if err != nil {
-		t.Fatalf("Next second: %v", err)
-	}
-	if strings.TrimSuffix(event.Data, "\n") != "second" {
-		t.Errorf("Data = %q, want second", event.Data)
-	}
+	require.NoError(t, err)
+	require.Equal(t, "second", strings.TrimSuffix(event.Data, "\n"))
 }
 
 func TestSSEParserReadAll(t *testing.T) {
 	input := "data: one\n\ndata: two\n\n"
 	events, err := httpstream.NewSSEParser(strings.NewReader(input)).ReadAll()
-	if err != nil {
-		t.Fatalf("ReadAll: %v", err)
-	}
-	if len(events) != 2 {
-		t.Fatalf("got %d events, want 2", len(events))
-	}
-	if events[0].Data != "one" || events[1].Data != "two" {
-		t.Fatalf("unexpected events: %+v", events)
-	}
+	require.NoError(t, err)
+	require.Len(t, events, 2)
+	require.Equal(t, "one", events[0].Data)
+	require.Equal(t, "two", events[1].Data)
 }

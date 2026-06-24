@@ -5,33 +5,25 @@ import (
 
 	"github.com/burpheart/cursor-tap/internal/config"
 	"github.com/burpheart/cursor-tap/internal/httpstream"
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDefaultConfig(t *testing.T) {
-	cfg := config.DefaultConfig()
+	want := &config.Config{
+		HTTPPort:   8080,
+		SOCKS5Port: 1080,
+		APIPort:    8888,
+		CertDir:    "~/.cursor-tap",
+		DataDir:    "~/.cursor-tap/data",
+	}
 
-	if cfg.HTTPPort != 8080 {
-		t.Errorf("HTTPPort = %d, want 8080", cfg.HTTPPort)
+	got := config.DefaultConfig()
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Fatalf("DefaultConfig() mismatch (-want +got):\n%s", diff)
 	}
-	if cfg.SOCKS5Port != 1080 {
-		t.Errorf("SOCKS5Port = %d, want 1080", cfg.SOCKS5Port)
-	}
-	if cfg.APIPort != 8888 {
-		t.Errorf("APIPort = %d, want 8888", cfg.APIPort)
-	}
-	if cfg.CertDir != "~/.cursor-tap" {
-		t.Errorf("CertDir = %q, want ~/.cursor-tap", cfg.CertDir)
-	}
-	if cfg.DataDir != "~/.cursor-tap/data" {
-		t.Errorf("DataDir = %q, want ~/.cursor-tap/data", cfg.DataDir)
-	}
-	if cfg.EnableHTTPParsing {
-		t.Error("EnableHTTPParsing should default to false")
-	}
-	if cfg.HTTPLogLevel != httpstream.LogLevel(0) {
-		t.Errorf("HTTPLogLevel = %d, want 0", cfg.HTTPLogLevel)
-	}
-	if cfg.HTTPRecordFile != "" {
-		t.Errorf("HTTPRecordFile = %q, want empty", cfg.HTTPRecordFile)
-	}
+
+	require.Equal(t, httpstream.LogLevel(0), got.HTTPLogLevel)
+	require.Empty(t, got.HTTPRecordFile)
+	require.False(t, got.EnableHTTPParsing)
 }

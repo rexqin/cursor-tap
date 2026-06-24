@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/burpheart/cursor-tap/internal/httpstream"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDirectionString(t *testing.T) {
@@ -17,8 +18,8 @@ func TestDirectionString(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if got := tt.dir.String(); got != tt.want {
-			t.Errorf("Direction(%d).String() = %q, want %q", tt.dir, got, tt.want)
-		}
+		t.Run(tt.want, func(t *testing.T) {
+			require.Equal(t, tt.want, tt.dir.String())
+		})
 	}
 }

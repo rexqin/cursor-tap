@@ -1,0 +1,86 @@
+---
+description: 分析或生成知识文档时遵循 Google Open Knowledge Format (OKF v0.1)
+alwaysApply: true
+---
+
+# OKF 文档规范
+
+分析代码/系统并**生成或改写知识文档**时，输出必须符合 [OKF v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)。
+
+## 核心结构
+
+- 知识以 **Bundle**（目录树）组织，每个概念 = 一个 `.md` 文件
+- 概念 ID = 文件路径去掉 `.md` 后缀（如 `modules/tap.md` → `modules/tap`）
+- 优先使用标题、列表、表格、代码块，少用大段散文
+
+## Frontmatter（每个概念文档）
+
+```yaml
+---
+type: Reference          # 必填：概念类型（自由字符串，需自解释）
+title: 显示名称           # 推荐
+description: 一句话摘要   # 推荐
+resource: https://...    # 可选：底层资源 URI
+tags: [go, proxy]        # 可选
+timestamp: 2026-06-24T00:00:00Z  # 可选，ISO 8601
+---
+```
+
+**必填**：`type`。其余推荐字段按优先级尽量填写。可添加自定义键，不得因未知字段拒绝文档。
+
+本项目常用 `type` 示例：`Architecture`、`API Endpoint`、`Module`、`Playbook`、`Reference`、`Metric`。
+
+## 正文约定章节
+
+按需使用（非强制，但适用时应采用）：
+
+| 标题 | 用途 |
+|------|------|
+| `# Schema` | 字段/接口/数据结构 |
+| `# Examples` | 用法示例（代码块） |
+| `# Citations` | 外部来源，编号列表 |
+
+## 交叉引用
+
+- **推荐**：Bundle 根相对路径，以 `/` 开头 → `[tap 模块](/modules/tap.md)`
+- 相对路径 `./other.md` 也可
+- 链接语义由上下文 prose 表达，允许指向尚未创建的概念
+
+## 保留文件
+
+| 文件 | 规则 |
+|------|------|
+| `index.md` | 目录索引，**无 frontmatter**（根目录可含 `okf_version: "0.1"`）；列表项含标题与 description |
+| `log.md` | 变更日志，日期 `YYYY-MM-DD`，最新在前 |
+
+## 输出检查清单
+
+生成 Bundle 后确认：
+
+1. 每个非保留 `.md` 文件有可解析 frontmatter 且 `type` 非空
+2. `index.md` / `log.md` 未被当作概念文档
+3. 展示目录树 → 各文件内容 → 声明「OKF v0.1 conformant」
+
+## 示例（概念文档）
+
+```markdown
+---
+type: Module
+title: tap 代理核心
+description: Go MITM 代理，负责 TLS 拦截与 gRPC 帧解析。
+tags: [go, proxy, grpc]
+timestamp: 2026-06-24T14:00:00Z
+---
+
+# Schema
+
+| 组件 | 路径 | 职责 |
+|------|------|------|
+| 代理入口 | `apps/tap/` | CLI 与 HTTP/SOCKS5 监听 |
+
+详见 [Web Inspector](/modules/web.md)。
+
+# Citations
+
+[1] [项目架构](/architecture.md)
+```

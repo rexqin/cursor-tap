@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/burpheart/cursor-tap/internal/httpstream"
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseContentEncoding(t *testing.T) {
@@ -26,13 +28,8 @@ func TestParseContentEncoding(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := httpstream.ParseContentEncoding(tt.value)
-			if len(got) != len(tt.want) {
-				t.Fatalf("ParseContentEncoding(%q) = %v, want %v", tt.value, got, tt.want)
-			}
-			for i := range got {
-				if got[i] != tt.want[i] {
-					t.Fatalf("ParseContentEncoding(%q) = %v, want %v", tt.value, got, tt.want)
-				}
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Fatalf("ParseContentEncoding(%q) mismatch (-want +got):\n%s", tt.value, diff)
 			}
 		})
 	}
@@ -42,24 +39,17 @@ func TestBodyDecoderGzip(t *testing.T) {
 	plain := []byte("decoded body")
 	var compressed bytes.Buffer
 	w := gzip.NewWriter(&compressed)
-	if _, err := w.Write(plain); err != nil {
-		t.Fatal(err)
-	}
-	if err := w.Close(); err != nil {
-		t.Fatal(err)
-	}
+	_, err := w.Write(plain)
+	require.NoError(t, err)
+	require.NoError(t, w.Close())
 
 	decoder := httpstream.NewBodyDecoder()
 	headers := http.Header{"Content-Encoding": []string{"gzip"}}
 	reader := decoder.Decode(bytes.NewReader(compressed.Bytes()), headers)
 
 	got, err := io.ReadAll(reader)
-	if err != nil {
-		t.Fatalf("ReadAll: %v", err)
-	}
-	if string(got) != string(plain) {
-		t.Fatalf("decoded = %q, want %q", got, plain)
-	}
+	require.NoError(t, err)
+	require.Equal(t, plain, got)
 }
 
 func TestBodyDecoderIdentitySkipped(t *testing.T) {
@@ -69,10 +59,6 @@ func TestBodyDecoderIdentitySkipped(t *testing.T) {
 	reader := decoder.Decode(bytes.NewReader(plain), headers)
 
 	got, err := io.ReadAll(reader)
-	if err != nil {
-		t.Fatalf("ReadAll: %v", err)
-	}
-	if string(got) != string(plain) {
-		t.Fatalf("decoded = %q, want %q", got, plain)
-	}
+	require.NoError(t, err)
+	require.Equal(t, plain, got)
 }

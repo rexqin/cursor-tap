@@ -7,27 +7,23 @@ import (
 	"testing"
 
 	"github.com/burpheart/cursor-tap/internal/httpstream"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseMethodFromURL(t *testing.T) {
-	service, method, full := httpstream.ParseMethodFromURL("/aiserver.v1.AiService/RunSSE")
-	if service != "aiserver.v1.AiService" {
-		t.Errorf("service = %q", service)
-	}
-	if method != "RunSSE" {
-		t.Errorf("method = %q", method)
-	}
-	if full != "/aiserver.v1.AiService/RunSSE" {
-		t.Errorf("fullMethod = %q", full)
-	}
+	t.Run("valid path", func(t *testing.T) {
+		service, method, full := httpstream.ParseMethodFromURL("/aiserver.v1.AiService/RunSSE")
+		require.Equal(t, "aiserver.v1.AiService", service)
+		require.Equal(t, "RunSSE", method)
+		require.Equal(t, "/aiserver.v1.AiService/RunSSE", full)
+	})
 
-	service, method, full = httpstream.ParseMethodFromURL("invalid")
-	if service != "" || method != "" {
-		t.Errorf("invalid path should return empty service/method, got %q/%q", service, method)
-	}
-	if full != "invalid" {
-		t.Errorf("fullMethod = %q, want invalid", full)
-	}
+	t.Run("invalid path", func(t *testing.T) {
+		service, method, full := httpstream.ParseMethodFromURL("invalid")
+		require.Empty(t, service)
+		require.Empty(t, method)
+		require.Equal(t, "invalid", full)
+	})
 }
 
 func TestGRPCParserReadFrame(t *testing.T) {
@@ -40,15 +36,9 @@ func TestGRPCParserReadFrame(t *testing.T) {
 	buf.Write(payload)
 
 	frame, err := parser.ReadFrame(&buf)
-	if err != nil {
-		t.Fatalf("ReadFrame: %v", err)
-	}
-	if frame.Compressed {
-		t.Fatal("expected uncompressed frame")
-	}
-	if string(frame.Data) != "hello" {
-		t.Fatalf("Data = %q, want hello", frame.Data)
-	}
+	require.NoError(t, err)
+	require.False(t, frame.Compressed)
+	require.Equal(t, []byte("hello"), frame.Data)
 }
 
 func TestGRPCParserReadFrameGzip(t *testing.T) {
@@ -57,12 +47,9 @@ func TestGRPCParserReadFrameGzip(t *testing.T) {
 	plain := []byte(`{"msg":"test"}`)
 	var gz bytes.Buffer
 	w := gzip.NewWriter(&gz)
-	if _, err := w.Write(plain); err != nil {
-		t.Fatal(err)
-	}
-	if err := w.Close(); err != nil {
-		t.Fatal(err)
-	}
+	_, err := w.Write(plain)
+	require.NoError(t, err)
+	require.NoError(t, w.Close())
 	compressed := gz.Bytes()
 
 	var buf bytes.Buffer
@@ -73,26 +60,17 @@ func TestGRPCParserReadFrameGzip(t *testing.T) {
 	buf.Write(compressed)
 
 	frame, err := parser.ReadFrame(&buf)
-	if err != nil {
-		t.Fatalf("ReadFrame: %v", err)
-	}
-	if !frame.Compressed {
-		t.Fatal("expected compressed frame")
-	}
-	if string(frame.Data) != string(plain) {
-		t.Fatalf("Data = %q, want %q", frame.Data, plain)
-	}
+	require.NoError(t, err)
+	require.True(t, frame.Compressed)
+	require.Equal(t, plain, frame.Data)
 }
 
 func TestGRPCParserReadAllFramesEOF(t *testing.T) {
 	parser := httpstream.NewGRPCParser(nil)
+
 	frames, err := parser.ReadAllFrames(bytes.NewReader(nil))
-	if err != nil {
-		t.Fatalf("ReadAllFrames: %v", err)
-	}
-	if len(frames) != 0 {
-		t.Fatalf("expected 0 frames, got %d", len(frames))
-	}
+	require.NoError(t, err)
+	require.Empty(t, frames)
 
 	payload := []byte("x")
 	var buf bytes.Buffer
@@ -102,9 +80,7 @@ func TestGRPCParserReadAllFramesEOF(t *testing.T) {
 
 	frames, err = parser.ReadAllFrames(&buf)
 	if err != nil && err != io.EOF {
-		t.Fatalf("ReadAllFrames: %v", err)
+		require.NoError(t, err)
 	}
-	if len(frames) != 1 {
-		t.Fatalf("expected 1 frame, got %d", len(frames))
-	}
+	require.Len(t, frames, 1)
 }
