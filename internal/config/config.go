@@ -1,16 +1,7 @@
 // Package config holds application configuration for the MITM proxy.
 package config
 
-// LogLevel for HTTP stream logging.
-type LogLevel int
-
-const (
-	LogLevelNone LogLevel = iota
-	LogLevelBasic
-	LogLevelHeaders
-	LogLevelBody
-	LogLevelDebug
-)
+import "github.com/burpheart/cursor-tap/internal/httpstream"
 
 // Config holds the application configuration.
 type Config struct {
@@ -22,9 +13,9 @@ type Config struct {
 	UpstreamProxy string `json:"upstream_proxy"` // e.g., "http://127.0.0.1:7890" or "socks5://127.0.0.1:1080"
 
 	// HTTP parsing options
-	EnableHTTPParsing bool     `json:"enable_http_parsing"`
-	HTTPLogLevel      LogLevel `json:"http_log_level"`
-	HTTPRecordFile    string   `json:"http_record_file"`
+	EnableHTTPParsing bool                `json:"enable_http_parsing"`
+	HTTPLogLevel      httpstream.LogLevel `json:"http_log_level"`
+	HTTPRecordFile    string              `json:"http_record_file"`
 }
 
 // DefaultConfig returns the default configuration.

@@ -81,7 +81,7 @@ func NewServer(config appconfig.Config) (*Server, error) {
 		interceptorOpts = append(interceptorOpts, mitm.WithHTTPParsing(true))
 
 		// Create HTTP logger with configured level
-		httpLogLevel := httpstream.LogLevel(config.HTTPLogLevel)
+		httpLogLevel := config.HTTPLogLevel
 		httpLogger := httpstream.NewDefaultLogger(
 			httpstream.WithLevel(httpLogLevel),
 			httpstream.WithColor(true),

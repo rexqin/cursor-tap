@@ -12,6 +12,7 @@ import (
 
 	"github.com/burpheart/cursor-tap/internal/ca"
 	appconfig "github.com/burpheart/cursor-tap/internal/config"
+	"github.com/burpheart/cursor-tap/internal/httpstream"
 	"github.com/burpheart/cursor-tap/internal/proxy"
 	"github.com/spf13/cobra"
 )
@@ -140,7 +141,7 @@ func runStart(cmd *cobra.Command, args []string) error {
 		DataDir:           dataDir,
 		UpstreamProxy:     upstreamProxy,
 		EnableHTTPParsing: enableHTTPParsing,
-		HTTPLogLevel:      appconfig.LogLevel(httpLogLevel),
+		HTTPLogLevel:      httpstream.LogLevel(httpLogLevel),
 		HTTPRecordFile:    httpRecordFile,
 	}
 
