@@ -2,10 +2,10 @@ package httpstream
 
 import (
 	// Import generated protobuf packages to register them with global registry
-	_ "github.com/burpheart/cursor-tap/cursor_proto/gen/agent/v1"
-	_ "github.com/burpheart/cursor-tap/cursor_proto/gen/aiserver/v1"
-	_ "github.com/burpheart/cursor-tap/cursor_proto/gen/anyrun/v1"
-	_ "github.com/burpheart/cursor-tap/cursor_proto/gen/internapi/v1"
+	_ "github.com/burpheart/cursor-tap/packages/proto/gen/agent/v1"
+	_ "github.com/burpheart/cursor-tap/packages/proto/gen/aiserver/v1"
+	_ "github.com/burpheart/cursor-tap/packages/proto/gen/anyrun/v1"
+	_ "github.com/burpheart/cursor-tap/packages/proto/gen/internapi/v1"
 )
 
 // DefaultGRPCRegistry returns a new registry that auto-discovers types

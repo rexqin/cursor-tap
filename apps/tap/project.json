@@ -1,0 +1,76 @@
+{
+  "name": "tap",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/tap",
+  "tags": ["type:app", "lang:go"],
+  "targets": {
+    "build": {
+      "executor": "@naxodev/gonx:build",
+      "outputs": ["{workspaceRoot}/dist/tap"],
+      "dependsOn": ["proto:build"],
+      "options": {
+        "main": "main.go",
+        "outputPath": "dist/tap"
+      },
+      "cache": true,
+      "inputs": [
+        "{workspaceRoot}/go.mod",
+        "{workspaceRoot}/go.sum",
+        "{workspaceRoot}/internal/**/*.go",
+        "{projectRoot}/**/*.go",
+        "!{workspaceRoot}/packages/proto/**"
+      ]
+    },
+    "serve": {
+      "executor": "@naxodev/gonx:serve",
+      "continuous": true,
+      "options": {
+        "main": "main.go",
+        "args": [
+          "start",
+          "--http-parse",
+          "--http-record",
+          "../../access.log"
+        ]
+      }
+    },
+    "dev": {
+      "executor": "@naxodev/gonx:serve",
+      "continuous": true,
+      "options": {
+        "main": "main.go",
+        "args": [
+          "start",
+          "--http-parse",
+          "--http-log",
+          "4",
+          "--http-record",
+          "../../access.log"
+        ]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "command": "go test ./internal/... ./apps/tap/... ./tools/...",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "lint": {
+      "executor": "@naxodev/gonx:lint",
+      "cache": true,
+      "options": {
+        "main": "main.go"
+      }
+    },
+    "tidy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "go mod tidy",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  }
+}

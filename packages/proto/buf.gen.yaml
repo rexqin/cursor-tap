@@ -1,0 +1,10 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/go
+    out: gen
+    opt:
+      - module=github.com/burpheart/cursor-tap/packages/proto/gen
+  - remote: buf.build/grpc/go
+    out: gen
+    opt:
+      - module=github.com/burpheart/cursor-tap/packages/proto/gen

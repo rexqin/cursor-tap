@@ -43,7 +43,7 @@ pnpm exec nx test tap
 #### 1. Start the Proxy
 
 ```bash
-go run ./cmd/cursor-tap start --http-parse --http-record ./access.log
+go run ./apps/tap start --http-parse --http-record ./access.log
 ```
 
 Listens on `localhost:8080` (HTTP proxy), `localhost:1080` (SOCKS5), and `localhost:9090` (API + WebSocket).
@@ -76,13 +76,16 @@ Open `http://localhost:3000`.
 ## Project Structure
 
 ```
-├── cmd/proxy/          # Proxy entry point
+├── apps/
+│   ├── tap/            # Proxy entry (Nx: tap)
+│   └── web/            # Next.js WebUI (Nx: web)
+├── tools/              # Dev utilities
 ├── internal/
-│   ├── ca/             # CA certificate management
-│   ├── proxy/          # HTTP CONNECT proxy
-│   └── httpstream/     # gRPC parsing core
-├── cursor_proto/       # Extracted proto definitions
-└── web/                # Next.js frontend
+│   ├── ca/
+│   ├── proxy/
+│   └── httpstream/
+├── packages/proto/     # Proto definitions (Nx: proto)
+└── docs/
 ```
 
 ## What You Can See

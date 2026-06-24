@@ -18,7 +18,7 @@ importers:
         specifier: 23.0.0
         version: 23.0.0
 
-  web:
+  apps/web:
     dependencies:
       '@radix-ui/react-scroll-area':
         specifier: ^1.2.10
