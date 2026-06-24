@@ -212,10 +212,25 @@ func (s *Server) Stop() {
 	if s.keyLog != nil {
 		s.keyLog.Close()
 	}
+	if s.recorder != nil {
+		s.recorder.Close()
+	}
 
 	// Remove API address file
 	addrFile := filepath.Join(s.config.CertDir, "api.addr")
 	os.Remove(addrFile)
+}
+
+// Close releases file handles (keylog, recorder). Safe to call without Start.
+func (s *Server) Close() {
+	if s.keyLog != nil {
+		s.keyLog.Close()
+		s.keyLog = nil
+	}
+	if s.recorder != nil {
+		s.recorder.Close()
+		s.recorder = nil
+	}
 }
 
 // startHTTPProxy starts the HTTP/HTTPS proxy server.
@@ -478,7 +493,20 @@ func (s *Server) handleSOCKS5Connection(conn net.Conn) {
 // startAPIServer starts the management API server.
 func (s *Server) startAPIServer() error {
 	mux := http.NewServeMux()
+	s.RegisterAPIRoutes(mux)
 
+	addr := fmt.Sprintf("127.0.0.1:%d", s.config.APIPort)
+	s.apiServer = &http.Server{
+		Addr:    addr,
+		Handler: mux,
+	}
+
+	fmt.Printf("[INFO] API server listening on %s\n", addr)
+	return s.apiServer.ListenAndServe()
+}
+
+// RegisterAPIRoutes registers management API routes on mux.
+func (s *Server) RegisterAPIRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -503,15 +531,6 @@ func (s *Server) startAPIServer() error {
 		handler.RegisterRoutes(mux)
 		fmt.Printf("[INFO] WebSocket and REST API enabled\n")
 	}
-
-	addr := fmt.Sprintf("127.0.0.1:%d", s.config.APIPort)
-	s.apiServer = &http.Server{
-		Addr:    addr,
-		Handler: mux,
-	}
-
-	fmt.Printf("[INFO] API server listening on %s\n", addr)
-	return s.apiServer.ListenAndServe()
 }
 
 // recorderStore adapts httpstream.Recorder to api.RecordStore interface.

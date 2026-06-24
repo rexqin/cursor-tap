@@ -13,7 +13,7 @@ func TestDefaultConfig(t *testing.T) {
 	want := &config.Config{
 		HTTPPort:   8080,
 		SOCKS5Port: 1080,
-		APIPort:    8888,
+		APIPort:    9090,
 		CertDir:    "~/.cursor-tap",
 		DataDir:    "~/.cursor-tap/data",
 	}
