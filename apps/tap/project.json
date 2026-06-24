@@ -54,7 +54,7 @@
       "executor": "nx:run-commands",
       "cache": true,
       "options": {
-        "command": "go test ./internal/... ./apps/tap/... ./tools/...",
+        "command": "go test ./tests/... ./apps/tap/... ./tools/...",
         "cwd": "{workspaceRoot}"
       }
     },

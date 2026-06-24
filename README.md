@@ -41,7 +41,7 @@ pnpm dev:web    # Next.js WebUI（:3000）
 pnpm build:tap  # 构建 Go 二进制 → dist/tap
 pnpm build:web  # 构建前端
 pnpm exec nx run proto:generate  # buf generate
-pnpm exec nx test tap     # go test ./...
+pnpm exec nx test tap     # go test ./tests/...
 ```
 
 ### 手动启动
@@ -87,6 +87,7 @@ pnpm dev:web
 ├── apps/
 │   ├── tap/            # 代理入口（Nx: tap）
 │   └── web/            # Next.js 前端（Nx: web）
+├── tests/              # 单元测试（config、httpstream）
 ├── tools/              # 开发调试工具（ext / restore 等）
 ├── internal/
 │   ├── ca/             # CA 证书管理，动态签发

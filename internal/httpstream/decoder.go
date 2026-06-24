@@ -29,7 +29,7 @@ func (d *BodyDecoder) Decode(body io.Reader, headers http.Header) io.Reader {
 	reader := body
 
 	// Content-Encoding can have multiple values, decode in order
-	encodings := parseContentEncoding(headers.Get("Content-Encoding"))
+	encodings := ParseContentEncoding(headers.Get("Content-Encoding"))
 
 	for _, encoding := range encodings {
 		switch strings.ToLower(strings.TrimSpace(encoding)) {
@@ -48,8 +48,8 @@ func (d *BodyDecoder) Decode(body io.Reader, headers http.Header) io.Reader {
 	return reader
 }
 
-// parseContentEncoding parses Content-Encoding header value.
-func parseContentEncoding(value string) []string {
+// ParseContentEncoding parses Content-Encoding header value.
+func ParseContentEncoding(value string) []string {
 	if value == "" {
 		return nil
 	}

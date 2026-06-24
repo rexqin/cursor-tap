@@ -79,6 +79,7 @@ Open `http://localhost:3000`.
 ├── apps/
 │   ├── tap/            # Proxy entry (Nx: tap)
 │   └── web/            # Next.js WebUI (Nx: web)
+├── tests/              # Unit tests (config, httpstream)
 ├── tools/              # Dev utilities
 ├── internal/
 │   ├── ca/

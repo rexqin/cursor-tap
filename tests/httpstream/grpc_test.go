@@ -1,14 +1,16 @@
-package httpstream
+package httpstream_test
 
 import (
 	"bytes"
 	"compress/gzip"
 	"io"
 	"testing"
+
+	"github.com/burpheart/cursor-tap/internal/httpstream"
 )
 
 func TestParseMethodFromURL(t *testing.T) {
-	service, method, full := ParseMethodFromURL("/aiserver.v1.AiService/RunSSE")
+	service, method, full := httpstream.ParseMethodFromURL("/aiserver.v1.AiService/RunSSE")
 	if service != "aiserver.v1.AiService" {
 		t.Errorf("service = %q", service)
 	}
@@ -19,7 +21,7 @@ func TestParseMethodFromURL(t *testing.T) {
 		t.Errorf("fullMethod = %q", full)
 	}
 
-	service, method, full = ParseMethodFromURL("invalid")
+	service, method, full = httpstream.ParseMethodFromURL("invalid")
 	if service != "" || method != "" {
 		t.Errorf("invalid path should return empty service/method, got %q/%q", service, method)
 	}
@@ -29,11 +31,11 @@ func TestParseMethodFromURL(t *testing.T) {
 }
 
 func TestGRPCParserReadFrame(t *testing.T) {
-	parser := NewGRPCParser(nil)
+	parser := httpstream.NewGRPCParser(nil)
 
 	payload := []byte("hello")
 	var buf bytes.Buffer
-	buf.WriteByte(0) // uncompressed
+	buf.WriteByte(0)
 	buf.Write([]byte{0, 0, 0, byte(len(payload))})
 	buf.Write(payload)
 
@@ -50,7 +52,7 @@ func TestGRPCParserReadFrame(t *testing.T) {
 }
 
 func TestGRPCParserReadFrameGzip(t *testing.T) {
-	parser := NewGRPCParser(nil)
+	parser := httpstream.NewGRPCParser(nil)
 
 	plain := []byte(`{"msg":"test"}`)
 	var gz bytes.Buffer
@@ -64,7 +66,7 @@ func TestGRPCParserReadFrameGzip(t *testing.T) {
 	compressed := gz.Bytes()
 
 	var buf bytes.Buffer
-	buf.WriteByte(1) // compressed
+	buf.WriteByte(1)
 	length := make([]byte, 4)
 	length[3] = byte(len(compressed))
 	buf.Write(length)
@@ -83,7 +85,7 @@ func TestGRPCParserReadFrameGzip(t *testing.T) {
 }
 
 func TestGRPCParserReadAllFramesEOF(t *testing.T) {
-	parser := NewGRPCParser(nil)
+	parser := httpstream.NewGRPCParser(nil)
 	frames, err := parser.ReadAllFrames(bytes.NewReader(nil))
 	if err != nil {
 		t.Fatalf("ReadAllFrames: %v", err)

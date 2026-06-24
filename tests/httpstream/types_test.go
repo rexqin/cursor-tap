@@ -1,15 +1,19 @@
-package httpstream
+package httpstream_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/burpheart/cursor-tap/internal/httpstream"
+)
 
 func TestDirectionString(t *testing.T) {
 	tests := []struct {
-		dir  Direction
+		dir  httpstream.Direction
 		want string
 	}{
-		{ClientToServer, "C2S"},
-		{ServerToClient, "S2C"},
-		{Direction(99), "S2C"},
+		{httpstream.ClientToServer, "C2S"},
+		{httpstream.ServerToClient, "S2C"},
+		{httpstream.Direction(99), "S2C"},
 	}
 
 	for _, tt := range tests {
